@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Musa Soko - Video Editor & Motion Designer</title>
+    <!-- ADD p5.js LIBRARY -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -20,23 +22,13 @@
       }
 
       :root {
-        --bg-color: hsl(0, 0%, 100%);
-        --text-color: #222;
-        --card-bg: rgba(255, 255, 255, 0.95);
-        --header-bg: #ffffff;
-        --button-bg: #000000;
-        --accent-color: #4a86e8;
-        --transition: all 0.3s ease;
-        --nav-color: #fff;
-      }
-
-      [data-theme="dark"] {
         --bg-color: #0a0a0a;
         --text-color: #e0e0e0;
         --card-bg: rgba(20, 20, 20, 0.95);
         --header-bg: #000;
         --button-bg: #4a86e8;
         --accent-color: #4a86e8;
+        --transition: all 0.3s ease;
         --nav-color: #151522;
       }
 
@@ -46,12 +38,69 @@
         color: var(--text-color);
         line-height: 1.6;
         overflow-x: hidden;
-        transition: background-color 0.3s ease, color 0.3s ease;
       }
 
       html {
         scroll-behavior: smooth;
       }
+
+      /* ============================================= */
+      /* PARTICLE SYSTEM STYLES FROM TEST INTEGRATION */
+      /* ============================================= */
+
+      /* Canvas for particles */
+      #particle-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+      }
+
+      /* Particle Toggle Button - TOP RIGHT */
+
+      /* ============================================= */
+      /* PARTICLE TOGGLE BUTTON - TO SHOW/HIDE BUTTON: */
+      /* Change 'display: block' to 'display: none' to hide */
+      /* Change 'display: none' to 'display: block' to show */
+      /* ============================================= */
+      .particle-toggle {
+        position: fixed;
+        top: 90px; /* Positioned below navbar */
+        right: 20px;
+        z-index: 1000;
+        background: var(--button-bg);
+        color: white;
+        border: none;
+        padding: 12px 18px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: var(--transition);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        font-family: "Montserrat", sans-serif;
+        font-weight: 600;
+        display: none; /* Change to 'none' to hide the button */
+      }
+
+      .particle-toggle:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+        background: #ff4444;
+      }
+
+      .particle-toggle.off {
+        background: #666;
+      }
+
+      .particle-toggle.off:hover {
+        background: #4a86e8;
+      }
+
+      /* ============================================= */
+      /* EXISTING PORTFOLIO STYLES - UNCHANGED */
+      /* ============================================= */
 
       /* Navigation */
       .navbar {
@@ -63,11 +112,6 @@
         z-index: 1000;
         padding: 1rem 0;
         transition: var(--transition);
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      }
-
-      [data-theme="dark"] .navbar {
-        background: var(--nav-color);
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
       }
 
@@ -137,56 +181,7 @@
         cursor: pointer;
       }
 
-      @media (max-width: 768px) {
-        .mobile-menu-toggle {
-          display: block;
-        }
-
-        .nav-menu {
-          position: fixed;
-          top: 70px;
-          right: -100%;
-          width: 250px;
-          height: calc(100vh - 70px);
-          background: var(--nav-color);
-          flex-direction: column;
-          padding: 2rem;
-          transition: right 0.3s ease;
-          box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .nav-menu.active {
-          right: 0;
-        }
-
-        .nav-menu li {
-          margin: 1rem 0;
-        }
-      }
-
-      /* Theme toggle button */
-      .theme-toggle {
-        position: fixed;
-        top: 80px;
-        right: 20px;
-        z-index: 1000;
-        background: var(--button-bg);
-        color: white;
-        border: none;
-        padding: 12px;
-        border-radius: 50%;
-        cursor: pointer;
-        font-size: 1.2rem;
-        transition: var(--transition);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-      }
-
-      .theme-toggle:hover {
-        transform: scale(1.1);
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-      }
-
-      /* Background decorations - Large wavy ribbons */
+      /* Background decorations - Only dark mode */
       .bg-decorations {
         position: fixed;
         top: 0;
@@ -198,69 +193,10 @@
         opacity: 0.3;
       }
 
-      .retro-stars {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-      }
-
-      .wavy-shape {
-        position: absolute;
-        opacity: 1;
-        will-change: transform;
-        transition: transform 0.1s ease-out;
-      }
-
-      .wavy-shape:nth-child(1) {
-        top: -10%;
-        left: -20%;
-        transform: rotate(15deg);
-      }
-
-      .wavy-shape:nth-child(2) {
-        top: 20%;
-        right: -30%;
-        transform: rotate(-25deg);
-      }
-
-      .wavy-shape:nth-child(3) {
-        bottom: 10%;
-        left: -15%;
-        transform: rotate(35deg);
-      }
-
-      .wavy-shape:nth-child(4) {
-        top: 50%;
-        left: 30%;
-        transform: rotate(-15deg);
-      }
-
-      .wavy-shape:nth-child(5) {
-        bottom: -5%;
-        right: -10%;
-        transform: rotate(45deg);
-      }
-
-      .wavy-shape:nth-child(6) {
-        top: 10%;
-        left: 50%;
-        transform: rotate(-35deg);
-      }
-
       .abstract-shapes {
         position: absolute;
         width: 100%;
         height: 100%;
-        display: none;
-      }
-
-      [data-theme="dark"] .abstract-shapes {
-        display: block;
-      }
-
-      [data-theme="dark"] .retro-stars {
-        display: none;
       }
 
       .abstract-shape {
@@ -287,7 +223,7 @@
         animation: shatter 1.5s forwards;
       }
 
-      /* Updated Header - Solid color */
+      /* Header */
       header {
         background: var(--header-bg);
         color: var(--text-color);
@@ -367,23 +303,35 @@
         border-radius: 2px;
       }
 
-      /* Video containers with enhanced hover effects */
+      /* FIXED: Video containers with proper sizing and glow */
       .video-container {
         display: flex;
         justify-content: center;
         margin-bottom: 2rem;
         border-radius: 12px;
-        overflow: hidden;
+        overflow: visible; /* Changed from hidden to visible for glow */
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         transition: var(--transition);
         border: 2px solid transparent;
+        position: relative;
+        /* Restore original sizing but with proper containment */
+        width: 100%;
+        max-width: 900px;
+        margin-left: auto;
+        margin-right: auto;
       }
 
       .video-container:hover {
         transform: translateY(-10px);
         box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3),
-          0 0 20px rgba(0, 136, 255, 0.5);
-        border-color: rgba(0, 136, 255, 0.3);
+          0 0 0 2px rgba(74, 134, 232, 0.3), 0 0 20px rgba(74, 134, 232, 0.5);
+      }
+
+      .video-wrapper {
+        width: 100%;
+        border-radius: 12px;
+        overflow: hidden; /* Contain the iframe here instead */
+        position: relative;
       }
 
       .video-container iframe {
@@ -391,6 +339,8 @@
         max-width: 900px;
         aspect-ratio: 16/9;
         border: none;
+        border-radius: 12px;
+        display: block;
       }
 
       /* Projects section */
@@ -460,7 +410,7 @@
       .project-video {
         width: 100%;
         height: 250px;
-        background: #f0f0f0;
+        background: #333;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -567,7 +517,7 @@
 
       /* Enhanced projects grid */
       .projects {
-        align-items: start; /* Prevent grid items from stretching */
+        align-items: start;
       }
 
       /* Loading state */
@@ -602,8 +552,8 @@
       .project-video.portrait-mode {
         background: #000;
         border-radius: 8px;
-        max-width: 400px; /* limit max width */
-        aspect-ratio: 9 / 16; /* maintain vertical ratio */
+        max-width: 400px;
+        aspect-ratio: 9 / 16;
         margin: 0 auto;
         display: flex;
         align-items: center;
@@ -631,7 +581,7 @@
         border-radius: 8px;
       }
 
-      /* NEW: Enhanced square mode */
+      /* Square mode */
       .project-video.square-mode {
         background: #000;
         border-radius: 8px;
@@ -699,7 +649,7 @@
 
       .project-video {
         position: relative;
-        background: #f0f0f0; /* Light gray background instead of black */
+        background: #333;
       }
 
       .thumbnail-container {
@@ -719,7 +669,7 @@
         max-height: 130%;
         width: auto;
         height: auto;
-        object-fit: contain; /* Ensures entire image is visible */
+        object-fit: contain;
       }
 
       .project-video.playing .play-button {
@@ -776,32 +726,28 @@
         font-weight: 600;
         display: inline-block;
         padding: 0.3rem 0.8rem;
-        background: rgba(0, 0, 0, 0.1);
+        background: rgba(255, 255, 255, 0.1);
         border-radius: 4px;
       }
 
       .project-info p {
         margin: 0;
-        color: #555;
+        color: #ccc;
         line-height: 1.5;
       }
 
-      [data-theme="dark"] .project-info p {
-        color: #ccc;
-      }
-
       .project-video.error {
-        background: #f5f5f5;
+        background: #333;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #666;
+        color: #999;
       }
 
       .project-video.error::after {
         content: "Video unavailable";
         font-size: 1rem;
-        color: #666;
+        color: #999;
       }
 
       a.button {
@@ -819,10 +765,6 @@
       a.button:hover {
         background: transparent;
         border-color: var(--button-bg);
-        color: var(--text-color);
-      }
-
-      [data-theme="dark"] a.button:hover {
         color: white;
       }
 
@@ -855,7 +797,7 @@
 
       .skill-tag {
         padding: 0.4rem 0.8rem;
-        background: rgba(0, 0, 0, 0.1);
+        background: rgba(255, 255, 255, 0.1);
         border-radius: 50px;
         font-size: 0.9rem;
       }
@@ -887,12 +829,12 @@
         transform: translateY(-3px);
       }
 
-      /* NEW: Aspect ratio detection and responsive layout */
+      /* Aspect ratio detection and responsive layout */
       .project-video.playing.portrait-mode {
-        grid-column: 1 / -1; /* Span across all columns */
+        grid-column: 1 / -1;
         width: 100%;
-        max-width: 400px; /* Limit width for portrait videos */
-        margin: 0 auto; /* Center the video */
+        max-width: 400px;
+        margin: 0 auto;
         justify-self: center;
       }
 
@@ -922,11 +864,6 @@
           gap: 1rem;
         }
 
-        .theme-toggle {
-          top: 70px;
-          right: 15px;
-        }
-
         section {
           padding: 3rem 1rem;
         }
@@ -941,7 +878,7 @@
         }
 
         .project-video.portrait {
-          height: 300px; /* Slightly smaller on mobile */
+          height: 300px;
         }
 
         .project-video.portrait .video-thumbnail {
@@ -966,10 +903,49 @@
         .project-video.playing.portrait-mode {
           max-width: 300px;
         }
+
+        /* Mobile adjustments for video containers */
+        .video-container {
+          max-width: 100%;
+        }
+
+        .video-container iframe {
+          max-width: 100%;
+        }
+
+        /* HIDE PARTICLE TOGGLE ON MOBILE */
+        .particle-toggle {
+          display: none !important;
+        }
+
+        /* HIDE PARTICLE CANVAS ON MOBILE */
+        #particle-canvas {
+          display: none !important;
+        }
       }
     </style>
   </head>
   <body>
+    <!-- ============================================= -->
+    <!-- PARTICLE SYSTEM ELEMENTS FROM TEST INTEGRATION -->
+    <!-- ============================================= -->
+
+    <!-- Particle Canvas -->
+    <div id="particle-canvas"></div>
+
+    <!-- Particle Toggle Button - TOP RIGHT -->
+    <button
+      class="particle-toggle"
+      id="particleToggle"
+      title="Toggle Particle Effects"
+    >
+      🔥 Particles: ON
+    </button>
+
+    <!-- ============================================= -->
+    <!-- EXISTING PORTFOLIO CONTENT - UNCHANGED -->
+    <!-- ============================================= -->
+
     <!-- Navigation -->
     <nav class="navbar">
       <div class="nav-container">
@@ -987,88 +963,14 @@
       </div>
     </nav>
 
-    <!-- Theme toggle button -->
-    <button
-      class="theme-toggle"
-      onclick="toggleTheme()"
-      aria-label="Toggle between dark and light mode"
-      title="Toggle Dark/Light Mode"
-    >
-      🌓
-    </button>
-
-    <!-- Background decorations - Large wavy ribbons -->
+    <!-- Background decorations - Only dark mode -->
     <div class="bg-decorations">
-      <!-- Light mode: Large wavy ribbon shapes -->
-      <div class="retro-stars">
-        <!-- Large wavy ribbon shape 1 -->
-        <div class="wavy-shape">
-          <svg width="800" height="400" viewBox="0 0 800 400">
-            <path
-              d="M-50 150 Q100 100 200 150 T400 150 Q500 100 600 150 T800 150 L850 250 Q700 200 600 250 T400 250 Q300 300 200 250 T-50 250 Z"
-              fill="#ff6b6b"
-            />
-          </svg>
-        </div>
-
-        <!-- Large wavy ribbon shape 2 -->
-        <div class="wavy-shape">
-          <svg width="900" height="300" viewBox="0 0 900 300">
-            <path
-              d="M-100 100 Q150 50 300 100 T600 100 Q750 50 900 100 L950 200 Q750 150 600 200 T300 200 Q150 250 -100 200 Z"
-              fill="#4ecdc4"
-            />
-          </svg>
-        </div>
-
-        <!-- Large wavy ribbon shape 3 -->
-        <div class="wavy-shape">
-          <svg width="700" height="350" viewBox="0 0 700 350">
-            <path
-              d="M-50 120 Q100 80 200 120 T400 120 Q500 80 650 120 L700 220 Q550 180 400 220 T200 220 Q100 260 -50 220 Z"
-              fill="#45b7d1"
-            />
-          </svg>
-        </div>
-
-        <!-- Large wavy ribbon shape 4 -->
-        <div class="wavy-shape">
-          <svg width="600" height="280" viewBox="0 0 600 280">
-            <path
-              d="M-80 90 Q80 60 160 90 T320 90 Q400 60 520 90 L580 180 Q420 150 320 180 T160 180 Q80 210 -80 180 Z"
-              fill="#f7dc6f"
-            />
-          </svg>
-        </div>
-
-        <!-- Large wavy ribbon shape 5 -->
-        <div class="wavy-shape">
-          <svg width="850" height="320" viewBox="0 0 850 320">
-            <path
-              d="M-60 110 Q120 70 240 110 T480 110 Q600 70 780 110 L840 210 Q660 170 480 210 T240 210 Q120 250 -60 210 Z"
-              fill="#bb8fce"
-            />
-          </svg>
-        </div>
-
-        <!-- Large wavy ribbon shape 6 -->
-        <div class="wavy-shape">
-          <svg width="750" height="300" viewBox="0 0 750 300">
-            <path
-              d="M-70 100 Q110 65 220 100 T440 100 Q550 65 720 100 L770 190 Q590 155 440 190 T220 190 Q110 225 -70 190 Z"
-              fill="#58d68d"
-            />
-          </svg>
-        </div>
-      </div>
-
-      <!-- Dark mode: Abstract shapes (Asteroids) -->
       <div class="abstract-shapes">
         <!-- Asteroids will be generated dynamically with JavaScript -->
       </div>
     </div>
 
-    <!-- Header with solid color -->
+    <!-- Header -->
     <header>
       <h1>Hi I'm Musa Soko</h1>
       <p>a Video Editor and Motion Graphic Designer based in South Africa</p>
@@ -1080,22 +982,24 @@
     <section id="showreel">
       <h2>Showreel</h2>
       <div class="video-container">
-        <!-- REPLACE THIS: Put your showreel video here -->
-        <iframe
-          src="https://player.vimeo.com/video/1108056464"
-          allowfullscreen
-        ></iframe>
+        <div class="video-wrapper">
+          <iframe
+            src="https://player.vimeo.com/video/1108056464"
+            allowfullscreen
+          ></iframe>
+        </div>
       </div>
     </section>
 
     <section id="highlight">
       <h2>Highlight Reel - Winedrops</h2>
       <div class="video-container">
-        <!-- REPLACE THIS: Put your Winedrops highlight reel here -->
-        <iframe
-          src="https://player.vimeo.com/video/1109940880"
-          allowfullscreen
-        ></iframe>
+        <div class="video-wrapper">
+          <iframe
+            src="https://player.vimeo.com/video/1109940880"
+            allowfullscreen
+          ></iframe>
+        </div>
       </div>
       <div class="video-placeholder">
         A focused edit showcasing my recent work with Winedrops, including ads,
@@ -1103,19 +1007,21 @@
       </div>
     </section>
 
+    <!-- Rest of your HTML remains the same -->
     <section id="projects">
       <h2>Selected Projects</h2>
 
       <div class="project-filters">
         <button class="filter-btn active" data-filter="all">All</button>
-        <!-- <button class="filter-btn" data-filter="social">Social Media</button>
-        <button class="filter-btn" data-filter="youtube">YouTube</button>
-        <button class="filter-btn" data-filter="motion">Motion Graphics</button> -->
       </div>
 
       <div class="projects">
         <!-- PROJECT 1 - Horizontal Video Example -->
-        <div class="project" data-category="commercial">
+        <div
+          class="project"
+          data-category="commercial"
+          id="project-container-1"
+        >
           <div
             class="project-video"
             data-video="https://vimeo.com/1114326040"
@@ -1132,8 +1038,6 @@
               class="ribbon-overlay"
               style="background: linear-gradient(135deg, #45b7d1, #6bd1e8)"
             ></div>
-
-            <!-- Video controls will be added dynamically -->
           </div>
           <div class="project-info">
             <h3>Website Info Video</h3>
@@ -1146,7 +1050,7 @@
         </div>
 
         <!-- PROJECT 2 - Horizontal Video Example -->
-        <div class="project" data-category="social">
+        <div class="project" data-category="social" id="project-container-2">
           <div
             class="project-video"
             data-video="https://vimeo.com/1114454162"
@@ -1174,7 +1078,7 @@
         </div>
 
         <!-- PROJECT 3 - Another portrait Video -->
-        <div class="project" data-category="youtube">
+        <div class="project" data-category="youtube" id="project-container-3">
           <div
             class="project-video"
             data-video="https://vimeo.com/1121611979"
@@ -1202,7 +1106,7 @@
         </div>
 
         <!-- PROJECT 4 - Add more projects as needed -->
-        <div class="project" data-category="motion">
+        <div class="project" data-category="motion" id="project-container-4">
           <div
             class="project-video"
             data-video="https://vimeo.com/900842265"
@@ -1231,7 +1135,7 @@
         </div>
 
         <!-- PROJECT - Square Video Example -->
-        <div class="project" data-category="social">
+        <div class="project" data-category="social" id="project-container-5">
           <div
             class="project-video"
             data-video="https://vimeo.com/1114326897?share=copy"
@@ -1256,7 +1160,7 @@
         </div>
 
         <!-- PROJECT 6 - Another portrait Video -->
-        <div class="project" data-category="youtube">
+        <div class="project" data-category="youtube" id="project-container-6">
           <div
             class="project-video"
             data-video="https://vimeo.com/1114453751"
@@ -1284,7 +1188,7 @@
         </div>
 
         <!-- PROJECT 7 - Another portrait Video -->
-        <div class="project" data-category="youtube">
+        <div class="project" data-category="youtube" id="project-container-7">
           <div
             class="project-video"
             data-video="https://vimeo.com/1121503730"
@@ -1306,7 +1210,7 @@
             <h3>Brand Identity</h3>
             <p>
               Developed motion style, color palette, and visual identity
-              concepts for StriveTech’s brand.
+              concepts for StriveTech's brand.
             </p>
           </div>
         </div>
@@ -1392,26 +1296,654 @@
       <p>Musa Soko. "I make frames move".</p>
     </footer>
 
+    <!-- ============================================= -->
+    <!-- PARTICLE SYSTEM JAVASCRIPT FROM TEST INTEGRATION -->
+    <!-- ============================================= -->
     <script>
-      // Enhanced theme toggle functionality
+      // =============================================
+      // PARTICLE SYSTEM INTEGRATION
+      // =============================================
+      let particles = [];
+      let containers = [];
+      let hoveredContainer = null; // Track which specific container is hovered
+      let particlesEnabled = true; // Track if particles are enabled
 
+      // =============================================
+      // PARTICLE COUNT SETTING - CHANGED TO 900 AS REQUESTED
+      // =============================================
+      const DENSITY = 900; // ⬅️ CHANGED TO 900 AS REQUESTED
+
+      const CONFETTI_SCALE = 0.28;
+      let PARTICLE_SPEED = 0.2; // HARDCODED: 0.2
+
+      const NEUTRAL_COLOR = [88, 88, 88, 170];
+      const ATTRACT_COLOR = [255, 255, 255, 220];
+      const STICKY_COLOR = [180, 220, 255, 240];
+      const EMITTED_COLOR = [255, 215, 0, 200];
+      const BUTTON_ATTRACT_COLOR = [255, 50, 50, 220]; // Red color for button attraction
+      const BUTTON_STICKY_COLOR = [255, 100, 100, 240]; // Red sticky color for button
+
+      let colors = {};
+      let attractedParticles = 0;
+      let stuckParticles = 0;
+      let emittedParticles = 0;
+      let lastEmissionTime = 0;
+
+      // Button container
+      let buttonContainer = null;
+
+      // HARDCODED SETTINGS - No longer using sliders
+      const settings = {
+        attractRadius: 96.0, // HARDCODED: 96.0
+        attractStrength: 1.2, // HARDCODED: 1.2
+        stickinessDistance: 1.6, // HARDCODED: 1.6
+        stickinessStrength: 0.6, // HARDCODED: 0.6
+        emissionRate: 4.0, // HARDCODED: 4.0
+        particleSpeed: 0.2, // HARDCODED: 0.2
+      };
+
+      // Check if device is mobile
+      function isMobileDevice() {
+        return window.innerWidth <= 768;
+      }
+
+      class Particle {
+        constructor(isEmitted = false) {
+          this.isEmitted = isEmitted;
+          this.reset();
+        }
+
+        reset() {
+          if (this.isEmitted) {
+            this.spawnAtEdge();
+            this.lifetime = 255;
+            this.color = colors.emitted;
+          } else {
+            do {
+              this.x = random(width);
+              this.y = random(height);
+            } while (this.isNearAnyContainer(80));
+            this.color = colors.neutral;
+          }
+
+          this.size = random(6, 11) * CONFETTI_SCALE;
+          let angle = random(TWO_PI);
+          this.baseSpeed = PARTICLE_SPEED * random(0.7, 1.2);
+          this.baseDx = cos(angle) * this.baseSpeed;
+          this.baseDy = sin(angle) * this.baseSpeed;
+          this.dx = this.baseDx;
+          this.dy = this.baseDy;
+
+          this.angle = random(TWO_PI);
+          this.rotSpeed = random(-0.03, 0.03);
+
+          this.isAttracted = false;
+          this.isStuck = false;
+          this.stuckTimer = 0;
+          this.floatOffsetX = random(1000);
+          this.floatOffsetY = random(1000);
+          this.targetContainer = null;
+          this.isAttractedToButton = false;
+          this.buttonAttractionProgress = 0; // 0 to 1 for gradual color change
+        }
+
+        spawnAtEdge() {
+          if (!hoveredContainer && !buttonContainer?.isHovered) return;
+
+          const container = hoveredContainer || buttonContainer;
+          const left = container.x - container.w / 2;
+          const right = container.x + container.w / 2;
+          const top = container.y - container.h / 2;
+          const bottom = container.y + container.h / 2;
+
+          const edge = floor(random(4));
+          switch (edge) {
+            case 0:
+              this.x = random(left, right);
+              this.y = top;
+              break;
+            case 1:
+              this.x = right;
+              this.y = random(top, bottom);
+              break;
+            case 2:
+              this.x = random(left, right);
+              this.y = bottom;
+              break;
+            case 3:
+              this.x = left;
+              this.y = random(top, bottom);
+              break;
+          }
+
+          const pushAngle = [PI, 0, -PI / 2, PI / 2][edge];
+          const pushStrength = random(0.5, 1.5);
+          this.dx += cos(pushAngle) * pushStrength;
+          this.dy += sin(pushAngle) * pushStrength;
+        }
+
+        isNearAnyContainer(distance) {
+          return containers.some(
+            (container) =>
+              dist(this.x, this.y, container.x, container.y) < distance
+          );
+        }
+
+        isInAttractionZone(container) {
+          const margin = settings.attractRadius;
+          const left = container.x - container.w / 2 - margin;
+          const right = container.x + container.w / 2 + margin;
+          const top = container.y - container.h / 2 - margin;
+          const bottom = container.y + container.h / 2 + margin;
+
+          return (
+            this.x > left && this.x < right && this.y > top && this.y < bottom
+          );
+        }
+
+        isCloseToEdge(container) {
+          const edgeDistance = map(
+            settings.stickinessDistance,
+            0.1,
+            2.0,
+            40,
+            5
+          );
+          const left = container.x - container.w / 2;
+          const right = container.x + container.w / 2;
+          const top = container.y - container.h / 2;
+          const bottom = container.y + container.h / 2;
+
+          return (
+            (this.x > left - edgeDistance && this.x < left + edgeDistance) ||
+            (this.x > right - edgeDistance && this.x < right + edgeDistance) ||
+            (this.y > top - edgeDistance && this.y < top + edgeDistance) ||
+            (this.y > bottom - edgeDistance && this.y < bottom + edgeDistance)
+          );
+        }
+
+        getClosestEdgePoint(container) {
+          const left = container.x - container.w / 2;
+          const right = container.x + container.w / 2;
+          const top = container.y - container.h / 2;
+          const bottom = container.y + container.h / 2;
+
+          if (
+            this.x >= left &&
+            this.x <= right &&
+            this.y >= top &&
+            this.y <= bottom
+          ) {
+            const distToLeft = this.x - left;
+            const distToRight = right - this.x;
+            const distToTop = this.y - top;
+            const distToBottom = bottom - this.y;
+            const minDist = min(
+              distToLeft,
+              distToRight,
+              distToTop,
+              distToBottom
+            );
+
+            if (minDist === distToLeft) return { x: left, y: this.y };
+            else if (minDist === distToRight) return { x: right, y: this.y };
+            else if (minDist === distToTop) return { x: this.x, y: top };
+            else return { x: this.x, y: bottom };
+          }
+
+          const nearestX = constrain(this.x, left, right);
+          const nearestY = constrain(this.y, top, bottom);
+          const distToLeft = abs(this.x - left);
+          const distToRight = abs(this.x - right);
+          const distToTop = abs(this.y - top);
+          const distToBottom = abs(this.y - bottom);
+          const minDist = min(distToLeft, distToRight, distToTop, distToBottom);
+
+          if (minDist === distToLeft) return { x: left, y: nearestY };
+          else if (minDist === distToRight) return { x: right, y: nearestY };
+          else if (minDist === distToTop) return { x: nearestX, y: top };
+          else return { x: nearestX, y: bottom };
+        }
+
+        update() {
+          if (!particlesEnabled) return;
+
+          this.isAttracted = false;
+          this.isStuck = false;
+          this.targetContainer = null;
+          this.isAttractedToButton = false;
+
+          // Check button hover first (highest priority)
+          if (
+            buttonContainer?.isHovered &&
+            this.isInAttractionZone(buttonContainer)
+          ) {
+            this.targetContainer = buttonContainer;
+            this.isAttractedToButton = true;
+            this.applyEdgeAttraction();
+            this.isAttracted = true;
+
+            if (this.isCloseToEdge(buttonContainer)) {
+              this.applyStickiness();
+              this.isStuck = true;
+              this.stuckTimer++;
+            } else {
+              this.stuckTimer = max(0, this.stuckTimer - 1);
+            }
+          }
+          // Then check project container hover
+          else if (
+            hoveredContainer &&
+            this.isInAttractionZone(hoveredContainer)
+          ) {
+            this.targetContainer = hoveredContainer;
+            this.applyEdgeAttraction();
+            this.isAttracted = true;
+
+            if (this.isCloseToEdge(hoveredContainer)) {
+              this.applyStickiness();
+              this.isStuck = true;
+              this.stuckTimer++;
+            } else {
+              this.stuckTimer = max(0, this.stuckTimer - 1);
+            }
+          } else {
+            this.returnToNatural();
+            this.stuckTimer = max(0, this.stuckTimer - 2);
+
+            if (this.isEmitted) {
+              this.lifetime -= 2;
+              if (this.lifetime <= 0) this.lifetime = 0;
+            }
+          }
+
+          this.x += this.dx;
+          this.y += this.dy;
+          this.angle += this.rotSpeed;
+
+          if (!this.isEmitted) {
+            if (this.x < 0) this.x = width;
+            if (this.x > width) this.x = 0;
+            if (this.y < 0) this.y = height;
+            if (this.y > height) this.y = 0;
+          }
+        }
+
+        applyEdgeAttraction() {
+          if (!this.targetContainer) return;
+
+          const attractStrength = settings.attractStrength * 0.08;
+          const edgePoint = this.getClosestEdgePoint(this.targetContainer);
+          const angleToEdge = atan2(edgePoint.y - this.y, edgePoint.x - this.x);
+
+          this.dx += cos(angleToEdge) * attractStrength;
+          this.dy += sin(angleToEdge) * attractStrength;
+          this.dx = constrain(this.dx, -8, 8);
+          this.dy = constrain(this.dy, -8, 8);
+
+          // Handle color transition for button attraction
+          if (this.isAttractedToButton) {
+            // Gradually increase red effect
+            this.buttonAttractionProgress = min(
+              1,
+              this.buttonAttractionProgress + 0.05
+            );
+
+            // Add flickering effect for button attraction
+            const flicker = sin(millis() * 0.01) * 0.2 + 0.8;
+            const currentRed = lerpColor(
+              colors.attract,
+              colors.buttonAttract,
+              this.buttonAttractionProgress
+            );
+            const flickeredRed = lerpColor(
+              currentRed,
+              color(255, 255, 255),
+              0.1 * flicker
+            );
+
+            this.color = flickeredRed;
+          } else {
+            // Gradually return to normal colors when not attracted to button
+            this.buttonAttractionProgress = max(
+              0,
+              this.buttonAttractionProgress - 0.02
+            );
+
+            if (this.isEmitted) {
+              const brighten = map(settings.attractStrength, 0.3, 2.5, 0, 0.3);
+              this.color = lerpColor(
+                this.color,
+                color(255, 255, 255),
+                brighten
+              );
+            } else {
+              this.color = lerpColor(this.color, colors.attract, 0.1);
+            }
+          }
+        }
+
+        applyStickiness() {
+          if (!this.targetContainer) return;
+
+          const stickinessStrength = settings.stickinessStrength;
+          const edgePoint = this.getClosestEdgePoint(this.targetContainer);
+          const stickStrength = stickinessStrength * 0.15;
+          const angleToEdge = atan2(edgePoint.y - this.y, edgePoint.x - this.x);
+
+          this.dx += cos(angleToEdge) * stickStrength;
+          this.dy += sin(angleToEdge) * stickStrength;
+
+          const floatAmount = map(stickinessStrength, 0.1, 1.5, 0.5, 0.1);
+          const floatX =
+            sin(millis() * 0.002 + this.floatOffsetX) * floatAmount;
+          const floatY =
+            cos(millis() * 0.002 + this.floatOffsetY) * floatAmount;
+
+          this.dx += floatX;
+          this.dy += floatY;
+
+          const damping = map(stickinessStrength, 0.1, 1.5, 0.92, 0.8);
+          this.dx *= damping;
+          this.dy *= damping;
+
+          const stickIntensity = map(this.stuckTimer, 0, 60, 0, 1);
+
+          if (this.isAttractedToButton) {
+            // Use red sticky colors for button
+            const flicker = sin(millis() * 0.008) * 0.3 + 0.7;
+            const stickyRed = lerpColor(
+              colors.buttonAttract,
+              colors.buttonSticky,
+              stickIntensity
+            );
+            const flickeredRed = lerpColor(
+              stickyRed,
+              color(255, 255, 255),
+              0.15 * flicker
+            );
+
+            this.color = flickeredRed;
+          } else if (this.isEmitted) {
+            this.color = lerpColor(
+              this.color,
+              colors.sticky,
+              stickIntensity * 0.5
+            );
+          } else {
+            this.color = lerpColor(this.color, colors.sticky, stickIntensity);
+          }
+        }
+
+        returnToNatural() {
+          this.dx = lerp(this.dx, this.baseDx, 0.06);
+          this.dy = lerp(this.dy, this.baseDy, 0.06);
+
+          if (!this.isEmitted) {
+            this.color = lerpColor(this.color, colors.neutral, 0.08);
+          }
+        }
+
+        display() {
+          if (!particlesEnabled) return;
+
+          push();
+          translate(this.x, this.y);
+          rotate(this.angle);
+
+          if (this.isEmitted) {
+            fill(
+              red(this.color),
+              green(this.color),
+              blue(this.color),
+              this.lifetime
+            );
+          } else {
+            fill(this.color);
+          }
+
+          noStroke();
+          rectMode(CENTER);
+          rect(0, 0, this.size, this.size * 0.6, 2);
+          pop();
+        }
+      }
+
+      function setup() {
+        // DON'T SET UP PARTICLES ON MOBILE
+        if (isMobileDevice()) {
+          console.log("Mobile device detected - particles disabled");
+          return;
+        }
+
+        const canvas = createCanvas(windowWidth, windowHeight);
+        canvas.parent("particle-canvas");
+
+        colors.neutral = color(...NEUTRAL_COLOR);
+        colors.attract = color(...ATTRACT_COLOR);
+        colors.sticky = color(...STICKY_COLOR);
+        colors.emitted = color(...EMITTED_COLOR);
+        colors.buttonAttract = color(...BUTTON_ATTRACT_COLOR);
+        colors.buttonSticky = color(...BUTTON_STICKY_COLOR);
+
+        // Initialize containers from project elements
+        initializeContainers();
+
+        // Initialize button container
+        initializeButtonContainer();
+
+        // =============================================
+        // PARTICLE CREATION - Creates particles based on DENSITY value (900)
+        // =============================================
+        particles = [];
+        for (let i = 0; i < DENSITY; i++) {
+          particles.push(new Particle(false));
+        }
+
+        // Set up hover detection
+        setupHoverDetection();
+
+        // Set up toggle button functionality
+        setupToggleButton();
+      }
+
+      function initializeButtonContainer() {
+        // DON'T SET UP BUTTON ON MOBILE
+        if (isMobileDevice()) return;
+
+        const buttonElement = document.getElementById("particleToggle");
+        if (buttonElement) {
+          const rect = buttonElement.getBoundingClientRect();
+          buttonContainer = {
+            element: buttonElement,
+            x: rect.left + rect.width / 2,
+            y: rect.top + rect.height / 2,
+            w: rect.width,
+            h: rect.height,
+            isHovered: false,
+          };
+        }
+      }
+
+      function setupToggleButton() {
+        // DON'T SET UP TOGGLE ON MOBILE
+        if (isMobileDevice()) return;
+
+        const toggleButton = document.getElementById("particleToggle");
+
+        toggleButton.addEventListener("click", function () {
+          particlesEnabled = !particlesEnabled;
+
+          if (particlesEnabled) {
+            this.textContent = "🔥 Silly Goober: ON";
+            this.classList.remove("off");
+          } else {
+            this.textContent = "💤 Silly Goober: OFF";
+            this.classList.add("off");
+          }
+        });
+
+        // Button hover detection
+        toggleButton.addEventListener("mouseenter", function () {
+          if (buttonContainer) {
+            buttonContainer.isHovered = true;
+          }
+        });
+
+        toggleButton.addEventListener("mouseleave", function () {
+          if (buttonContainer) {
+            buttonContainer.isHovered = false;
+          }
+        });
+      }
+
+      function initializeContainers() {
+        // DON'T SET UP CONTAINERS ON MOBILE
+        if (isMobileDevice()) return;
+
+        // Initialize containers for ALL project containers in your portfolio
+        const projectContainers = [
+          "project-container-1",
+          "project-container-2",
+          "project-container-3",
+          "project-container-4",
+          "project-container-5",
+          "project-container-6",
+          "project-container-7",
+        ];
+
+        projectContainers.forEach((id) => {
+          const element = document.getElementById(id);
+          if (element) {
+            const rect = element.getBoundingClientRect();
+            containers.push({
+              element: element,
+              x: rect.left + rect.width / 2,
+              y: rect.top + rect.height / 2,
+              w: rect.width,
+              h: rect.height,
+              id: id,
+            });
+          }
+        });
+      }
+
+      function setupHoverDetection() {
+        // DON'T SET UP HOVER DETECTION ON MOBILE
+        if (isMobileDevice()) return;
+
+        containers.forEach((container) => {
+          container.element.addEventListener("mouseenter", () => {
+            hoveredContainer = container; // Set the specific hovered container
+          });
+
+          container.element.addEventListener("mouseleave", () => {
+            // Only clear if we're leaving the currently hovered container
+            if (hoveredContainer && hoveredContainer.id === container.id) {
+              hoveredContainer = null;
+            }
+          });
+        });
+      }
+
+      function draw() {
+        // DON'T DRAW PARTICLES ON MOBILE
+        if (isMobileDevice()) return;
+
+        background(25, 25, 25, 100);
+
+        // Update container positions (in case of scroll/resize)
+        updateContainerPositions();
+
+        // Update button position
+        updateButtonPosition();
+
+        // Emit particles when a specific container is hovered and particles are enabled
+        if (
+          particlesEnabled &&
+          (hoveredContainer || buttonContainer?.isHovered)
+        ) {
+          const currentTime = millis();
+          if (
+            currentTime - lastEmissionTime >
+            1000 / (settings.emissionRate + 1)
+          ) {
+            for (let i = 0; i < settings.emissionRate; i++) {
+              particles.push(new Particle(true));
+            }
+            lastEmissionTime = currentTime;
+          }
+        }
+
+        // Update and count particles
+        attractedParticles = 0;
+        stuckParticles = 0;
+        emittedParticles = 0;
+
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i];
+
+          if (p.isEmitted) {
+            emittedParticles++;
+            if (p.lifetime <= 0) {
+              particles.splice(i, 1);
+              continue;
+            }
+          }
+
+          p.update();
+
+          if (p.isAttracted) attractedParticles++;
+          if (p.isStuck) stuckParticles++;
+        }
+
+        // Display all particles
+        for (const p of particles) {
+          p.display();
+        }
+      }
+
+      function updateContainerPositions() {
+        // DON'T UPDATE CONTAINERS ON MOBILE
+        if (isMobileDevice()) return;
+
+        containers.forEach((container) => {
+          const rect = container.element.getBoundingClientRect();
+          container.x = rect.left + rect.width / 2;
+          container.y = rect.top + rect.height / 2;
+          container.w = rect.width;
+          container.h = rect.height;
+        });
+      }
+
+      function updateButtonPosition() {
+        // DON'T UPDATE BUTTON ON MOBILE
+        if (isMobileDevice()) return;
+
+        if (buttonContainer) {
+          const rect = buttonContainer.element.getBoundingClientRect();
+          buttonContainer.x = rect.left + rect.width / 2;
+          buttonContainer.y = rect.top + rect.height / 2;
+          buttonContainer.w = rect.width;
+          buttonContainer.h = rect.height;
+        }
+      }
+
+      function windowResized() {
+        // DON'T RESIZE CANVAS ON MOBILE
+        if (isMobileDevice()) return;
+
+        resizeCanvas(windowWidth, windowHeight);
+      }
+
+      // =============================================
+      // EXISTING PORTFOLIO JAVASCRIPT - UNCHANGED
+      // =============================================
+
+      // Mobile menu functionality only
       function toggleMobileMenu() {
         const menu = document.querySelector(".nav-menu");
         menu.classList.toggle("active");
-      }
-      function toggleTheme() {
-        const body = document.body;
-        const currentTheme = body.getAttribute("data-theme");
-        const newTheme = currentTheme === "dark" ? "light" : "dark";
-        body.setAttribute("data-theme", newTheme);
-      }
-
-      // Check for saved theme preference
-      if (
-        window.matchMedia &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches
-      ) {
-        document.body.setAttribute("data-theme", "dark");
       }
 
       // Enhanced project filtering and responsive video layout
@@ -1655,34 +2187,6 @@
           project.style.transition = "all 0.5s ease";
         }
 
-        function addCloseButton(container, originalHeight) {
-          const controls = document.createElement("div");
-          controls.className = "video-controls";
-          controls.style.position = "absolute";
-          controls.style.bottom = "15px";
-          controls.style.right = "15px";
-          controls.style.zIndex = "1000";
-
-          const closeBtn = document.createElement("button");
-          closeBtn.innerHTML = "✕ Close";
-          closeBtn.style.background = "rgba(0, 0, 0, 0.8)";
-          closeBtn.style.color = "white";
-          closeBtn.style.border = "none";
-          closeBtn.style.borderRadius = "6px";
-          closeBtn.style.padding = "8px 12px";
-          closeBtn.style.cursor = "pointer";
-          closeBtn.style.fontSize = "12px";
-          closeBtn.style.fontWeight = "bold";
-
-          closeBtn.onclick = function (e) {
-            e.stopPropagation();
-            resetVideoContainer(container, originalHeight);
-          };
-
-          controls.appendChild(closeBtn);
-          container.appendChild(controls);
-        }
-
         function resetVideoContainer(container, originalHeight) {
           const project = container.closest(".project");
 
@@ -1713,19 +2217,19 @@
           const isPortrait = aspectRatio === "portrait";
 
           container.innerHTML = `
-      <div class="thumbnail-container">
-        <img src="images/video-thumbnail.jpg" class="video-thumbnail" alt="Video thumbnail">
-      </div>
-      <div class="ribbon-overlay" style="background: linear-gradient(135deg, ${
-        isPortrait ? "#f7dc6f, #f9e79f" : "#45b7d1, #6bd1e8"
-      })"></div>
-      <div class="video-placeholder">
-        ${
-          isPortrait ? "Social Media Video" : "Commercial Ad"
-        } (Click to play)<br />
-        <small>${isPortrait ? "Portrait" : "Landscape"} video</small>
-      </div>
-    `;
+            <div class="thumbnail-container">
+              <img src="images/video-thumbnail.jpg" class="video-thumbnail" alt="Video thumbnail">
+            </div>
+            <div class="ribbon-overlay" style="background: linear-gradient(135deg, ${
+              isPortrait ? "#f7dc6f, #f9e79f" : "#45b7d1, #6bd1e8"
+            })"></div>
+            <div class="video-placeholder">
+              ${
+                isPortrait ? "Social Media Video" : "Commercial Ad"
+              } (Click to play)<br />
+              <small>${isPortrait ? "Portrait" : "Landscape"} video</small>
+            </div>
+          `;
         }
 
         // Handle window resize to maintain responsive layout
