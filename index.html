@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Musa Soko - Video Editor & Motion Designer</title>
-    <!-- ADD p5.js LIBRARY -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
     <link
       rel="stylesheet"
@@ -44,11 +43,7 @@
         scroll-behavior: smooth;
       }
 
-      /* ============================================= */
-      /* PARTICLE SYSTEM STYLES FROM TEST INTEGRATION */
-      /* ============================================= */
-
-      /* Canvas for particles */
+      /* Particle Canvas */
       #particle-canvas {
         position: fixed;
         top: 0;
@@ -57,50 +52,6 @@
         height: 100%;
         z-index: -1;
       }
-
-      /* Particle Toggle Button - TOP RIGHT */
-
-      /* ============================================= */
-      /* PARTICLE TOGGLE BUTTON - TO SHOW/HIDE BUTTON: */
-      /* Change 'display: block' to 'display: none' to hide */
-      /* Change 'display: none' to 'display: block' to show */
-      /* ============================================= */
-      .particle-toggle {
-        position: fixed;
-        top: 90px; /* Positioned below navbar */
-        right: 20px;
-        z-index: 1000;
-        background: var(--button-bg);
-        color: white;
-        border: none;
-        padding: 12px 18px;
-        border-radius: 25px;
-        cursor: pointer;
-        font-size: 0.9rem;
-        transition: var(--transition);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        font-family: "Montserrat", sans-serif;
-        font-weight: 600;
-        display: none; /* Change to 'none' to hide the button */
-      }
-
-      .particle-toggle:hover {
-        transform: scale(1.1);
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-        background: #ff4444;
-      }
-
-      .particle-toggle.off {
-        background: #666;
-      }
-
-      .particle-toggle.off:hover {
-        background: #4a86e8;
-      }
-
-      /* ============================================= */
-      /* EXISTING PORTFOLIO STYLES - UNCHANGED */
-      /* ============================================= */
 
       /* Navigation */
       .navbar {
@@ -179,48 +130,6 @@
         color: var(--text-color);
         font-size: 1.5rem;
         cursor: pointer;
-      }
-
-      /* Background decorations - Only dark mode */
-      .bg-decorations {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        pointer-events: none;
-        z-index: -1;
-        opacity: 0.3;
-      }
-
-      .abstract-shapes {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-      }
-
-      .abstract-shape {
-        position: absolute;
-        opacity: 0.4;
-        transition: transform 1s ease, opacity 0.5s ease;
-      }
-
-      @keyframes shatter {
-        0% {
-          transform: translate(0, 0) rotate(0) scale(1);
-          opacity: 0.4;
-        }
-        50% {
-          opacity: 0.2;
-        }
-        100% {
-          transform: translate(var(--tx), var(--ty)) rotate(var(--r)) scale(0);
-          opacity: 0;
-        }
-      }
-
-      .shatter {
-        animation: shatter 1.5s forwards;
       }
 
       /* Header */
@@ -303,18 +212,17 @@
         border-radius: 2px;
       }
 
-      /* FIXED: Video containers with proper sizing and glow */
+      /* Video containers */
       .video-container {
         display: flex;
         justify-content: center;
         margin-bottom: 2rem;
         border-radius: 12px;
-        overflow: visible; /* Changed from hidden to visible for glow */
+        overflow: visible;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         transition: var(--transition);
         border: 2px solid transparent;
         position: relative;
-        /* Restore original sizing but with proper containment */
         width: 100%;
         max-width: 900px;
         margin-left: auto;
@@ -330,7 +238,7 @@
       .video-wrapper {
         width: 100%;
         border-radius: 12px;
-        overflow: hidden; /* Contain the iframe here instead */
+        overflow: hidden;
         position: relative;
       }
 
@@ -373,6 +281,7 @@
         grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
         gap: 2.5rem;
         margin-top: 2rem;
+        align-items: start;
       }
 
       .project {
@@ -382,7 +291,7 @@
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         overflow: hidden;
         transition: var(--transition);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(10, 10, 10, 0.1);
         opacity: 0;
         transform: translateY(20px);
         animation: fadeInUp 0.6s ease forwards;
@@ -501,7 +410,6 @@
         transition: var(--transition);
       }
 
-      /* Enhanced project layout classes */
       .project.portrait-layout,
       .project.square-layout {
         max-width: 400px;
@@ -515,16 +423,6 @@
         transition: all 0.5s ease;
       }
 
-      /* Enhanced projects grid */
-      .projects {
-        align-items: start;
-      }
-
-      /* Loading state */
-      .project-video.loading {
-        background: #333;
-      }
-
       .project-video.loading::after {
         content: "Loading...";
         position: absolute;
@@ -534,9 +432,9 @@
         color: white;
         font-size: 1rem;
         z-index: 5;
+        opacity: 1;
       }
 
-      /* Hide overlays when playing */
       .project-video.playing .ribbon-overlay,
       .project-video.playing::before,
       .project-video.playing::after {
@@ -548,7 +446,6 @@
         display: none !important;
       }
 
-      /* Enhanced portrait mode */
       .project-video.portrait-mode {
         background: #000;
         border-radius: 8px;
@@ -568,20 +465,17 @@
         border-radius: 8px;
       }
 
-      @media (max-width: 768px) {
-        .project-video.portrait-mode {
-          height: 350px;
-          width: 250px;
-        }
-      }
-
-      /* Enhanced landscape mode */
       .project-video.landscape-mode {
         background: #000;
         border-radius: 8px;
       }
 
-      /* Square mode */
+      .project-video.landscape-mode iframe,
+      .project-video.landscape-mode video {
+        object-fit: cover !important;
+        border-radius: 8px;
+      }
+
       .project-video.square-mode {
         background: #000;
         border-radius: 8px;
@@ -599,57 +493,6 @@
         border-radius: 8px;
         width: 100% !important;
         height: 100% !important;
-      }
-
-      @media (max-width: 768px) {
-        .project-video.square-mode {
-          height: 250px;
-          width: 250px;
-        }
-      }
-
-      .project-video.landscape-mode iframe,
-      .project-video.landscape-mode video {
-        object-fit: cover !important;
-        border-radius: 8px;
-      }
-
-      /* New styles for video playback within project container */
-      .project-video.playing {
-        cursor: default;
-        transition: all 0.5s ease;
-      }
-
-      .project-video.playing .ribbon-overlay,
-      .project-video.playing::before,
-      .project-video.playing::after {
-        display: none;
-      }
-
-      .project-video.playing .video-placeholder {
-        display: none;
-      }
-
-      .project-video.playing video {
-        object-fit: contain;
-        transform: none !important;
-      }
-
-      .video-controls {
-        position: absolute;
-        bottom: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-        display: flex;
-        gap: 10px;
-        z-index: 10;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-      }
-
-      .project-video {
-        position: relative;
-        background: #333;
       }
 
       .thumbnail-container {
@@ -672,41 +515,8 @@
         object-fit: contain;
       }
 
-      .project-video.playing .play-button {
-        display: none;
-      }
-
-      .project-video.playing .video-thumbnail {
-        display: none;
-      }
-
-      .project-video video {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: none;
-      }
-
       .project-video.playing video {
         display: block;
-      }
-
-      .project-video.playing .video-controls {
-        opacity: 1;
-      }
-
-      .video-controls button {
-        background: rgba(0, 0, 0, 0.7);
-        color: white;
-        border: none;
-        border-radius: 4px;
-        padding: 5px 10px;
-        cursor: pointer;
-        font-size: 12px;
-      }
-
-      .video-controls button:hover {
-        background: rgba(0, 0, 0, 0.9);
       }
 
       .project-info {
@@ -734,20 +544,6 @@
         margin: 0;
         color: #ccc;
         line-height: 1.5;
-      }
-
-      .project-video.error {
-        background: #333;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #999;
-      }
-
-      .project-video.error::after {
-        content: "Video unavailable";
-        font-size: 1rem;
-        color: #999;
       }
 
       a.button {
@@ -829,15 +625,6 @@
         transform: translateY(-3px);
       }
 
-      /* Aspect ratio detection and responsive layout */
-      .project-video.playing.portrait-mode {
-        grid-column: 1 / -1;
-        width: 100%;
-        max-width: 400px;
-        margin: 0 auto;
-        justify-self: center;
-      }
-
       @media (max-width: 768px) {
         header {
           padding: 6rem 1rem 3rem;
@@ -877,34 +664,20 @@
           height: 200px;
         }
 
-        .project-video.portrait {
-          height: 300px;
+        .project-video.portrait-mode {
+          height: 350px;
+          max-width: 300px;
         }
 
-        .project-video.portrait .video-thumbnail {
-          max-width: 70%;
-          max-height: 85%;
+        .project-video.square-mode {
+          height: 250px;
+          width: 250px;
         }
 
         .skills-container {
           grid-template-columns: 1fr;
         }
 
-        .video-controls {
-          bottom: 5px;
-        }
-
-        .video-controls button {
-          padding: 3px 8px;
-          font-size: 10px;
-        }
-
-        /* Mobile adjustments for portrait videos */
-        .project-video.playing.portrait-mode {
-          max-width: 300px;
-        }
-
-        /* Mobile adjustments for video containers */
         .video-container {
           max-width: 100%;
         }
@@ -913,12 +686,6 @@
           max-width: 100%;
         }
 
-        /* HIDE PARTICLE TOGGLE ON MOBILE */
-        .particle-toggle {
-          display: none !important;
-        }
-
-        /* HIDE PARTICLE CANVAS ON MOBILE */
         #particle-canvas {
           display: none !important;
         }
@@ -926,27 +693,8 @@
     </style>
   </head>
   <body>
-    <!-- ============================================= -->
-    <!-- PARTICLE SYSTEM ELEMENTS FROM TEST INTEGRATION -->
-    <!-- ============================================= -->
-
-    <!-- Particle Canvas -->
     <div id="particle-canvas"></div>
 
-    <!-- Particle Toggle Button - TOP RIGHT -->
-    <button
-      class="particle-toggle"
-      id="particleToggle"
-      title="Toggle Particle Effects"
-    >
-      🔥 Particles: ON
-    </button>
-
-    <!-- ============================================= -->
-    <!-- EXISTING PORTFOLIO CONTENT - UNCHANGED -->
-    <!-- ============================================= -->
-
-    <!-- Navigation -->
     <nav class="navbar">
       <div class="nav-container">
         <a href="#" class="nav-logo">Musa Soko</a>
@@ -963,14 +711,6 @@
       </div>
     </nav>
 
-    <!-- Background decorations - Only dark mode -->
-    <div class="bg-decorations">
-      <div class="abstract-shapes">
-        <!-- Asteroids will be generated dynamically with JavaScript -->
-      </div>
-    </div>
-
-    <!-- Header -->
     <header>
       <h1>Hi I'm Musa Soko</h1>
       <p>a Video Editor and Motion Graphic Designer based in South Africa</p>
@@ -1007,7 +747,6 @@
       </div>
     </section>
 
-    <!-- Rest of your HTML remains the same -->
     <section id="projects">
       <h2>Selected Projects</h2>
 
@@ -1016,7 +755,6 @@
       </div>
 
       <div class="projects">
-        <!-- PROJECT 1 - Horizontal Video Example -->
         <div
           class="project"
           data-category="commercial"
@@ -1049,7 +787,6 @@
           </div>
         </div>
 
-        <!-- PROJECT 2 - Horizontal Video Example -->
         <div class="project" data-category="social" id="project-container-2">
           <div
             class="project-video"
@@ -1077,7 +814,6 @@
           </div>
         </div>
 
-        <!-- PROJECT 3 - Another portrait Video -->
         <div class="project" data-category="youtube" id="project-container-3">
           <div
             class="project-video"
@@ -1105,7 +841,6 @@
           </div>
         </div>
 
-        <!-- PROJECT 4 - Add more projects as needed -->
         <div class="project" data-category="motion" id="project-container-4">
           <div
             class="project-video"
@@ -1134,7 +869,6 @@
           </div>
         </div>
 
-        <!-- PROJECT - Square Video Example -->
         <div class="project" data-category="social" id="project-container-5">
           <div
             class="project-video"
@@ -1159,7 +893,6 @@
           </div>
         </div>
 
-        <!-- PROJECT 6 - Another portrait Video -->
         <div class="project" data-category="youtube" id="project-container-6">
           <div
             class="project-video"
@@ -1187,7 +920,6 @@
           </div>
         </div>
 
-        <!-- PROJECT 7 - Another portrait Video -->
         <div class="project" data-category="youtube" id="project-container-7">
           <div
             class="project-video"
@@ -1296,53 +1028,60 @@
       <p>Musa Soko. "I make frames move".</p>
     </footer>
 
-    <!-- ============================================= -->
-    <!-- PARTICLE SYSTEM JAVASCRIPT FROM TEST INTEGRATION -->
-    <!-- ============================================= -->
     <script>
       // =============================================
-      // PARTICLE SYSTEM INTEGRATION
+      // PARTICLE SYSTEM CONFIGURATION
       // =============================================
+
       let particles = [];
       let containers = [];
-      let hoveredContainer = null; // Track which specific container is hovered
-      let particlesEnabled = true; // Track if particles are enabled
+      let hoveredContainer = null;
 
       // =============================================
-      // PARTICLE COUNT SETTING - CHANGED TO 900 AS REQUESTED
+      // PARTICLE DENSITY SETTING
+      // Change this number to increase/decrease total particles on screen
+      // Higher = more particles, Lower = fewer particles
       // =============================================
-      const DENSITY = 900; // ⬅️ CHANGED TO 900 AS REQUESTED
+      const DENSITY = 1000;
 
-      const CONFETTI_SCALE = 0.28;
-      let PARTICLE_SPEED = 0.2; // HARDCODED: 0.2
+      // =============================================
+      // PARTICLE SIZE & SPEED SETTINGS
+      // =============================================
+      const CONFETTI_SCALE = 0.28; // Particle size multiplier (0.1 = tiny, 1.0 = large)
+      const PARTICLE_SPEED = 0.1; // Base movement speed (0.1 = slow, 1.0 = fast)
 
-      const NEUTRAL_COLOR = [88, 88, 88, 170];
-      const ATTRACT_COLOR = [255, 255, 255, 220];
-      const STICKY_COLOR = [180, 220, 255, 240];
-      const EMITTED_COLOR = [255, 215, 0, 200];
-      const BUTTON_ATTRACT_COLOR = [255, 50, 50, 220]; // Red color for button attraction
-      const BUTTON_STICKY_COLOR = [255, 100, 100, 240]; // Red sticky color for button
+      // =============================================
+      // PARTICLE COLORS (R, G, B, Alpha)
+      // Alpha: 0 = invisible, 255 = fully opaque
+      // =============================================
+      const NEUTRAL_COLOR = [150, 150, 150, 170]; // Floating particles (not attracted)
+      const ATTRACT_COLOR = [255, 255, 255, 240]; // Particles being attracted to containers
+      const STICKY_COLOR = [180, 220, 255, 255]; // Particles stuck to container edges
+      const EMITTED_COLOR = [255, 215, 0, 230]; // Newly emitted particles from container edges
 
       let colors = {};
-      let attractedParticles = 0;
-      let stuckParticles = 0;
-      let emittedParticles = 0;
       let lastEmissionTime = 0;
 
-      // Button container
-      let buttonContainer = null;
-
-      // HARDCODED SETTINGS - No longer using sliders
+      // =============================================
+      // PARTICLE BEHAVIOR SETTINGS
+      // =============================================
       const settings = {
-        attractRadius: 96.0, // HARDCODED: 96.0
-        attractStrength: 1.2, // HARDCODED: 1.2
-        stickinessDistance: 1.6, // HARDCODED: 1.6
-        stickinessStrength: 0.6, // HARDCODED: 0.6
-        emissionRate: 4.0, // HARDCODED: 4.0
-        particleSpeed: 0.2, // HARDCODED: 0.2
+        attractRadius: 96.0, // Distance from container where attraction starts (pixels)
+        attractStrength: 1.2, // How strongly particles are pulled (0.1 = weak, 3.0 = strong)
+        stickinessDistance: 1.6, // How close particles must be to stick to edges
+        stickinessStrength: 0.6, // How strongly particles stick (0.1 = weak, 2.0 = strong)
+        emissionRate: 4.0, // How many particles emit per second when hovering
+        particleSpeed: 0.2, // Particle movement speed (same as PARTICLE_SPEED)
       };
 
-      // Check if device is mobile
+      // =============================================
+      // SHIMMER/FLICKER INTENSITY
+      // Located in: applyStickiness() function
+      // Look for: "const stickIntensity = map(this.stuckTimer, 0, 60, 0, 1);"
+      // The number 60 controls how long it takes to reach full shimmer
+      // Lower = faster shimmer, Higher = slower shimmer buildup
+      // =============================================
+
       function isMobileDevice() {
         return window.innerWidth <= 768;
       }
@@ -1356,7 +1095,7 @@
         reset() {
           if (this.isEmitted) {
             this.spawnAtEdge();
-            this.lifetime = 255;
+            this.lifetime = 255; // Emitted particle lifespan (255 = longest, 0 = instant fade)
             this.color = colors.emitted;
           } else {
             do {
@@ -1366,7 +1105,12 @@
             this.color = colors.neutral;
           }
 
-          this.size = random(6, 11) * CONFETTI_SCALE;
+          // =============================================
+          // PARTICLE SIZE RANGE
+          // random(min, max) - adjust these for different particle sizes
+          // =============================================
+          this.size = random(4, 11) * CONFETTI_SCALE;
+
           let angle = random(TWO_PI);
           this.baseSpeed = PARTICLE_SPEED * random(0.7, 1.2);
           this.baseDx = cos(angle) * this.baseSpeed;
@@ -1374,6 +1118,10 @@
           this.dx = this.baseDx;
           this.dy = this.baseDy;
 
+          // =============================================
+          // PARTICLE ROTATION SPEED
+          // random(min, max) - adjust for faster/slower spinning
+          // =============================================
           this.angle = random(TWO_PI);
           this.rotSpeed = random(-0.03, 0.03);
 
@@ -1383,14 +1131,12 @@
           this.floatOffsetX = random(1000);
           this.floatOffsetY = random(1000);
           this.targetContainer = null;
-          this.isAttractedToButton = false;
-          this.buttonAttractionProgress = 0; // 0 to 1 for gradual color change
         }
 
         spawnAtEdge() {
-          if (!hoveredContainer && !buttonContainer?.isHovered) return;
+          if (!hoveredContainer) return;
 
-          const container = hoveredContainer || buttonContainer;
+          const container = hoveredContainer;
           const left = container.x - container.w / 2;
           const right = container.x + container.w / 2;
           const top = container.y - container.h / 2;
@@ -1506,36 +1252,11 @@
         }
 
         update() {
-          if (!particlesEnabled) return;
-
           this.isAttracted = false;
           this.isStuck = false;
           this.targetContainer = null;
-          this.isAttractedToButton = false;
 
-          // Check button hover first (highest priority)
-          if (
-            buttonContainer?.isHovered &&
-            this.isInAttractionZone(buttonContainer)
-          ) {
-            this.targetContainer = buttonContainer;
-            this.isAttractedToButton = true;
-            this.applyEdgeAttraction();
-            this.isAttracted = true;
-
-            if (this.isCloseToEdge(buttonContainer)) {
-              this.applyStickiness();
-              this.isStuck = true;
-              this.stuckTimer++;
-            } else {
-              this.stuckTimer = max(0, this.stuckTimer - 1);
-            }
-          }
-          // Then check project container hover
-          else if (
-            hoveredContainer &&
-            this.isInAttractionZone(hoveredContainer)
-          ) {
+          if (hoveredContainer && this.isInAttractionZone(hoveredContainer)) {
             this.targetContainer = hoveredContainer;
             this.applyEdgeAttraction();
             this.isAttracted = true;
@@ -1552,6 +1273,10 @@
             this.stuckTimer = max(0, this.stuckTimer - 2);
 
             if (this.isEmitted) {
+              // =============================================
+              // EMITTED PARTICLE FADE SPEED
+              // Higher number = faster fade, Lower = slower fade
+              // =============================================
               this.lifetime -= 2;
               if (this.lifetime <= 0) this.lifetime = 0;
             }
@@ -1581,45 +1306,11 @@
           this.dx = constrain(this.dx, -8, 8);
           this.dy = constrain(this.dy, -8, 8);
 
-          // Handle color transition for button attraction
-          if (this.isAttractedToButton) {
-            // Gradually increase red effect
-            this.buttonAttractionProgress = min(
-              1,
-              this.buttonAttractionProgress + 0.05
-            );
-
-            // Add flickering effect for button attraction
-            const flicker = sin(millis() * 0.01) * 0.2 + 0.8;
-            const currentRed = lerpColor(
-              colors.attract,
-              colors.buttonAttract,
-              this.buttonAttractionProgress
-            );
-            const flickeredRed = lerpColor(
-              currentRed,
-              color(255, 255, 255),
-              0.1 * flicker
-            );
-
-            this.color = flickeredRed;
+          if (this.isEmitted) {
+            const brighten = map(settings.attractStrength, 0.3, 2.5, 0, 0.3);
+            this.color = lerpColor(this.color, color(255, 255, 255), brighten);
           } else {
-            // Gradually return to normal colors when not attracted to button
-            this.buttonAttractionProgress = max(
-              0,
-              this.buttonAttractionProgress - 0.02
-            );
-
-            if (this.isEmitted) {
-              const brighten = map(settings.attractStrength, 0.3, 2.5, 0, 0.3);
-              this.color = lerpColor(
-                this.color,
-                color(255, 255, 255),
-                brighten
-              );
-            } else {
-              this.color = lerpColor(this.color, colors.attract, 0.1);
-            }
+            this.color = lerpColor(this.color, colors.attract, 0.1);
           }
         }
 
@@ -1647,24 +1338,14 @@
           this.dx *= damping;
           this.dy *= damping;
 
-          const stickIntensity = map(this.stuckTimer, 0, 60, 0, 1);
+          // =============================================
+          // SHIMMER INTENSITY & BUILDUP SPEED
+          // map(timer, 0, 60, ...) - the "60" controls buildup time
+          // Lower = faster shimmer buildup, Higher = slower buildup
+          // =============================================
+          const stickIntensity = map(this.stuckTimer, 0, 10, 0, 1);
 
-          if (this.isAttractedToButton) {
-            // Use red sticky colors for button
-            const flicker = sin(millis() * 0.008) * 0.3 + 0.7;
-            const stickyRed = lerpColor(
-              colors.buttonAttract,
-              colors.buttonSticky,
-              stickIntensity
-            );
-            const flickeredRed = lerpColor(
-              stickyRed,
-              color(255, 255, 255),
-              0.15 * flicker
-            );
-
-            this.color = flickeredRed;
-          } else if (this.isEmitted) {
+          if (this.isEmitted) {
             this.color = lerpColor(
               this.color,
               colors.sticky,
@@ -1685,8 +1366,6 @@
         }
 
         display() {
-          if (!particlesEnabled) return;
-
           push();
           translate(this.x, this.y);
           rotate(this.angle);
@@ -1710,7 +1389,6 @@
       }
 
       function setup() {
-        // DON'T SET UP PARTICLES ON MOBILE
         if (isMobileDevice()) {
           console.log("Mobile device detected - particles disabled");
           return;
@@ -1723,85 +1401,20 @@
         colors.attract = color(...ATTRACT_COLOR);
         colors.sticky = color(...STICKY_COLOR);
         colors.emitted = color(...EMITTED_COLOR);
-        colors.buttonAttract = color(...BUTTON_ATTRACT_COLOR);
-        colors.buttonSticky = color(...BUTTON_STICKY_COLOR);
 
-        // Initialize containers from project elements
         initializeContainers();
 
-        // Initialize button container
-        initializeButtonContainer();
-
-        // =============================================
-        // PARTICLE CREATION - Creates particles based on DENSITY value (900)
-        // =============================================
         particles = [];
         for (let i = 0; i < DENSITY; i++) {
           particles.push(new Particle(false));
         }
 
-        // Set up hover detection
         setupHoverDetection();
-
-        // Set up toggle button functionality
-        setupToggleButton();
-      }
-
-      function initializeButtonContainer() {
-        // DON'T SET UP BUTTON ON MOBILE
-        if (isMobileDevice()) return;
-
-        const buttonElement = document.getElementById("particleToggle");
-        if (buttonElement) {
-          const rect = buttonElement.getBoundingClientRect();
-          buttonContainer = {
-            element: buttonElement,
-            x: rect.left + rect.width / 2,
-            y: rect.top + rect.height / 2,
-            w: rect.width,
-            h: rect.height,
-            isHovered: false,
-          };
-        }
-      }
-
-      function setupToggleButton() {
-        // DON'T SET UP TOGGLE ON MOBILE
-        if (isMobileDevice()) return;
-
-        const toggleButton = document.getElementById("particleToggle");
-
-        toggleButton.addEventListener("click", function () {
-          particlesEnabled = !particlesEnabled;
-
-          if (particlesEnabled) {
-            this.textContent = "🔥 Silly Goober: ON";
-            this.classList.remove("off");
-          } else {
-            this.textContent = "💤 Silly Goober: OFF";
-            this.classList.add("off");
-          }
-        });
-
-        // Button hover detection
-        toggleButton.addEventListener("mouseenter", function () {
-          if (buttonContainer) {
-            buttonContainer.isHovered = true;
-          }
-        });
-
-        toggleButton.addEventListener("mouseleave", function () {
-          if (buttonContainer) {
-            buttonContainer.isHovered = false;
-          }
-        });
       }
 
       function initializeContainers() {
-        // DON'T SET UP CONTAINERS ON MOBILE
         if (isMobileDevice()) return;
 
-        // Initialize containers for ALL project containers in your portfolio
         const projectContainers = [
           "project-container-1",
           "project-container-2",
@@ -1829,16 +1442,14 @@
       }
 
       function setupHoverDetection() {
-        // DON'T SET UP HOVER DETECTION ON MOBILE
         if (isMobileDevice()) return;
 
         containers.forEach((container) => {
           container.element.addEventListener("mouseenter", () => {
-            hoveredContainer = container; // Set the specific hovered container
+            hoveredContainer = container;
           });
 
           container.element.addEventListener("mouseleave", () => {
-            // Only clear if we're leaving the currently hovered container
             if (hoveredContainer && hoveredContainer.id === container.id) {
               hoveredContainer = null;
             }
@@ -1847,22 +1458,20 @@
       }
 
       function draw() {
-        // DON'T DRAW PARTICLES ON MOBILE
         if (isMobileDevice()) return;
 
-        background(25, 25, 25, 100);
+        // =============================================
+        // CANVAS BACKGROUND COLOR (R, G, B, Alpha)
+        // Change these values to change the background darkness
+        // First 3 numbers: RGB color (0-255)
+        // Last number: Transparency (0 = clear trail effect, 255 = solid)
+        // Lower alpha = longer particle trails
+        // =============================================
+        background(10, 10, 10, 80);
 
-        // Update container positions (in case of scroll/resize)
         updateContainerPositions();
 
-        // Update button position
-        updateButtonPosition();
-
-        // Emit particles when a specific container is hovered and particles are enabled
-        if (
-          particlesEnabled &&
-          (hoveredContainer || buttonContainer?.isHovered)
-        ) {
+        if (hoveredContainer) {
           const currentTime = millis();
           if (
             currentTime - lastEmissionTime >
@@ -1875,36 +1484,23 @@
           }
         }
 
-        // Update and count particles
-        attractedParticles = 0;
-        stuckParticles = 0;
-        emittedParticles = 0;
-
         for (let i = particles.length - 1; i >= 0; i--) {
           const p = particles[i];
 
-          if (p.isEmitted) {
-            emittedParticles++;
-            if (p.lifetime <= 0) {
-              particles.splice(i, 1);
-              continue;
-            }
+          if (p.isEmitted && p.lifetime <= 0) {
+            particles.splice(i, 1);
+            continue;
           }
 
           p.update();
-
-          if (p.isAttracted) attractedParticles++;
-          if (p.isStuck) stuckParticles++;
         }
 
-        // Display all particles
         for (const p of particles) {
           p.display();
         }
       }
 
       function updateContainerPositions() {
-        // DON'T UPDATE CONTAINERS ON MOBILE
         if (isMobileDevice()) return;
 
         containers.forEach((container) => {
@@ -1916,42 +1512,20 @@
         });
       }
 
-      function updateButtonPosition() {
-        // DON'T UPDATE BUTTON ON MOBILE
-        if (isMobileDevice()) return;
-
-        if (buttonContainer) {
-          const rect = buttonContainer.element.getBoundingClientRect();
-          buttonContainer.x = rect.left + rect.width / 2;
-          buttonContainer.y = rect.top + rect.height / 2;
-          buttonContainer.w = rect.width;
-          buttonContainer.h = rect.height;
-        }
-      }
-
       function windowResized() {
-        // DON'T RESIZE CANVAS ON MOBILE
         if (isMobileDevice()) return;
-
         resizeCanvas(windowWidth, windowHeight);
       }
 
-      // =============================================
-      // EXISTING PORTFOLIO JAVASCRIPT - UNCHANGED
-      // =============================================
-
-      // Mobile menu functionality only
       function toggleMobileMenu() {
         const menu = document.querySelector(".nav-menu");
         menu.classList.toggle("active");
       }
 
-      // Enhanced project filtering and responsive video layout
       document.addEventListener("DOMContentLoaded", function () {
         const filterButtons = document.querySelectorAll(".filter-btn");
         const projects = document.querySelectorAll(".project");
 
-        // Project filtering functionality
         filterButtons.forEach((button) => {
           button.addEventListener("click", () => {
             filterButtons.forEach((btn) => btn.classList.remove("active"));
@@ -1970,14 +1544,12 @@
           });
         });
 
-        // Enhanced responsive video layout system
         const videoContainers = document.querySelectorAll(".project-video");
 
         videoContainers.forEach((container) => {
           container.addEventListener("click", function (e) {
             e.preventDefault();
 
-            // Prevent multiple clicks
             if (
               this.classList.contains("playing") ||
               this.classList.contains("loading")
@@ -1987,11 +1559,9 @@
             const videoUrl = this.getAttribute("data-video");
             if (!videoUrl) return;
 
-            // Add loading state
             this.classList.add("loading");
             const originalHeight = this.offsetHeight;
 
-            // Create video element based on URL type
             if (
               videoUrl.includes("vimeo.com") ||
               videoUrl.includes("player.vimeo.com")
@@ -2004,10 +1574,8 @@
         });
 
         function handleVimeoVideo(container, videoUrl, originalHeight) {
-          // Create iframe for Vimeo
           const iframe = document.createElement("iframe");
 
-          // Convert to proper embed URL
           let embedUrl = videoUrl;
           if (
             videoUrl.includes("vimeo.com/") &&
@@ -2031,12 +1599,11 @@
           iframe.style.height = "100%";
           iframe.style.border = "none";
 
-          // For Vimeo, detect aspect ratio from data attribute or estimate
           iframe.onload = function () {
             setTimeout(() => {
               const dataAspectRatio =
                 container.getAttribute("data-aspect-ratio");
-              let orientation = "landscape"; // default
+              let orientation = "landscape";
               if (dataAspectRatio === "portrait") {
                 orientation = "portrait";
               } else if (dataAspectRatio === "square") {
@@ -2048,14 +1615,13 @@
                 iframe,
                 originalHeight
               );
-            }, 500); // Small delay to ensure iframe is ready
+            }, 500);
           };
 
-          setupVideoContainer(container, iframe, originalHeight);
+          setupVideoContainer(container, iframe);
         }
 
         function handleDirectVideo(container, videoUrl, originalHeight) {
-          // Create video element for direct files
           const video = document.createElement("video");
           video.src = videoUrl;
           video.controls = true;
@@ -2064,7 +1630,6 @@
           video.style.width = "100%";
           video.style.height = "100%";
 
-          // Wait for metadata to get actual dimensions
           video.addEventListener("loadedmetadata", function () {
             const aspectRatio = this.videoWidth / this.videoHeight;
             let orientation;
@@ -2074,7 +1639,7 @@
             } else if (aspectRatio < 0.8) {
               orientation = "portrait";
             } else {
-              orientation = "square"; // Aspect ratios between 0.8 and 1.2
+              orientation = "square";
             }
 
             applyResponsiveLayout(
@@ -2086,21 +1651,16 @@
             );
           });
 
-          // Fallback if metadata doesn't load
           video.addEventListener("error", function () {
             console.error("Video failed to load:", videoUrl);
-            resetVideoContainer(container, originalHeight);
           });
 
-          setupVideoContainer(container, video, originalHeight);
+          setupVideoContainer(container, video);
         }
 
-        function setupVideoContainer(container, videoElement, originalHeight) {
-          // Remove loading state
+        function setupVideoContainer(container, videoElement) {
           container.classList.remove("loading");
           container.classList.add("playing");
-
-          // Clear container and add video
           container.innerHTML = "";
           container.appendChild(videoElement);
         }
@@ -2114,7 +1674,6 @@
         ) {
           const project = container.closest(".project");
 
-          // Remove existing layout classes
           container.classList.remove(
             "portrait-mode",
             "landscape-mode",
@@ -2130,7 +1689,6 @@
             container.classList.add("portrait-mode");
             project.classList.add("portrait-layout");
 
-            // Calculate height to maintain aspect ratio
             const maxWidth = 400;
             const calculatedHeight = aspectRatio
               ? maxWidth / aspectRatio
@@ -2143,12 +1701,10 @@
             container.style.maxWidth = `${maxWidth}px`;
             container.style.margin = "0 auto";
 
-            // Ensure video fills container properly
             videoElement.style.objectFit = "contain";
             videoElement.style.width = "100%";
             videoElement.style.height = "100%";
           } else if (orientation === "square") {
-            // Square video handling
             container.classList.add("square-mode");
             project.classList.add("square-layout");
 
@@ -2159,7 +1715,6 @@
 
             videoElement.style.objectFit = "cover";
           } else {
-            // Landscape video handling
             container.classList.add("landscape-mode");
             project.classList.add("landscape-layout");
 
@@ -2187,52 +1742,6 @@
           project.style.transition = "all 0.5s ease";
         }
 
-        function resetVideoContainer(container, originalHeight) {
-          const project = container.closest(".project");
-
-          // Reset all classes and styles
-          project.classList.remove(
-            "portrait-layout",
-            "landscape-layout",
-            "square-layout"
-          );
-          container.classList.remove(
-            "playing",
-            "portrait-mode",
-            "landscape-mode",
-            "square-mode",
-            "loading"
-          );
-          project.classList.remove("portrait-layout", "landscape-layout");
-
-          // Reset styles
-          container.style.height = `${originalHeight}px`;
-          container.style.maxWidth = "";
-          container.style.margin = "";
-          project.style.maxWidth = "";
-          project.style.justifySelf = "";
-
-          // Recreate original content
-          const aspectRatio = container.getAttribute("data-aspect-ratio");
-          const isPortrait = aspectRatio === "portrait";
-
-          container.innerHTML = `
-            <div class="thumbnail-container">
-              <img src="images/video-thumbnail.jpg" class="video-thumbnail" alt="Video thumbnail">
-            </div>
-            <div class="ribbon-overlay" style="background: linear-gradient(135deg, ${
-              isPortrait ? "#f7dc6f, #f9e79f" : "#45b7d1, #6bd1e8"
-            })"></div>
-            <div class="video-placeholder">
-              ${
-                isPortrait ? "Social Media Video" : "Commercial Ad"
-              } (Click to play)<br />
-              <small>${isPortrait ? "Portrait" : "Landscape"} video</small>
-            </div>
-          `;
-        }
-
-        // Handle window resize to maintain responsive layout
         let resizeTimeout;
         window.addEventListener("resize", function () {
           clearTimeout(resizeTimeout);
@@ -2246,7 +1755,7 @@
                 : "landscape";
               const videoElement = container.querySelector("video, iframe");
               if (videoElement) {
-                const originalHeight = 250; // Default height
+                const originalHeight = 250;
                 applyResponsiveLayout(
                   container,
                   orientation,
