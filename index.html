@@ -37,6 +37,8 @@
         color: var(--text-color);
         line-height: 1.6;
         overflow-x: hidden;
+        -webkit-text-size-adjust: 100%;
+        -webkit-tap-highlight-color: transparent;
       }
 
       html {
@@ -130,6 +132,19 @@
         color: var(--text-color);
         font-size: 1.5rem;
         cursor: pointer;
+        z-index: 1001;
+        padding: 0.5rem;
+      }
+
+      .nav-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 998;
       }
 
       /* Header */
@@ -625,48 +640,304 @@
         transform: translateY(-3px);
       }
 
+      /* ============================================= */
+      /* MOBILE-ONLY STYLES (Applied only below 768px) */
+      /* ============================================= */
       @media (max-width: 768px) {
-        header {
-          padding: 6rem 1rem 3rem;
-          min-height: 50vh;
+        body {
+          font-size: 16px;
+          -webkit-text-size-adjust: 100%;
         }
 
-        header h1 {
-          font-size: 2.5rem;
-        }
-
-        header p {
-          font-size: 1.2rem;
-        }
-
+        /* Enhanced Navigation - Mobile Only */
         .navbar {
           padding: 0.8rem 0;
+          backdrop-filter: blur(10px);
         }
 
         .nav-container {
           padding: 0 1rem;
+          position: relative;
+        }
+
+        .nav-logo {
+          font-size: 1.4rem;
+          z-index: 1001;
         }
 
         .nav-menu {
-          gap: 1rem;
+          position: fixed;
+          top: 0;
+          right: -100%;
+          width: 80%;
+          max-width: 300px;
+          height: 100vh;
+          background: var(--nav-color);
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: flex-start;
+          padding: 5rem 2rem 2rem;
+          gap: 0;
+          transition: right 0.3s ease;
+          box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+          z-index: 999;
         }
 
+        .nav-menu.active {
+          right: 0;
+        }
+
+        .nav-menu li {
+          width: 100%;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-menu li:last-child {
+          border-bottom: none;
+        }
+
+        .nav-link {
+          display: block;
+          padding: 1.2rem 0;
+          font-size: 1.1rem;
+          width: 100%;
+          min-height: 44px;
+          display: flex;
+          align-items: center;
+        }
+
+        .mobile-menu-toggle {
+          display: block;
+          min-width: 44px;
+          min-height: 44px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .mobile-menu-toggle.active {
+          color: var(--accent-color);
+        }
+
+        .nav-overlay.active {
+          display: block;
+        }
+
+        /* Improved Header - Mobile Only */
+        header {
+          padding: 7rem 1.5rem 3rem;
+          min-height: 70vh;
+          padding-left: 1.5rem;
+          text-align: center;
+          align-items: center;
+        }
+
+        header h1 {
+          font-size: 2.8rem;
+          text-align: center;
+          margin-bottom: 1rem;
+          line-height: 1.2;
+        }
+
+        header p {
+          font-size: 1.3rem;
+          text-align: center;
+          margin: 0 0 2rem 0;
+          max-width: 100%;
+          line-height: 1.4;
+        }
+
+        .header-cta {
+          width: 100%;
+          display: flex;
+          justify-content: center;
+        }
+
+        /* Improved Sections - Mobile Only */
         section {
           padding: 3rem 1rem;
         }
 
+        section h2 {
+          font-size: 2rem;
+          margin-bottom: 2rem;
+          line-height: 1.3;
+        }
+
+        /* Improved Projects - Mobile Only */
         .projects {
           grid-template-columns: 1fr;
-          gap: 1.5rem;
+          gap: 2rem;
+        }
+
+        .project {
+          margin: 0 auto;
+          max-width: 100%;
+          transform: translateZ(0);
         }
 
         .project-video {
           height: 200px;
+          -webkit-tap-highlight-color: rgba(74, 134, 232, 0.3);
         }
 
         .project-video.portrait-mode {
-          height: 350px;
-          max-width: 300px;
+          height: 500px;
+          max-width: 280px;
+        }
+
+        .project-video.square-mode {
+          height: 300px;
+          width: 300px;
+        }
+
+        .project-info {
+          padding: 1.25rem;
+        }
+
+        .project-info h3 {
+          font-size: 1.4rem;
+          line-height: 1.3;
+        }
+
+        .project-info p {
+          font-size: 1rem;
+          line-height: 1.5;
+        }
+
+        /* Improved Skills - Mobile Only */
+        .skills-container {
+          grid-template-columns: 1fr;
+          gap: 1.5rem;
+        }
+
+        .skill-category {
+          padding: 1.25rem;
+          transform: translateZ(0);
+        }
+
+        .skill-tag {
+          padding: 0.7rem 1rem;
+          font-size: 0.9rem;
+          min-height: 44px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        /* Improved Video Containers - Mobile Only */
+        .video-container {
+          max-width: 100%;
+          margin: 0 0 1.5rem 0;
+          transform: translateZ(0);
+        }
+
+        .video-container iframe {
+          max-width: 100%;
+          height: 200px;
+        }
+
+        .video-placeholder {
+          font-size: 1rem;
+          padding: 1rem;
+          line-height: 1.4;
+        }
+
+        /* Improved Buttons and Filters - Mobile Only */
+        .project-filters {
+          gap: 0.75rem;
+          margin-bottom: 1.5rem;
+        }
+
+        .filter-btn {
+          padding: 0.8rem 1.2rem;
+          font-size: 0.9rem;
+          min-height: 44px;
+          min-width: 60px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        a.button {
+          padding: 1rem 2rem;
+          font-size: 1.1rem;
+          min-height: 52px;
+          width: 100%;
+          max-width: 280px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        /* Improved Footer - Mobile Only */
+        footer {
+          padding: 2.5rem 1.5rem;
+        }
+
+        .social-links {
+          gap: 1rem;
+        }
+
+        .social-link {
+          min-width: 50px;
+          min-height: 50px;
+          font-size: 1.4rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0.5rem;
+        }
+
+        /* Mobile Performance Optimizations */
+        #particle-canvas {
+          display: none !important;
+        }
+
+        /* Prevent horizontal scroll */
+        html,
+        body {
+          max-width: 100%;
+          overflow-x: hidden;
+        }
+
+        /* Safe area insets for notch devices */
+        @supports (padding: max(0px)) {
+          .navbar,
+          header,
+          section,
+          footer {
+            padding-left: max(1rem, env(safe-area-inset-left));
+            padding-right: max(1rem, env(safe-area-inset-right));
+          }
+
+          header {
+            padding-top: max(7rem, env(safe-area-inset-top));
+          }
+
+          .navbar {
+            padding-top: max(0.8rem, env(safe-area-inset-top));
+          }
+        }
+      }
+
+      /* Extra small mobile devices */
+      @media (max-width: 480px) {
+        header h1 {
+          font-size: 2.2rem;
+        }
+
+        header p {
+          font-size: 1.1rem;
+        }
+
+        section h2 {
+          font-size: 1.8rem;
+        }
+
+        .project-video.portrait-mode {
+          height: 450px;
+          max-width: 250px;
         }
 
         .project-video.square-mode {
@@ -674,20 +945,8 @@
           width: 250px;
         }
 
-        .skills-container {
-          grid-template-columns: 1fr;
-        }
-
-        .video-container {
-          max-width: 100%;
-        }
-
-        .video-container iframe {
-          max-width: 100%;
-        }
-
-        #particle-canvas {
-          display: none !important;
+        .nav-menu {
+          width: 85%;
         }
       }
     </style>
@@ -698,18 +957,43 @@
     <nav class="navbar">
       <div class="nav-container">
         <a href="#" class="nav-logo">Musa Soko</a>
-        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+        <button
+          class="mobile-menu-toggle"
+          onclick="toggleMobileMenu()"
+          aria-label="Toggle menu"
+        >
           &#9776;
         </button>
         <ul class="nav-menu">
-          <li><a href="#showreel" class="nav-link">Showreel</a></li>
-          <li><a href="#projects" class="nav-link">Projects</a></li>
-          <li><a href="#skills" class="nav-link">Skills</a></li>
-          <li><a href="#about" class="nav-link">About</a></li>
-          <li><a href="#contact" class="nav-link">Contact</a></li>
+          <li>
+            <a href="#showreel" class="nav-link" onclick="closeMobileMenu()"
+              >Showreel</a
+            >
+          </li>
+          <li>
+            <a href="#projects" class="nav-link" onclick="closeMobileMenu()"
+              >Projects</a
+            >
+          </li>
+          <li>
+            <a href="#skills" class="nav-link" onclick="closeMobileMenu()"
+              >Skills</a
+            >
+          </li>
+          <li>
+            <a href="#about" class="nav-link" onclick="closeMobileMenu()"
+              >About</a
+            >
+          </li>
+          <li>
+            <a href="#contact" class="nav-link" onclick="closeMobileMenu()"
+              >Contact</a
+            >
+          </li>
         </ul>
       </div>
     </nav>
+    <div class="nav-overlay" onclick="closeMobileMenu()"></div>
 
     <header>
       <h1>Hi I'm Musa Soko</h1>
@@ -726,6 +1010,7 @@
           <iframe
             src="https://player.vimeo.com/video/1108056464"
             allowfullscreen
+            loading="lazy"
           ></iframe>
         </div>
       </div>
@@ -738,6 +1023,7 @@
           <iframe
             src="https://player.vimeo.com/video/1109940880"
             allowfullscreen
+            loading="lazy"
           ></iframe>
         </div>
       </div>
@@ -770,6 +1056,7 @@
                 src="images/Realistic Strategist.jpg"
                 class="video-thumbnail"
                 alt="Video thumbnail"
+                loading="lazy"
               />
             </div>
             <div
@@ -798,6 +1085,7 @@
                 src="images/Youtube img.jpg"
                 class="video-thumbnail"
                 alt="Video thumbnail"
+                loading="lazy"
               />
             </div>
             <div
@@ -825,6 +1113,7 @@
                 src="images/Strive Content.jpg"
                 class="video-thumbnail"
                 alt="Video thumbnail"
+                loading="lazy"
               />
             </div>
             <div
@@ -852,6 +1141,7 @@
                 src="images/Mortica.jpg"
                 class="video-thumbnail"
                 alt="Video thumbnail"
+                loading="lazy"
               />
             </div>
             <div
@@ -880,6 +1170,7 @@
                 src="images/sales source.jpg"
                 class="video-thumbnail"
                 alt="Video thumbnail"
+                loading="lazy"
               />
             </div>
             <div
@@ -904,6 +1195,7 @@
                 src="images/Short ad.jpg"
                 class="video-thumbnail"
                 alt="Video thumbnail"
+                loading="lazy"
               />
             </div>
             <div
@@ -931,6 +1223,7 @@
                 src="images/Strivetech.jpg"
                 class="video-thumbnail"
                 alt="Video thumbnail"
+                loading="lazy"
               />
             </div>
             <div
@@ -985,7 +1278,14 @@
 
     <section id="about">
       <h2>About Me</h2>
-      <p style="text-align: center; max-width: 700px; margin: auto">
+      <p
+        style="
+          text-align: center;
+          max-width: 700px;
+          margin: auto;
+          line-height: 1.6;
+        "
+      >
         Hi! I'm a video editor and motion designer. I make videos that feel fun
         to watch, whether it's for ads, social posts, or longer stories. I like
         experimenting with styles and motion to find what fits best. Outside of
@@ -995,7 +1295,14 @@
 
     <section id="contact">
       <h2>Get In Touch</h2>
-      <p style="text-align: center; max-width: 700px; margin: auto">
+      <p
+        style="
+          text-align: center;
+          max-width: 700px;
+          margin: auto;
+          line-height: 1.6;
+        "
+      >
         Interested in working together? Have a project in mind? Feel free to
         reach out and let's create something amazing.
       </p>
@@ -1019,16 +1326,74 @@
         <a
           href="https://www.instagram.com/grandmama_patrick/"
           class="social-link"
+          aria-label="Instagram"
           ><i class="fab fa-instagram"></i
         ></a>
-        <a href="#" class="social-link"><i class="fab fa-vimeo-v"></i></a>
-        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
-        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+        <a href="#" class="social-link" aria-label="Vimeo"
+          ><i class="fab fa-vimeo-v"></i
+        ></a>
+        <a href="#" class="social-link" aria-label="YouTube"
+          ><i class="fab fa-youtube"></i
+        ></a>
+        <a href="#" class="social-link" aria-label="LinkedIn"
+          ><i class="fab fa-linkedin-in"></i
+        ></a>
       </div>
       <p>Musa Soko. "I make frames move".</p>
     </footer>
 
     <script>
+      // Mobile menu functionality - Only affects mobile
+      function toggleMobileMenu() {
+        const menu = document.querySelector(".nav-menu");
+        const overlay = document.querySelector(".nav-overlay");
+        const toggle = document.querySelector(".mobile-menu-toggle");
+
+        menu.classList.toggle("active");
+        overlay.classList.toggle("active");
+        toggle.classList.toggle("active");
+
+        // Prevent body scroll when menu is open on mobile
+        if (window.innerWidth <= 768) {
+          document.body.style.overflow = menu.classList.contains("active")
+            ? "hidden"
+            : "";
+        }
+      }
+
+      function closeMobileMenu() {
+        const menu = document.querySelector(".nav-menu");
+        const overlay = document.querySelector(".nav-overlay");
+        const toggle = document.querySelector(".mobile-menu-toggle");
+
+        menu.classList.remove("active");
+        overlay.classList.remove("active");
+        toggle.classList.remove("active");
+
+        if (window.innerWidth <= 768) {
+          document.body.style.overflow = "";
+        }
+      }
+
+      // Close menu when clicking on overlay (mobile only)
+      document
+        .querySelector(".nav-overlay")
+        .addEventListener("click", closeMobileMenu);
+
+      // Close menu on escape key (mobile only)
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && window.innerWidth <= 768) {
+          closeMobileMenu();
+        }
+      });
+
+      // Improved touch handling for mobile
+      document.addEventListener("touchstart", function () {}, {
+        passive: true,
+      });
+
+      // Rest of your existing JavaScript code for particles and video handling...
+      // This remains exactly the same as your original code
       // =============================================
       // PARTICLE SYSTEM CONFIGURATION
       // =============================================
@@ -1517,11 +1882,7 @@
         resizeCanvas(windowWidth, windowHeight);
       }
 
-      function toggleMobileMenu() {
-        const menu = document.querySelector(".nav-menu");
-        menu.classList.toggle("active");
-      }
-
+      // Keep your existing DOMContentLoaded code exactly as it was
       document.addEventListener("DOMContentLoaded", function () {
         const filterButtons = document.querySelectorAll(".filter-btn");
         const projects = document.querySelectorAll(".project");
