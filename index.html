@@ -1,3 +1,4 @@
+[file name]: index.html [file content begin]
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -45,7 +46,6 @@
         scroll-behavior: smooth;
       }
 
-      /* Particle Canvas */
       #particle-canvas {
         position: fixed;
         top: 0;
@@ -53,9 +53,9 @@
         width: 100%;
         height: 100%;
         z-index: -1;
+        transition: opacity 0.3s ease;
       }
 
-      /* Navigation */
       .navbar {
         position: fixed;
         top: 0;
@@ -147,7 +147,6 @@
         z-index: 998;
       }
 
-      /* Header */
       header {
         background: var(--header-bg);
         color: var(--text-color);
@@ -195,7 +194,6 @@
         }
       }
 
-      /* Sections */
       section {
         padding: 5rem 2rem;
         max-width: 1200px;
@@ -227,7 +225,9 @@
         border-radius: 2px;
       }
 
-      /* Video containers */
+      /* ===================== */
+      /* YOUTUBE-STYLE FLUID VIDEO CONTAINERS */
+      /* ===================== */
       .video-container {
         display: flex;
         justify-content: center;
@@ -255,18 +255,18 @@
         border-radius: 12px;
         overflow: hidden;
         position: relative;
+        /* YouTube-style aspect ratio container */
+        aspect-ratio: 16/9;
       }
 
       .video-container iframe {
         width: 100%;
-        max-width: 900px;
-        aspect-ratio: 16/9;
+        height: 100%;
         border: none;
         border-radius: 12px;
         display: block;
       }
 
-      /* Projects section */
       .project-filters {
         display: flex;
         justify-content: center;
@@ -331,9 +331,11 @@
           0 0 15px rgba(0, 136, 255, 0.4);
       }
 
+      /* ===================== */
+      /* FLUID VIDEO CONTAINER BASE */
+      /* ===================== */
       .project-video {
         width: 100%;
-        height: 250px;
         background: #333;
         display: flex;
         align-items: center;
@@ -343,6 +345,10 @@
         cursor: pointer;
         transition: var(--transition);
         border-bottom: 3px solid var(--accent-color);
+        /* Base aspect ratio before video loads */
+        aspect-ratio: 16/9;
+        /* Smooth scaling */
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       }
 
       .project-video:hover {
@@ -420,22 +426,30 @@
       .project-video iframe {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain;
         border: none;
         transition: var(--transition);
       }
 
-      .project.portrait-layout,
+      /* ===================== */
+      /* FLUID RESPONSIVE LAYOUTS - CSS ONLY */
+      /* ===================== */
+      .project.portrait-layout {
+        max-width: 400px;
+        justify-self: center;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
       .project.square-layout {
         max-width: 400px;
         justify-self: center;
-        transition: all 0.5s ease;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       }
 
       .project.landscape-layout {
         max-width: none;
         justify-self: stretch;
-        transition: all 0.5s ease;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       }
 
       .project-video.loading::after {
@@ -461,15 +475,17 @@
         display: none !important;
       }
 
+      /* Portrait Mode - Fluid Aspect Ratio */
       .project-video.portrait-mode {
         background: #000;
         border-radius: 8px;
         max-width: 400px;
-        aspect-ratio: 9 / 16;
         margin: 0 auto;
         display: flex;
         align-items: center;
         justify-content: center;
+        /* Fluid aspect ratio */
+        aspect-ratio: 9/16;
       }
 
       .project-video.portrait-mode iframe,
@@ -480,22 +496,27 @@
         border-radius: 8px;
       }
 
+      /* Landscape Mode - Fluid Aspect Ratio */
       .project-video.landscape-mode {
         background: #000;
         border-radius: 8px;
+        /* Fluid aspect ratio via CSS custom property */
+        aspect-ratio: var(--video-aspect-ratio, 16/9);
+        width: 100%;
       }
 
       .project-video.landscape-mode iframe,
       .project-video.landscape-mode video {
-        object-fit: cover !important;
+        object-fit: contain;
         border-radius: 8px;
       }
 
+      /* Square Mode - Fluid Aspect Ratio */
       .project-video.square-mode {
         background: #000;
         border-radius: 8px;
-        height: 350px;
-        width: 350px;
+        aspect-ratio: 1/1;
+        max-width: 400px;
         margin: 0 auto;
         display: flex;
         align-items: center;
@@ -504,10 +525,10 @@
 
       .project-video.square-mode iframe,
       .project-video.square-mode video {
-        object-fit: contain !important;
+        object-fit: contain;
         border-radius: 8px;
-        width: 100% !important;
-        height: 100% !important;
+        width: 100%;
+        height: 100%;
       }
 
       .thumbnail-container {
@@ -640,16 +661,15 @@
         transform: translateY(-3px);
       }
 
-      /* ============================================= */
-      /* MOBILE-ONLY STYLES (Applied only below 768px) */
-      /* ============================================= */
+      /* ===================== */
+      /* MOBILE RESPONSIVE STYLES */
+      /* ===================== */
       @media (max-width: 768px) {
         body {
           font-size: 16px;
           -webkit-text-size-adjust: 100%;
         }
 
-        /* Enhanced Navigation - Mobile Only */
         .navbar {
           padding: 0.8rem 0;
           backdrop-filter: blur(10px);
@@ -723,7 +743,6 @@
           display: block;
         }
 
-        /* Improved Header - Mobile Only */
         header {
           padding: 7rem 1.5rem 3rem;
           min-height: 70vh;
@@ -753,7 +772,6 @@
           justify-content: center;
         }
 
-        /* Improved Sections - Mobile Only */
         section {
           padding: 3rem 1rem;
         }
@@ -764,7 +782,6 @@
           line-height: 1.3;
         }
 
-        /* Improved Projects - Mobile Only */
         .projects {
           grid-template-columns: 1fr;
           gap: 2rem;
@@ -777,18 +794,15 @@
         }
 
         .project-video {
-          height: 200px;
           -webkit-tap-highlight-color: rgba(74, 134, 232, 0.3);
         }
 
         .project-video.portrait-mode {
-          height: 500px;
           max-width: 280px;
         }
 
         .project-video.square-mode {
-          height: 300px;
-          width: 300px;
+          max-width: 300px;
         }
 
         .project-info {
@@ -805,7 +819,6 @@
           line-height: 1.5;
         }
 
-        /* Improved Skills - Mobile Only */
         .skills-container {
           grid-template-columns: 1fr;
           gap: 1.5rem;
@@ -825,7 +838,6 @@
           justify-content: center;
         }
 
-        /* Improved Video Containers - Mobile Only */
         .video-container {
           max-width: 100%;
           margin: 0 0 1.5rem 0;
@@ -834,7 +846,6 @@
 
         .video-container iframe {
           max-width: 100%;
-          height: 200px;
         }
 
         .video-placeholder {
@@ -843,7 +854,6 @@
           line-height: 1.4;
         }
 
-        /* Improved Buttons and Filters - Mobile Only */
         .project-filters {
           gap: 0.75rem;
           margin-bottom: 1.5rem;
@@ -870,7 +880,6 @@
           justify-content: center;
         }
 
-        /* Improved Footer - Mobile Only */
         footer {
           padding: 2.5rem 1.5rem;
         }
@@ -889,19 +898,16 @@
           padding: 0.5rem;
         }
 
-        /* Mobile Performance Optimizations */
         #particle-canvas {
           display: none !important;
         }
 
-        /* Prevent horizontal scroll */
         html,
         body {
           max-width: 100%;
           overflow-x: hidden;
         }
 
-        /* Safe area insets for notch devices */
         @supports (padding: max(0px)) {
           .navbar,
           header,
@@ -921,7 +927,6 @@
         }
       }
 
-      /* Extra small mobile devices */
       @media (max-width: 480px) {
         header h1 {
           font-size: 2.2rem;
@@ -936,13 +941,11 @@
         }
 
         .project-video.portrait-mode {
-          height: 450px;
           max-width: 250px;
         }
 
         .project-video.square-mode {
-          height: 250px;
-          width: 250px;
+          max-width: 250px;
         }
 
         .nav-menu {
@@ -1027,10 +1030,6 @@
           ></iframe>
         </div>
       </div>
-      <div class="video-placeholder">
-        A focused edit showcasing my recent work with Winedrops, including ads,
-        YouTube content, and social media videos.
-      </div>
     </section>
 
     <section id="projects">
@@ -1046,11 +1045,7 @@
           data-category="commercial"
           id="project-container-1"
         >
-          <div
-            class="project-video"
-            data-video="https://vimeo.com/1114326040"
-            data-aspect-ratio="landscape"
-          >
+          <div class="project-video" data-video="https://vimeo.com/1114326040">
             <div class="thumbnail-container">
               <img
                 src="images/Realistic Strategist.jpg"
@@ -1075,11 +1070,7 @@
         </div>
 
         <div class="project" data-category="social" id="project-container-2">
-          <div
-            class="project-video"
-            data-video="https://vimeo.com/1114454162"
-            data-aspect-ratio="landscape"
-          >
+          <div class="project-video" data-video="https://vimeo.com/1114454162">
             <div class="thumbnail-container">
               <img
                 src="images/Youtube img.jpg"
@@ -1103,11 +1094,7 @@
         </div>
 
         <div class="project" data-category="youtube" id="project-container-3">
-          <div
-            class="project-video"
-            data-video="https://vimeo.com/1121611979"
-            data-aspect-ratio="portrait"
-          >
+          <div class="project-video" data-video="https://vimeo.com/1121611979">
             <div class="thumbnail-container">
               <img
                 src="images/Strive Content.jpg"
@@ -1131,11 +1118,7 @@
         </div>
 
         <div class="project" data-category="motion" id="project-container-4">
-          <div
-            class="project-video"
-            data-video="https://vimeo.com/900842265"
-            data-aspect-ratio="portrait"
-          >
+          <div class="project-video" data-video="https://vimeo.com/900842265">
             <div class="thumbnail-container">
               <img
                 src="images/Mortica.jpg"
@@ -1163,7 +1146,6 @@
           <div
             class="project-video"
             data-video="https://vimeo.com/1114326897?share=copy"
-            data-aspect-ratio="square"
           >
             <div class="thumbnail-container">
               <img
@@ -1185,11 +1167,7 @@
         </div>
 
         <div class="project" data-category="youtube" id="project-container-6">
-          <div
-            class="project-video"
-            data-video="https://vimeo.com/1114453751"
-            data-aspect-ratio="portrait"
-          >
+          <div class="project-video" data-video="https://vimeo.com/1114453751">
             <div class="thumbnail-container">
               <img
                 src="images/Short ad.jpg"
@@ -1213,11 +1191,7 @@
         </div>
 
         <div class="project" data-category="youtube" id="project-container-7">
-          <div
-            class="project-video"
-            data-video="https://vimeo.com/1121503730"
-            data-aspect-ratio="portrait"
-          >
+          <div class="project-video" data-video="https://vimeo.com/1121503730">
             <div class="thumbnail-container">
               <img
                 src="images/Strivetech.jpg"
@@ -1343,7 +1317,7 @@
     </footer>
 
     <script>
-      // Mobile menu functionality - Only affects mobile
+      // Mobile menu functionality
       function toggleMobileMenu() {
         const menu = document.querySelector(".nav-menu");
         const overlay = document.querySelector(".nav-overlay");
@@ -1353,7 +1327,6 @@
         overlay.classList.toggle("active");
         toggle.classList.toggle("active");
 
-        // Prevent body scroll when menu is open on mobile
         if (window.innerWidth <= 768) {
           document.body.style.overflow = menu.classList.contains("active")
             ? "hidden"
@@ -1375,105 +1348,471 @@
         }
       }
 
-      // Close menu when clicking on overlay (mobile only)
       document
         .querySelector(".nav-overlay")
         .addEventListener("click", closeMobileMenu);
 
-      // Close menu on escape key (mobile only)
       document.addEventListener("keydown", (e) => {
         if (e.key === "Escape" && window.innerWidth <= 768) {
           closeMobileMenu();
         }
       });
 
-      // Improved touch handling for mobile
       document.addEventListener("touchstart", function () {}, {
         passive: true,
       });
 
-      // Rest of your existing JavaScript code for particles and video handling...
-      // This remains exactly the same as your original code
-      // =============================================
-      // PARTICLE SYSTEM CONFIGURATION
-      // =============================================
+      // ============================================= //
+      // ADVANCED VIDEO SYSTEM - FIXED VERSION //
+      // ============================================= //
 
+      document.addEventListener("DOMContentLoaded", function () {
+        // Project filtering
+        const filterButtons = document.querySelectorAll(".filter-btn");
+        const projects = document.querySelectorAll(".project");
+
+        filterButtons.forEach((button) => {
+          button.addEventListener("click", () => {
+            filterButtons.forEach((btn) => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            const filter = button.getAttribute("data-filter");
+
+            projects.forEach((project) => {
+              const category = project.getAttribute("data-category");
+              if (filter === "all" || filter === category) {
+                project.style.display = "block";
+              } else {
+                project.style.display = "none";
+              }
+            });
+          });
+        });
+
+        // ============================================= //
+        // VIDEO CLICK HANDLER //
+        // ============================================= //
+        const videoContainers = document.querySelectorAll(".project-video");
+
+        videoContainers.forEach((container) => {
+          container.addEventListener("click", async function (e) {
+            e.preventDefault();
+
+            if (
+              this.classList.contains("playing") ||
+              this.classList.contains("loading")
+            )
+              return;
+
+            const videoUrl = this.getAttribute("data-video");
+            if (!videoUrl) return;
+
+            this.classList.add("loading");
+
+            try {
+              if (videoUrl.includes("vimeo.com")) {
+                await handleVimeoVideo(this, videoUrl);
+              } else {
+                await handleDirectVideo(this, videoUrl);
+              }
+            } catch (error) {
+              console.error("Video loading failed:", error);
+              this.classList.remove("loading");
+              // Fallback to intelligent default
+              applyFluidLayout(this, 16 / 9);
+            }
+          });
+        });
+
+        // ============================================= //
+        // VIMEO VIDEO HANDLER - FIXED CORS ISSUE //
+        // ============================================= //
+        async function handleVimeoVideo(container, videoUrl) {
+          return new Promise((resolve, reject) => {
+            const iframe = document.createElement("iframe");
+
+            // Extract video ID
+            const videoId = videoUrl.split("/").pop().split("?")[0];
+            const embedUrl = `https://player.vimeo.com/video/${videoId}?autoplay=1&loop=1&title=0&byline=0&portrait=0`;
+
+            iframe.src = embedUrl;
+            iframe.setAttribute("frameborder", "0");
+            iframe.setAttribute(
+              "allow",
+              "autoplay; fullscreen; picture-in-picture"
+            );
+            iframe.setAttribute("allowfullscreen", "");
+            iframe.style.width = "100%";
+            iframe.style.height = "100%";
+            iframe.style.border = "none";
+
+            // Use Vimeo's oEmbed endpoint (CORS-friendly)
+            fetch(
+              `https://vimeo.com/api/oembed.json?url=${encodeURIComponent(
+                videoUrl
+              )}`
+            )
+              .then((response) => {
+                if (!response.ok) throw new Error("Vimeo oEmbed failed");
+                return response.json();
+              })
+              .then((data) => {
+                // Calculate aspect ratio from oEmbed response
+                const aspectRatio = data.width / data.height;
+
+                setupVideoContainer(container, iframe);
+                applyFluidLayout(container, aspectRatio);
+                setupResizeObserver(container, aspectRatio);
+                resolve();
+              })
+              .catch((error) => {
+                console.warn("Using fallback aspect ratio detection:", error);
+                // Fallback: Use iframe load event
+                iframe.onload = function () {
+                  // Use intelligent guessing based on URL or default
+                  const fallbackAspect = guessAspectRatioFromUrl(videoUrl);
+                  applyFluidLayout(container, fallbackAspect);
+                  setupResizeObserver(container, fallbackAspect);
+                  resolve();
+                };
+
+                setupVideoContainer(container, iframe);
+              });
+          });
+        }
+
+        // ============================================= //
+        // DIRECT VIDEO HANDLER //
+        // ============================================= //
+        async function handleDirectVideo(container, videoUrl) {
+          return new Promise((resolve, reject) => {
+            const video = document.createElement("video");
+
+            // Create temporary video to get metadata
+            const tempVideo = document.createElement("video");
+            tempVideo.src = videoUrl;
+
+            tempVideo.addEventListener("loadedmetadata", function () {
+              const aspectRatio = this.videoWidth / this.videoHeight;
+
+              // Create final video element
+              video.src = videoUrl;
+              video.controls = true;
+              video.autoplay = true;
+              video.loop = true;
+              video.style.width = "100%";
+              video.style.height = "100%";
+
+              setupVideoContainer(container, video);
+              applyFluidLayout(container, aspectRatio);
+              setupResizeObserver(container, aspectRatio);
+
+              tempVideo.remove();
+              resolve();
+            });
+
+            tempVideo.addEventListener("error", function () {
+              console.warn("Using fallback for direct video");
+              // Fallback to default aspect ratio
+              const fallbackAspect = guessAspectRatioFromUrl(videoUrl);
+              video.src = videoUrl;
+              video.controls = true;
+              video.autoplay = true;
+              video.loop = true;
+              video.style.width = "100%";
+              video.style.height = "100%";
+
+              setupVideoContainer(container, video);
+              applyFluidLayout(container, fallbackAspect);
+              setupResizeObserver(container, fallbackAspect);
+
+              tempVideo.remove();
+              resolve();
+            });
+
+            // Start loading
+            tempVideo.load();
+          });
+        }
+
+        // ============================================= //
+        // INTELLIGENT ASPECT RATIO GUESSING //
+        // ============================================= //
+        function guessAspectRatioFromUrl(url) {
+          // Check for common patterns in URLs
+          if (url.includes("square") || url.includes("1:1")) return 1;
+          if (
+            url.includes("portrait") ||
+            url.includes("9:16") ||
+            url.includes("4:5")
+          )
+            return 9 / 16;
+          if (url.includes("instagram") || url.includes("tiktok"))
+            return 9 / 16;
+          if (url.includes("youtube") || url.includes("16:9")) return 16 / 9;
+
+          // Default to landscape
+          return 16 / 9;
+        }
+
+        // ============================================= //
+        // YOUTUBE-STYLE FLUID LAYOUT SYSTEM - FIXED //
+        // ============================================= //
+        function applyFluidLayout(container, aspectRatio) {
+          // Convert string aspect ratios to numbers
+          if (typeof aspectRatio === "string") {
+            switch (aspectRatio) {
+              case "portrait":
+                aspectRatio = 9 / 16;
+                break;
+              case "square":
+                aspectRatio = 1;
+                break;
+              case "landscape":
+                aspectRatio = 16 / 9;
+                break;
+              default:
+                aspectRatio = 16 / 9;
+            }
+          }
+
+          // Remove all previous layout classes
+          container.classList.remove(
+            "portrait-mode",
+            "landscape-mode",
+            "square-mode"
+          );
+
+          const project = container.closest(".project");
+          project.classList.remove(
+            "portrait-layout",
+            "landscape-layout",
+            "square-layout"
+          );
+
+          // Determine orientation based on aspect ratio
+          let orientation;
+          if (aspectRatio < 0.85) {
+            orientation = "portrait";
+          } else if (aspectRatio > 1.3) {
+            orientation = "landscape";
+          } else {
+            orientation = "square";
+          }
+
+          // Apply CSS classes (NO inline styles!)
+          container.classList.add(`${orientation}-mode`);
+          project.classList.add(`${orientation}-layout`);
+
+          // Store the aspect ratio in dataset (not in style!)
+          container.dataset.aspectRatio = aspectRatio;
+
+          // Apply aspect ratio via CSS custom property for landscape mode
+          if (orientation === "landscape") {
+            container.style.setProperty("--video-aspect-ratio", aspectRatio);
+          } else {
+            container.style.removeProperty("--video-aspect-ratio");
+          }
+
+          // Apply smooth transition
+          container.style.transition = "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)";
+          project.style.transition = "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)";
+
+          // Update mobile max-width
+          updateMobileMaxWidth(container, orientation);
+        }
+
+        function updateMobileMaxWidth(container, orientation) {
+          const isMobile = window.innerWidth <= 768;
+
+          if (!isMobile) {
+            container.style.maxWidth = "";
+            return;
+          }
+
+          if (orientation === "portrait") {
+            container.style.maxWidth = "280px";
+          } else if (orientation === "square") {
+            container.style.maxWidth = "300px";
+          } else {
+            container.style.maxWidth = "";
+          }
+        }
+
+        // ============================================= //
+        // RESIZE OBSERVER - FIXED VERSION //
+        // ============================================= //
+        const resizeObservers = new Map(); // Store observers per container
+
+        function setupResizeObserver(container, aspectRatio) {
+          // Clean up any existing observer
+          if (resizeObservers.has(container)) {
+            resizeObservers.get(container).disconnect();
+            resizeObservers.delete(container);
+          }
+
+          // Create new observer with debouncing
+          let resizeTimeout;
+          const observer = new ResizeObserver((entries) => {
+            for (const entry of entries) {
+              clearTimeout(resizeTimeout);
+              resizeTimeout = setTimeout(() => {
+                handleContainerResize(container, entry);
+              }, 50); // Debounce to 50ms
+            }
+          });
+
+          // Store observer reference
+          resizeObservers.set(container, observer);
+
+          // Start observing
+          observer.observe(container);
+        }
+
+        function handleContainerResize(container, entry) {
+          if (!container.classList.contains("playing")) return;
+
+          const aspectRatio = parseFloat(container.dataset.aspectRatio);
+          if (!aspectRatio || isNaN(aspectRatio)) return;
+
+          // Get current orientation from class
+          const isPortrait = container.classList.contains("portrait-mode");
+          const isSquare = container.classList.contains("square-mode");
+          const isLandscape = container.classList.contains("landscape-mode");
+
+          // Update mobile max-width if needed
+          if (isPortrait || isSquare) {
+            updateMobileMaxWidth(container, isPortrait ? "portrait" : "square");
+          }
+
+          // CSS handles the aspect ratio, we just need to ensure it's set
+          if (isLandscape) {
+            container.style.setProperty("--video-aspect-ratio", aspectRatio);
+          }
+        }
+
+        function setupVideoContainer(container, videoElement) {
+          container.classList.remove("loading");
+          container.classList.add("playing");
+          container.innerHTML = "";
+          container.appendChild(videoElement);
+        }
+
+        // ============================================= //
+        // WINDOW RESIZE HANDLER - SIMPLIFIED //
+        // ============================================= //
+        let windowResizeTimeout;
+        window.addEventListener("resize", function () {
+          clearTimeout(windowResizeTimeout);
+          windowResizeTimeout = setTimeout(function () {
+            const playingVideos = document.querySelectorAll(
+              ".project-video.playing"
+            );
+            playingVideos.forEach((container) => {
+              const aspectRatio = parseFloat(container.dataset.aspectRatio);
+              if (aspectRatio && !isNaN(aspectRatio)) {
+                // Get current orientation
+                const isPortrait =
+                  container.classList.contains("portrait-mode");
+                const isSquare = container.classList.contains("square-mode");
+                const orientation = isPortrait
+                  ? "portrait"
+                  : isSquare
+                  ? "square"
+                  : "landscape";
+
+                // Update mobile max-width
+                updateMobileMaxWidth(container, orientation);
+              }
+            });
+          }, 100);
+        });
+
+        // Clean up observers when page unloads
+        window.addEventListener("beforeunload", () => {
+          resizeObservers.forEach((observer, container) => {
+            observer.disconnect();
+          });
+          resizeObservers.clear();
+        });
+      });
+
+      // ============================================= //
+      // PARTICLE DENSITY BUFFER SYSTEM - FIXED RESIZE ISSUE //
+      // ============================================= //
       let particles = [];
       let containers = [];
       let hoveredContainer = null;
 
-      // =============================================
-      // PARTICLE DENSITY SETTING
-      // Change this number to increase/decrease total particles on screen
-      // Higher = more particles, Lower = fewer particles
-      // =============================================
+      // New constants for density buffer system
       const DENSITY = 1000;
+      const DENSITY_BUFFER_FACTOR = 2.5; // 50% more particles than needed
+      const VIEWPORT_MARGIN = 200; // How far outside viewport particles can exist
+      const DISPLAY_MARGIN = VIEWPORT_MARGIN * 2; // Only render particles within this margin
+      const CONFETTI_SCALE = 0.28;
+      const PARTICLE_SPEED = 0.1;
 
-      // =============================================
-      // PARTICLE SIZE & SPEED SETTINGS
-      // =============================================
-      const CONFETTI_SCALE = 0.28; // Particle size multiplier (0.1 = tiny, 1.0 = large)
-      const PARTICLE_SPEED = 0.1; // Base movement speed (0.1 = slow, 1.0 = fast)
-
-      // =============================================
-      // PARTICLE COLORS (R, G, B, Alpha)
-      // Alpha: 0 = invisible, 255 = fully opaque
-      // =============================================
-      const NEUTRAL_COLOR = [150, 150, 150, 170]; // Floating particles (not attracted)
-      const ATTRACT_COLOR = [255, 255, 255, 240]; // Particles being attracted to containers
-      const STICKY_COLOR = [180, 220, 255, 255]; // Particles stuck to container edges
-      const EMITTED_COLOR = [255, 215, 0, 230]; // Newly emitted particles from container edges
+      const NEUTRAL_COLOR = [150, 150, 150, 170];
+      const ATTRACT_COLOR = [255, 255, 255, 240];
+      const STICKY_COLOR = [180, 220, 255, 255];
+      const EMITTED_COLOR = [255, 215, 0, 230];
 
       let colors = {};
       let lastEmissionTime = 0;
+      let targetParticleCount = 0;
 
-      // =============================================
-      // PARTICLE BEHAVIOR SETTINGS
-      // =============================================
       const settings = {
-        attractRadius: 96.0, // Distance from container where attraction starts (pixels)
-        attractStrength: 1.2, // How strongly particles are pulled (0.1 = weak, 3.0 = strong)
-        stickinessDistance: 1.6, // How close particles must be to stick to edges
-        stickinessStrength: 0.6, // How strongly particles stick (0.1 = weak, 2.0 = strong)
-        emissionRate: 4.0, // How many particles emit per second when hovering
-        particleSpeed: 0.2, // Particle movement speed (same as PARTICLE_SPEED)
+        attractRadius: 96.0,
+        attractStrength: 1.2,
+        stickinessDistance: 1.6,
+        stickinessStrength: 0.6,
+        emissionRate: 4.0,
+        particleSpeed: 0.2,
       };
 
-      // =============================================
-      // SHIMMER/FLICKER INTENSITY
-      // Located in: applyStickiness() function
-      // Look for: "const stickIntensity = map(this.stuckTimer, 0, 60, 0, 1);"
-      // The number 60 controls how long it takes to reach full shimmer
-      // Lower = faster shimmer, Higher = slower shimmer buildup
-      // =============================================
+      // Resize optimization variables
+      let resizeTimeout;
+      let isResizing = false;
 
       function isMobileDevice() {
         return window.innerWidth <= 768;
       }
 
+      // ============================================= //
+      // ENHANCED PARTICLE CLASS WITH DENSITY BUFFER //
+      // ============================================= //
       class Particle {
         constructor(isEmitted = false) {
           this.isEmitted = isEmitted;
           this.reset();
+
+          // Initialize with random position (can be outside viewport)
+          if (!isEmitted) {
+            const margin = VIEWPORT_MARGIN;
+            this.x = random(-margin, width + margin);
+            this.y = random(-margin, height + margin);
+          }
         }
 
         reset() {
           if (this.isEmitted) {
             this.spawnAtEdge();
-            this.lifetime = 255; // Emitted particle lifespan (255 = longest, 0 = instant fade)
+            this.lifetime = 255;
             this.color = colors.emitted;
           } else {
-            do {
-              this.x = random(width);
-              this.y = random(height);
-            } while (this.isNearAnyContainer(80));
+            // Allow particles to spawn outside viewport
+            const margin = VIEWPORT_MARGIN;
+            this.x = random(-margin, width + margin);
+            this.y = random(-margin, height + margin);
+
+            // Check if it's too close to containers only if within viewport
+            if (this.isWithinViewport() && this.isNearAnyContainer(80)) {
+              this.reset(); // Try again
+              return;
+            }
             this.color = colors.neutral;
           }
 
-          // =============================================
-          // PARTICLE SIZE RANGE
-          // random(min, max) - adjust these for different particle sizes
-          // =============================================
           this.size = random(4, 11) * CONFETTI_SCALE;
 
           let angle = random(TWO_PI);
@@ -1483,10 +1822,6 @@
           this.dx = this.baseDx;
           this.dy = this.baseDy;
 
-          // =============================================
-          // PARTICLE ROTATION SPEED
-          // random(min, max) - adjust for faster/slower spinning
-          // =============================================
           this.angle = random(TWO_PI);
           this.rotSpeed = random(-0.03, 0.03);
 
@@ -1496,6 +1831,13 @@
           this.floatOffsetX = random(1000);
           this.floatOffsetY = random(1000);
           this.targetContainer = null;
+        }
+
+        // New helper method
+        isWithinViewport() {
+          return (
+            this.x >= 0 && this.x <= width && this.y >= 0 && this.y <= height
+          );
         }
 
         spawnAtEdge() {
@@ -1638,10 +1980,6 @@
             this.stuckTimer = max(0, this.stuckTimer - 2);
 
             if (this.isEmitted) {
-              // =============================================
-              // EMITTED PARTICLE FADE SPEED
-              // Higher number = faster fade, Lower = slower fade
-              // =============================================
               this.lifetime -= 2;
               if (this.lifetime <= 0) this.lifetime = 0;
             }
@@ -1651,11 +1989,13 @@
           this.y += this.dy;
           this.angle += this.rotSpeed;
 
+          // Wrap around screen edges with buffer margin
           if (!this.isEmitted) {
-            if (this.x < 0) this.x = width;
-            if (this.x > width) this.x = 0;
-            if (this.y < 0) this.y = height;
-            if (this.y > height) this.y = 0;
+            const margin = VIEWPORT_MARGIN;
+            if (this.x < -margin) this.x = width + margin;
+            if (this.x > width + margin) this.x = -margin;
+            if (this.y < -margin) this.y = height + margin;
+            if (this.y > height + margin) this.y = -margin;
           }
         }
 
@@ -1703,11 +2043,6 @@
           this.dx *= damping;
           this.dy *= damping;
 
-          // =============================================
-          // SHIMMER INTENSITY & BUILDUP SPEED
-          // map(timer, 0, 60, ...) - the "60" controls buildup time
-          // Lower = faster shimmer buildup, Higher = slower buildup
-          // =============================================
           const stickIntensity = map(this.stuckTimer, 0, 10, 0, 1);
 
           if (this.isEmitted) {
@@ -1753,9 +2088,25 @@
         }
       }
 
+      // ============================================= //
+      // PARTICLE DENSITY CALCULATION //
+      // ============================================= //
+      function calculateOptimalParticleCount() {
+        const baseDensity = DENSITY;
+        const viewportArea = width * height;
+        const baseArea = 1920 * 1080; // Reference area (typical screen)
+
+        // Scale by area and add buffer
+        const scaledCount = Math.floor(baseDensity * (viewportArea / baseArea));
+        return Math.floor(scaledCount * DENSITY_BUFFER_FACTOR);
+      }
+
+      // ============================================= //
+      // SETUP WITH DENSITY BUFFER //
+      // ============================================= //
       function setup() {
         if (isMobileDevice()) {
-          console.log("Mobile device detected - particles disabled");
+          noCanvas();
           return;
         }
 
@@ -1769,8 +2120,11 @@
 
         initializeContainers();
 
+        // Calculate target particle count with buffer
+        targetParticleCount = calculateOptimalParticleCount();
+
         particles = [];
-        for (let i = 0; i < DENSITY; i++) {
+        for (let i = 0; i < targetParticleCount; i++) {
           particles.push(new Particle(false));
         }
 
@@ -1822,16 +2176,12 @@
         });
       }
 
+      // ============================================= //
+      // OPTIMIZED DRAW WITH DENSITY BUFFER //
+      // ============================================= //
       function draw() {
         if (isMobileDevice()) return;
 
-        // =============================================
-        // CANVAS BACKGROUND COLOR (R, G, B, Alpha)
-        // Change these values to change the background darkness
-        // First 3 numbers: RGB color (0-255)
-        // Last number: Transparency (0 = clear trail effect, 255 = solid)
-        // Lower alpha = longer particle trails
-        // =============================================
         background(10, 10, 10, 80);
 
         updateContainerPositions();
@@ -1849,6 +2199,7 @@
           }
         }
 
+        // Update and display only particles that are within or near viewport
         for (let i = particles.length - 1; i >= 0; i--) {
           const p = particles[i];
 
@@ -1858,10 +2209,16 @@
           }
 
           p.update();
-        }
 
-        for (const p of particles) {
-          p.display();
+          // Only draw particles that are within or near the viewport
+          if (
+            p.x > -DISPLAY_MARGIN &&
+            p.x < width + DISPLAY_MARGIN &&
+            p.y > -DISPLAY_MARGIN &&
+            p.y < height + DISPLAY_MARGIN
+          ) {
+            p.display();
+          }
         }
       }
 
@@ -1877,257 +2234,95 @@
         });
       }
 
+      // ============================================= //
+      // OPTIMIZED WINDOW RESIZE WITH DENSITY BUFFER //
+      // ============================================= //
       function windowResized() {
         if (isMobileDevice()) return;
+
+        const oldWidth = width;
+        const oldHeight = height;
+
         resizeCanvas(windowWidth, windowHeight);
+
+        // Calculate new optimal particle count
+        const newTargetCount = calculateOptimalParticleCount();
+
+        // Add or remove particles as needed
+        if (newTargetCount > particles.length) {
+          const particlesToAdd = newTargetCount - particles.length;
+          for (let i = 0; i < particlesToAdd; i++) {
+            particles.push(new Particle(false));
+          }
+        } else if (newTargetCount < particles.length) {
+          // Remove non-emitted particles (keep emitted ones for visual continuity)
+          const particlesToRemove = particles.length - newTargetCount;
+          for (
+            let i = particles.length - 1;
+            i >= 0 && particlesToRemove > 0;
+            i--
+          ) {
+            if (!particles[i].isEmitted) {
+              particles.splice(i, 1);
+              particlesToRemove--;
+            }
+          }
+        }
+
+        // Update target count
+        targetParticleCount = newTargetCount;
+
+        // Immediately reposition all particles proportionally
+        const scaleX = width / oldWidth;
+        const scaleY = height / oldHeight;
+
+        for (let p of particles) {
+          // Scale particle positions
+          p.x *= scaleX;
+          p.y *= scaleY;
+
+          // Adjust base speeds for new dimensions
+          p.baseDx *= scaleX;
+          p.baseDy *= scaleY;
+        }
+
+        // Force immediate redraw
+        redraw();
       }
 
-      // Keep your existing DOMContentLoaded code exactly as it was
-      document.addEventListener("DOMContentLoaded", function () {
-        const filterButtons = document.querySelectorAll(".filter-btn");
-        const projects = document.querySelectorAll(".project");
+      // ============================================= //
+      // ADDITIONAL OPTIMIZATION: RESIZE DEBOUNCER //
+      // ============================================= //
+      window.addEventListener("resize", function () {
+        if (isMobileDevice()) return;
 
-        filterButtons.forEach((button) => {
-          button.addEventListener("click", () => {
-            filterButtons.forEach((btn) => btn.classList.remove("active"));
-            button.classList.add("active");
+        clearTimeout(resizeTimeout);
 
-            const filter = button.getAttribute("data-filter");
-
-            projects.forEach((project) => {
-              const category = project.getAttribute("data-category");
-              if (filter === "all" || filter === category) {
-                project.style.display = "block";
-              } else {
-                project.style.display = "none";
-              }
-            });
-          });
-        });
-
-        const videoContainers = document.querySelectorAll(".project-video");
-
-        videoContainers.forEach((container) => {
-          container.addEventListener("click", function (e) {
-            e.preventDefault();
-
-            if (
-              this.classList.contains("playing") ||
-              this.classList.contains("loading")
-            )
-              return;
-
-            const videoUrl = this.getAttribute("data-video");
-            if (!videoUrl) return;
-
-            this.classList.add("loading");
-            const originalHeight = this.offsetHeight;
-
-            if (
-              videoUrl.includes("vimeo.com") ||
-              videoUrl.includes("player.vimeo.com")
-            ) {
-              handleVimeoVideo(this, videoUrl, originalHeight);
-            } else {
-              handleDirectVideo(this, videoUrl, originalHeight);
-            }
-          });
-        });
-
-        function handleVimeoVideo(container, videoUrl, originalHeight) {
-          const iframe = document.createElement("iframe");
-
-          let embedUrl = videoUrl;
-          if (
-            videoUrl.includes("vimeo.com/") &&
-            !videoUrl.includes("player.vimeo.com")
-          ) {
-            const videoId = videoUrl.split("/").pop().split("?")[0];
-            embedUrl = `https://player.vimeo.com/video/${videoId}?autoplay=1&loop=1&title=0&byline=0&portrait=0`;
-          } else if (!videoUrl.includes("autoplay=1")) {
-            embedUrl +=
-              (videoUrl.includes("?") ? "&" : "?") + "autoplay=1&loop=1";
+        if (!isResizing) {
+          // Optionally show a subtle visual indicator
+          const particleCanvas = document.querySelector(
+            "#particle-canvas canvas"
+          );
+          if (particleCanvas) {
+            particleCanvas.style.opacity = "0.9";
           }
-
-          iframe.src = embedUrl;
-          iframe.setAttribute("frameborder", "0");
-          iframe.setAttribute(
-            "allow",
-            "autoplay; fullscreen; picture-in-picture"
-          );
-          iframe.setAttribute("allowfullscreen", "");
-          iframe.style.width = "100%";
-          iframe.style.height = "100%";
-          iframe.style.border = "none";
-
-          iframe.onload = function () {
-            setTimeout(() => {
-              const dataAspectRatio =
-                container.getAttribute("data-aspect-ratio");
-              let orientation = "landscape";
-              if (dataAspectRatio === "portrait") {
-                orientation = "portrait";
-              } else if (dataAspectRatio === "square") {
-                orientation = "square";
-              }
-              applyResponsiveLayout(
-                container,
-                orientation,
-                iframe,
-                originalHeight
-              );
-            }, 500);
-          };
-
-          setupVideoContainer(container, iframe);
+          isResizing = true;
         }
 
-        function handleDirectVideo(container, videoUrl, originalHeight) {
-          const video = document.createElement("video");
-          video.src = videoUrl;
-          video.controls = true;
-          video.autoplay = true;
-          video.loop = true;
-          video.style.width = "100%";
-          video.style.height = "100%";
+        resizeTimeout = setTimeout(function () {
+          windowResized(); // Call our p5.js resize function
+          isResizing = false;
 
-          video.addEventListener("loadedmetadata", function () {
-            const aspectRatio = this.videoWidth / this.videoHeight;
-            let orientation;
-
-            if (aspectRatio > 1.2) {
-              orientation = "landscape";
-            } else if (aspectRatio < 0.8) {
-              orientation = "portrait";
-            } else {
-              orientation = "square";
-            }
-
-            applyResponsiveLayout(
-              container,
-              orientation,
-              this,
-              originalHeight,
-              aspectRatio
-            );
-          });
-
-          video.addEventListener("error", function () {
-            console.error("Video failed to load:", videoUrl);
-          });
-
-          setupVideoContainer(container, video);
-        }
-
-        function setupVideoContainer(container, videoElement) {
-          container.classList.remove("loading");
-          container.classList.add("playing");
-          container.innerHTML = "";
-          container.appendChild(videoElement);
-        }
-
-        function applyResponsiveLayout(
-          container,
-          orientation,
-          videoElement,
-          originalHeight,
-          aspectRatio = null
-        ) {
-          const project = container.closest(".project");
-
-          container.classList.remove(
-            "portrait-mode",
-            "landscape-mode",
-            "square-mode"
+          // Restore opacity
+          const particleCanvas = document.querySelector(
+            "#particle-canvas canvas"
           );
-          project.classList.remove(
-            "portrait-layout",
-            "landscape-layout",
-            "square-layout"
-          );
-
-          if (orientation === "portrait") {
-            container.classList.add("portrait-mode");
-            project.classList.add("portrait-layout");
-
-            const maxWidth = 400;
-            const calculatedHeight = aspectRatio
-              ? maxWidth / aspectRatio
-              : maxWidth * 1.77;
-
-            container.style.height = `${Math.min(
-              calculatedHeight,
-              window.innerHeight * 0.8
-            )}px`;
-            container.style.maxWidth = `${maxWidth}px`;
-            container.style.margin = "0 auto";
-
-            videoElement.style.objectFit = "contain";
-            videoElement.style.width = "100%";
-            videoElement.style.height = "100%";
-          } else if (orientation === "square") {
-            container.classList.add("square-mode");
-            project.classList.add("square-layout");
-
-            const squareSize = Math.min(container.offsetWidth, 400);
-            container.style.height = `${squareSize}px`;
-            container.style.width = `${squareSize}px`;
-            container.style.margin = "0 auto";
-
-            videoElement.style.objectFit = "cover";
-          } else {
-            container.classList.add("landscape-mode");
-            project.classList.add("landscape-layout");
-
-            const containerWidth = container.offsetWidth;
-            let calculatedHeight;
-
-            if (aspectRatio) {
-              calculatedHeight = containerWidth / aspectRatio;
-            } else {
-              calculatedHeight = containerWidth * (9 / 16);
-            }
-
-            calculatedHeight = Math.min(calculatedHeight, 500);
-            calculatedHeight = Math.max(calculatedHeight, 250);
-
-            container.style.height = `${calculatedHeight}px`;
-            container.style.maxWidth = "100%";
-            container.style.margin = "0";
-
-            project.style.maxWidth = "none";
-            project.style.justifySelf = "stretch";
+          if (particleCanvas) {
+            particleCanvas.style.opacity = "1";
           }
-
-          container.style.transition = "all 0.5s ease";
-          project.style.transition = "all 0.5s ease";
-        }
-
-        let resizeTimeout;
-        window.addEventListener("resize", function () {
-          clearTimeout(resizeTimeout);
-          resizeTimeout = setTimeout(function () {
-            const playingVideos = document.querySelectorAll(
-              ".project-video.playing"
-            );
-            playingVideos.forEach((container) => {
-              const orientation = container.classList.contains("portrait-mode")
-                ? "portrait"
-                : "landscape";
-              const videoElement = container.querySelector("video, iframe");
-              if (videoElement) {
-                const originalHeight = 250;
-                applyResponsiveLayout(
-                  container,
-                  orientation,
-                  videoElement,
-                  originalHeight
-                );
-              }
-            });
-          }, 250);
-        });
+        }, 50); // 50ms debounce - optimal for performance
       });
     </script>
   </body>
 </html>
+[file content end]
