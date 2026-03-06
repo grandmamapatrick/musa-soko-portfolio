@@ -1,11 +1,9 @@
-[file name]: index.html [file content begin]
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Musa Soko - Video Editor & Motion Designer</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -44,16 +42,6 @@
 
       html {
         scroll-behavior: smooth;
-      }
-
-      #particle-canvas {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
-        transition: opacity 0.3s ease;
       }
 
       .navbar {
@@ -150,7 +138,7 @@
       header {
         background: var(--header-bg);
         color: var(--text-color);
-        padding: 8rem 2rem 4rem;
+        padding: 8rem 4rem 4rem;
         text-align: left;
         position: relative;
         z-index: 10;
@@ -159,7 +147,6 @@
         flex-direction: column;
         justify-content: center;
         align-items: flex-start;
-        padding-left: 4rem;
       }
 
       header h1 {
@@ -170,7 +157,7 @@
       }
 
       header p {
-        margin: 0rem 0 4rem;
+        margin: 0 0 4rem;
         font-size: 1.5rem;
         color: #aaa;
         max-width: 600px;
@@ -225,9 +212,6 @@
         border-radius: 2px;
       }
 
-      /* ===================== */
-      /* YOUTUBE-STYLE FLUID VIDEO CONTAINERS */
-      /* ===================== */
       .video-container {
         display: flex;
         justify-content: center;
@@ -246,8 +230,10 @@
 
       .video-container:hover {
         transform: translateY(-10px);
-        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3),
-          0 0 0 2px rgba(74, 134, 232, 0.3), 0 0 20px rgba(74, 134, 232, 0.5);
+        box-shadow:
+          0 15px 40px rgba(0, 0, 0, 0.3),
+          0 0 0 2px rgba(74, 134, 232, 0.3),
+          0 0 20px rgba(74, 134, 232, 0.5);
       }
 
       .video-wrapper {
@@ -255,7 +241,6 @@
         border-radius: 12px;
         overflow: hidden;
         position: relative;
-        /* YouTube-style aspect ratio container */
         aspect-ratio: 16/9;
       }
 
@@ -327,13 +312,11 @@
 
       .project:hover {
         transform: translateY(-10px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15),
+        box-shadow:
+          0 8px 20px rgba(0, 0, 0, 0.15),
           0 0 15px rgba(0, 136, 255, 0.4);
       }
 
-      /* ===================== */
-      /* FLUID VIDEO CONTAINER BASE */
-      /* ===================== */
       .project-video {
         width: 100%;
         background: #333;
@@ -343,11 +326,8 @@
         position: relative;
         overflow: hidden;
         cursor: pointer;
-        transition: var(--transition);
         border-bottom: 3px solid var(--accent-color);
-        /* Base aspect ratio before video loads */
         aspect-ratio: 16/9;
-        /* Smooth scaling */
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       }
 
@@ -412,46 +392,6 @@
         opacity: 0.8;
       }
 
-      .video-placeholder {
-        color: white;
-        text-align: center;
-        font-size: 1.1rem;
-        padding: 1rem;
-        background: rgba(0, 91, 133, 0.7);
-        border-radius: 8px;
-        z-index: 1;
-      }
-
-      .project-video video,
-      .project-video iframe {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        border: none;
-        transition: var(--transition);
-      }
-
-      /* ===================== */
-      /* FLUID RESPONSIVE LAYOUTS - CSS ONLY */
-      /* ===================== */
-      .project.portrait-layout {
-        max-width: 400px;
-        justify-self: center;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      }
-
-      .project.square-layout {
-        max-width: 400px;
-        justify-self: center;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      }
-
-      .project.landscape-layout {
-        max-width: none;
-        justify-self: stretch;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      }
-
       .project-video.loading::after {
         content: "Loading...";
         position: absolute;
@@ -475,7 +415,6 @@
         display: none !important;
       }
 
-      /* Portrait Mode - Fluid Aspect Ratio */
       .project-video.portrait-mode {
         background: #000;
         border-radius: 8px;
@@ -484,7 +423,6 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        /* Fluid aspect ratio */
         aspect-ratio: 9/16;
       }
 
@@ -496,11 +434,9 @@
         border-radius: 8px;
       }
 
-      /* Landscape Mode - Fluid Aspect Ratio */
       .project-video.landscape-mode {
         background: #000;
         border-radius: 8px;
-        /* Fluid aspect ratio via CSS custom property */
         aspect-ratio: var(--video-aspect-ratio, 16/9);
         width: 100%;
       }
@@ -511,7 +447,6 @@
         border-radius: 8px;
       }
 
-      /* Square Mode - Fluid Aspect Ratio */
       .project-video.square-mode {
         background: #000;
         border-radius: 8px;
@@ -529,6 +464,19 @@
         border-radius: 8px;
         width: 100%;
         height: 100%;
+      }
+
+      .project.portrait-layout {
+        max-width: 400px;
+        justify-self: center;
+      }
+      .project.square-layout {
+        max-width: 400px;
+        justify-self: center;
+      }
+      .project.landscape-layout {
+        max-width: none;
+        justify-self: stretch;
       }
 
       .thumbnail-container {
@@ -551,10 +499,6 @@
         object-fit: contain;
       }
 
-      .project-video.playing video {
-        display: block;
-      }
-
       .project-info {
         padding: 1.5rem;
       }
@@ -563,17 +507,6 @@
         margin: 0 0 0.5rem 0;
         font-size: 1.3rem;
         color: var(--text-color);
-      }
-
-      .project-info .project-type {
-        color: var(--accent-color);
-        font-size: 0.9rem;
-        margin-bottom: 1rem;
-        font-weight: 600;
-        display: inline-block;
-        padding: 0.3rem 0.8rem;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 4px;
       }
 
       .project-info p {
@@ -661,25 +594,15 @@
         transform: translateY(-3px);
       }
 
-      /* ===================== */
-      /* MOBILE RESPONSIVE STYLES */
-      /* ===================== */
+      /* Mobile */
       @media (max-width: 768px) {
-        body {
-          font-size: 16px;
-          -webkit-text-size-adjust: 100%;
-        }
-
         .navbar {
           padding: 0.8rem 0;
           backdrop-filter: blur(10px);
         }
-
         .nav-container {
           padding: 0 1rem;
-          position: relative;
         }
-
         .nav-logo {
           font-size: 1.4rem;
           z-index: 1001;
@@ -706,31 +629,27 @@
         .nav-menu.active {
           right: 0;
         }
-
         .nav-menu li {
           width: 100%;
           border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
-
         .nav-menu li:last-child {
           border-bottom: none;
         }
 
         .nav-link {
-          display: block;
+          display: flex;
           padding: 1.2rem 0;
           font-size: 1.1rem;
           width: 100%;
           min-height: 44px;
-          display: flex;
           align-items: center;
         }
 
         .mobile-menu-toggle {
-          display: block;
+          display: flex;
           min-width: 44px;
           min-height: 44px;
-          display: flex;
           align-items: center;
           justify-content: center;
         }
@@ -738,7 +657,6 @@
         .mobile-menu-toggle.active {
           color: var(--accent-color);
         }
-
         .nav-overlay.active {
           display: block;
         }
@@ -746,26 +664,21 @@
         header {
           padding: 7rem 1.5rem 3rem;
           min-height: 70vh;
-          padding-left: 1.5rem;
           text-align: center;
           align-items: center;
         }
 
         header h1 {
           font-size: 2.8rem;
-          text-align: center;
           margin-bottom: 1rem;
           line-height: 1.2;
         }
-
         header p {
           font-size: 1.3rem;
-          text-align: center;
-          margin: 0 0 2rem 0;
+          margin: 0 0 2rem;
           max-width: 100%;
           line-height: 1.4;
         }
-
         .header-cta {
           width: 100%;
           display: flex;
@@ -775,7 +688,6 @@
         section {
           padding: 3rem 1rem;
         }
-
         section h2 {
           font-size: 2rem;
           margin-bottom: 2rem;
@@ -786,49 +698,34 @@
           grid-template-columns: 1fr;
           gap: 2rem;
         }
-
         .project {
           margin: 0 auto;
           max-width: 100%;
-          transform: translateZ(0);
         }
-
-        .project-video {
-          -webkit-tap-highlight-color: rgba(74, 134, 232, 0.3);
-        }
-
         .project-video.portrait-mode {
           max-width: 280px;
         }
-
         .project-video.square-mode {
           max-width: 300px;
         }
-
         .project-info {
           padding: 1.25rem;
         }
-
         .project-info h3 {
           font-size: 1.4rem;
           line-height: 1.3;
         }
-
         .project-info p {
           font-size: 1rem;
-          line-height: 1.5;
         }
 
         .skills-container {
           grid-template-columns: 1fr;
           gap: 1.5rem;
         }
-
         .skill-category {
           padding: 1.25rem;
-          transform: translateZ(0);
         }
-
         .skill-tag {
           padding: 0.7rem 1rem;
           font-size: 0.9rem;
@@ -840,30 +737,12 @@
 
         .video-container {
           max-width: 100%;
-          margin: 0 0 1.5rem 0;
-          transform: translateZ(0);
+          margin: 0 0 1.5rem;
         }
-
-        .video-container iframe {
-          max-width: 100%;
-        }
-
-        .video-placeholder {
-          font-size: 1rem;
-          padding: 1rem;
-          line-height: 1.4;
-        }
-
-        .project-filters {
-          gap: 0.75rem;
-          margin-bottom: 1.5rem;
-        }
-
         .filter-btn {
           padding: 0.8rem 1.2rem;
           font-size: 0.9rem;
           min-height: 44px;
-          min-width: 60px;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -883,47 +762,17 @@
         footer {
           padding: 2.5rem 1.5rem;
         }
-
-        .social-links {
-          gap: 1rem;
-        }
-
         .social-link {
           min-width: 50px;
           min-height: 50px;
-          font-size: 1.4rem;
           display: flex;
           align-items: center;
           justify-content: center;
-          padding: 0.5rem;
         }
-
-        #particle-canvas {
-          display: none !important;
-        }
-
         html,
         body {
           max-width: 100%;
           overflow-x: hidden;
-        }
-
-        @supports (padding: max(0px)) {
-          .navbar,
-          header,
-          section,
-          footer {
-            padding-left: max(1rem, env(safe-area-inset-left));
-            padding-right: max(1rem, env(safe-area-inset-right));
-          }
-
-          header {
-            padding-top: max(7rem, env(safe-area-inset-top));
-          }
-
-          .navbar {
-            padding-top: max(0.8rem, env(safe-area-inset-top));
-          }
         }
       }
 
@@ -931,23 +780,18 @@
         header h1 {
           font-size: 2.2rem;
         }
-
         header p {
           font-size: 1.1rem;
         }
-
         section h2 {
           font-size: 1.8rem;
         }
-
         .project-video.portrait-mode {
           max-width: 250px;
         }
-
         .project-video.square-mode {
           max-width: 250px;
         }
-
         .nav-menu {
           width: 85%;
         }
@@ -955,8 +799,6 @@
     </style>
   </head>
   <body>
-    <div id="particle-canvas"></div>
-
     <nav class="navbar">
       <div class="nav-container">
         <a href="#" class="nav-logo">Musa Soko</a>
@@ -1034,11 +876,9 @@
 
     <section id="projects">
       <h2>Selected Projects</h2>
-
       <div class="project-filters">
         <button class="filter-btn active" data-filter="all">All</button>
       </div>
-
       <div class="projects">
         <div
           class="project"
@@ -1227,7 +1067,6 @@
             <span class="skill-tag">Audio Editing</span>
           </div>
         </div>
-
         <div class="skill-category">
           <h3>Motion Graphics</h3>
           <div class="skill-list">
@@ -1237,7 +1076,6 @@
             <span class="skill-tag">3D Animation</span>
           </div>
         </div>
-
         <div class="skill-category">
           <h3>Other</h3>
           <div class="skill-list">
@@ -1317,16 +1155,13 @@
     </footer>
 
     <script>
-      // Mobile menu functionality
       function toggleMobileMenu() {
         const menu = document.querySelector(".nav-menu");
         const overlay = document.querySelector(".nav-overlay");
         const toggle = document.querySelector(".mobile-menu-toggle");
-
         menu.classList.toggle("active");
         overlay.classList.toggle("active");
         toggle.classList.toggle("active");
-
         if (window.innerWidth <= 768) {
           document.body.style.overflow = menu.classList.contains("active")
             ? "hidden"
@@ -1338,77 +1173,53 @@
         const menu = document.querySelector(".nav-menu");
         const overlay = document.querySelector(".nav-overlay");
         const toggle = document.querySelector(".mobile-menu-toggle");
-
         menu.classList.remove("active");
         overlay.classList.remove("active");
         toggle.classList.remove("active");
-
-        if (window.innerWidth <= 768) {
-          document.body.style.overflow = "";
-        }
+        if (window.innerWidth <= 768) document.body.style.overflow = "";
       }
 
       document
         .querySelector(".nav-overlay")
         .addEventListener("click", closeMobileMenu);
-
       document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape" && window.innerWidth <= 768) {
-          closeMobileMenu();
-        }
+        if (e.key === "Escape") closeMobileMenu();
       });
-
       document.addEventListener("touchstart", function () {}, {
         passive: true,
       });
 
-      // ============================================= //
-      // ADVANCED VIDEO SYSTEM - FIXED VERSION //
-      // ============================================= //
-
       document.addEventListener("DOMContentLoaded", function () {
-        // Project filtering
-        const filterButtons = document.querySelectorAll(".filter-btn");
-        const projects = document.querySelectorAll(".project");
-
-        filterButtons.forEach((button) => {
+        // Filtering
+        document.querySelectorAll(".filter-btn").forEach((button) => {
           button.addEventListener("click", () => {
-            filterButtons.forEach((btn) => btn.classList.remove("active"));
+            document
+              .querySelectorAll(".filter-btn")
+              .forEach((btn) => btn.classList.remove("active"));
             button.classList.add("active");
-
             const filter = button.getAttribute("data-filter");
-
-            projects.forEach((project) => {
-              const category = project.getAttribute("data-category");
-              if (filter === "all" || filter === category) {
-                project.style.display = "block";
-              } else {
-                project.style.display = "none";
-              }
+            document.querySelectorAll(".project").forEach((project) => {
+              project.style.display =
+                filter === "all" ||
+                filter === project.getAttribute("data-category")
+                  ? "block"
+                  : "none";
             });
           });
         });
 
-        // ============================================= //
-        // VIDEO CLICK HANDLER //
-        // ============================================= //
-        const videoContainers = document.querySelectorAll(".project-video");
-
-        videoContainers.forEach((container) => {
+        // Video click handler
+        document.querySelectorAll(".project-video").forEach((container) => {
           container.addEventListener("click", async function (e) {
             e.preventDefault();
-
             if (
               this.classList.contains("playing") ||
               this.classList.contains("loading")
             )
               return;
-
             const videoUrl = this.getAttribute("data-video");
             if (!videoUrl) return;
-
             this.classList.add("loading");
-
             try {
               if (videoUrl.includes("vimeo.com")) {
                 await handleVimeoVideo(this, videoUrl);
@@ -1416,279 +1227,95 @@
                 await handleDirectVideo(this, videoUrl);
               }
             } catch (error) {
-              console.error("Video loading failed:", error);
               this.classList.remove("loading");
-              // Fallback to intelligent default
               applyFluidLayout(this, 16 / 9);
             }
           });
         });
 
-        // ============================================= //
-        // VIMEO VIDEO HANDLER - FIXED CORS ISSUE //
-        // ============================================= //
         async function handleVimeoVideo(container, videoUrl) {
-          return new Promise((resolve, reject) => {
+          return new Promise((resolve) => {
             const iframe = document.createElement("iframe");
-
-            // Extract video ID
             const videoId = videoUrl.split("/").pop().split("?")[0];
-            const embedUrl = `https://player.vimeo.com/video/${videoId}?autoplay=1&loop=1&title=0&byline=0&portrait=0`;
-
-            iframe.src = embedUrl;
+            iframe.src = `https://player.vimeo.com/video/${videoId}?autoplay=1&loop=1&title=0&byline=0&portrait=0`;
             iframe.setAttribute("frameborder", "0");
             iframe.setAttribute(
               "allow",
-              "autoplay; fullscreen; picture-in-picture"
+              "autoplay; fullscreen; picture-in-picture",
             );
             iframe.setAttribute("allowfullscreen", "");
-            iframe.style.width = "100%";
-            iframe.style.height = "100%";
-            iframe.style.border = "none";
+            iframe.style.cssText = "width:100%;height:100%;border:none;";
 
-            // Use Vimeo's oEmbed endpoint (CORS-friendly)
             fetch(
-              `https://vimeo.com/api/oembed.json?url=${encodeURIComponent(
-                videoUrl
-              )}`
+              `https://vimeo.com/api/oembed.json?url=${encodeURIComponent(videoUrl)}`,
             )
-              .then((response) => {
-                if (!response.ok) throw new Error("Vimeo oEmbed failed");
-                return response.json();
+              .then((r) => {
+                if (!r.ok) throw new Error();
+                return r.json();
               })
               .then((data) => {
-                // Calculate aspect ratio from oEmbed response
-                const aspectRatio = data.width / data.height;
-
                 setupVideoContainer(container, iframe);
-                applyFluidLayout(container, aspectRatio);
-                setupResizeObserver(container, aspectRatio);
+                applyFluidLayout(container, data.width / data.height);
                 resolve();
               })
-              .catch((error) => {
-                console.warn("Using fallback aspect ratio detection:", error);
-                // Fallback: Use iframe load event
-                iframe.onload = function () {
-                  // Use intelligent guessing based on URL or default
-                  const fallbackAspect = guessAspectRatioFromUrl(videoUrl);
-                  applyFluidLayout(container, fallbackAspect);
-                  setupResizeObserver(container, fallbackAspect);
+              .catch(() => {
+                iframe.onload = () => {
+                  applyFluidLayout(container, 16 / 9);
                   resolve();
                 };
-
                 setupVideoContainer(container, iframe);
               });
           });
         }
 
-        // ============================================= //
-        // DIRECT VIDEO HANDLER //
-        // ============================================= //
         async function handleDirectVideo(container, videoUrl) {
-          return new Promise((resolve, reject) => {
+          return new Promise((resolve) => {
             const video = document.createElement("video");
-
-            // Create temporary video to get metadata
-            const tempVideo = document.createElement("video");
-            tempVideo.src = videoUrl;
-
-            tempVideo.addEventListener("loadedmetadata", function () {
-              const aspectRatio = this.videoWidth / this.videoHeight;
-
-              // Create final video element
+            const tmp = document.createElement("video");
+            tmp.src = videoUrl;
+            const finish = (ratio) => {
               video.src = videoUrl;
               video.controls = true;
               video.autoplay = true;
               video.loop = true;
-              video.style.width = "100%";
-              video.style.height = "100%";
-
+              video.style.cssText = "width:100%;height:100%;";
               setupVideoContainer(container, video);
-              applyFluidLayout(container, aspectRatio);
-              setupResizeObserver(container, aspectRatio);
-
-              tempVideo.remove();
+              applyFluidLayout(container, ratio);
+              tmp.remove();
               resolve();
+            };
+            tmp.addEventListener("loadedmetadata", function () {
+              finish(this.videoWidth / this.videoHeight);
             });
-
-            tempVideo.addEventListener("error", function () {
-              console.warn("Using fallback for direct video");
-              // Fallback to default aspect ratio
-              const fallbackAspect = guessAspectRatioFromUrl(videoUrl);
-              video.src = videoUrl;
-              video.controls = true;
-              video.autoplay = true;
-              video.loop = true;
-              video.style.width = "100%";
-              video.style.height = "100%";
-
-              setupVideoContainer(container, video);
-              applyFluidLayout(container, fallbackAspect);
-              setupResizeObserver(container, fallbackAspect);
-
-              tempVideo.remove();
-              resolve();
-            });
-
-            // Start loading
-            tempVideo.load();
+            tmp.addEventListener("error", () => finish(16 / 9));
+            tmp.load();
           });
         }
 
-        // ============================================= //
-        // INTELLIGENT ASPECT RATIO GUESSING //
-        // ============================================= //
-        function guessAspectRatioFromUrl(url) {
-          // Check for common patterns in URLs
-          if (url.includes("square") || url.includes("1:1")) return 1;
-          if (
-            url.includes("portrait") ||
-            url.includes("9:16") ||
-            url.includes("4:5")
-          )
-            return 9 / 16;
-          if (url.includes("instagram") || url.includes("tiktok"))
-            return 9 / 16;
-          if (url.includes("youtube") || url.includes("16:9")) return 16 / 9;
-
-          // Default to landscape
-          return 16 / 9;
-        }
-
-        // ============================================= //
-        // YOUTUBE-STYLE FLUID LAYOUT SYSTEM - FIXED //
-        // ============================================= //
         function applyFluidLayout(container, aspectRatio) {
-          // Convert string aspect ratios to numbers
-          if (typeof aspectRatio === "string") {
-            switch (aspectRatio) {
-              case "portrait":
-                aspectRatio = 9 / 16;
-                break;
-              case "square":
-                aspectRatio = 1;
-                break;
-              case "landscape":
-                aspectRatio = 16 / 9;
-                break;
-              default:
-                aspectRatio = 16 / 9;
-            }
-          }
-
-          // Remove all previous layout classes
           container.classList.remove(
             "portrait-mode",
             "landscape-mode",
-            "square-mode"
+            "square-mode",
           );
-
           const project = container.closest(".project");
           project.classList.remove(
             "portrait-layout",
             "landscape-layout",
-            "square-layout"
+            "square-layout",
           );
-
-          // Determine orientation based on aspect ratio
-          let orientation;
-          if (aspectRatio < 0.85) {
-            orientation = "portrait";
-          } else if (aspectRatio > 1.3) {
-            orientation = "landscape";
-          } else {
-            orientation = "square";
-          }
-
-          // Apply CSS classes (NO inline styles!)
+          const orientation =
+            aspectRatio < 0.85
+              ? "portrait"
+              : aspectRatio > 1.3
+                ? "landscape"
+                : "square";
           container.classList.add(`${orientation}-mode`);
           project.classList.add(`${orientation}-layout`);
-
-          // Store the aspect ratio in dataset (not in style!)
           container.dataset.aspectRatio = aspectRatio;
-
-          // Apply aspect ratio via CSS custom property for landscape mode
-          if (orientation === "landscape") {
+          if (orientation === "landscape")
             container.style.setProperty("--video-aspect-ratio", aspectRatio);
-          } else {
-            container.style.removeProperty("--video-aspect-ratio");
-          }
-
-          // Apply smooth transition
-          container.style.transition = "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)";
-          project.style.transition = "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)";
-
-          // Update mobile max-width
-          updateMobileMaxWidth(container, orientation);
-        }
-
-        function updateMobileMaxWidth(container, orientation) {
-          const isMobile = window.innerWidth <= 768;
-
-          if (!isMobile) {
-            container.style.maxWidth = "";
-            return;
-          }
-
-          if (orientation === "portrait") {
-            container.style.maxWidth = "280px";
-          } else if (orientation === "square") {
-            container.style.maxWidth = "300px";
-          } else {
-            container.style.maxWidth = "";
-          }
-        }
-
-        // ============================================= //
-        // RESIZE OBSERVER - FIXED VERSION //
-        // ============================================= //
-        const resizeObservers = new Map(); // Store observers per container
-
-        function setupResizeObserver(container, aspectRatio) {
-          // Clean up any existing observer
-          if (resizeObservers.has(container)) {
-            resizeObservers.get(container).disconnect();
-            resizeObservers.delete(container);
-          }
-
-          // Create new observer with debouncing
-          let resizeTimeout;
-          const observer = new ResizeObserver((entries) => {
-            for (const entry of entries) {
-              clearTimeout(resizeTimeout);
-              resizeTimeout = setTimeout(() => {
-                handleContainerResize(container, entry);
-              }, 50); // Debounce to 50ms
-            }
-          });
-
-          // Store observer reference
-          resizeObservers.set(container, observer);
-
-          // Start observing
-          observer.observe(container);
-        }
-
-        function handleContainerResize(container, entry) {
-          if (!container.classList.contains("playing")) return;
-
-          const aspectRatio = parseFloat(container.dataset.aspectRatio);
-          if (!aspectRatio || isNaN(aspectRatio)) return;
-
-          // Get current orientation from class
-          const isPortrait = container.classList.contains("portrait-mode");
-          const isSquare = container.classList.contains("square-mode");
-          const isLandscape = container.classList.contains("landscape-mode");
-
-          // Update mobile max-width if needed
-          if (isPortrait || isSquare) {
-            updateMobileMaxWidth(container, isPortrait ? "portrait" : "square");
-          }
-
-          // CSS handles the aspect ratio, we just need to ensure it's set
-          if (isLandscape) {
-            container.style.setProperty("--video-aspect-ratio", aspectRatio);
-          }
+          else container.style.removeProperty("--video-aspect-ratio");
         }
 
         function setupVideoContainer(container, videoElement) {
@@ -1697,632 +1324,7 @@
           container.innerHTML = "";
           container.appendChild(videoElement);
         }
-
-        // ============================================= //
-        // WINDOW RESIZE HANDLER - SIMPLIFIED //
-        // ============================================= //
-        let windowResizeTimeout;
-        window.addEventListener("resize", function () {
-          clearTimeout(windowResizeTimeout);
-          windowResizeTimeout = setTimeout(function () {
-            const playingVideos = document.querySelectorAll(
-              ".project-video.playing"
-            );
-            playingVideos.forEach((container) => {
-              const aspectRatio = parseFloat(container.dataset.aspectRatio);
-              if (aspectRatio && !isNaN(aspectRatio)) {
-                // Get current orientation
-                const isPortrait =
-                  container.classList.contains("portrait-mode");
-                const isSquare = container.classList.contains("square-mode");
-                const orientation = isPortrait
-                  ? "portrait"
-                  : isSquare
-                  ? "square"
-                  : "landscape";
-
-                // Update mobile max-width
-                updateMobileMaxWidth(container, orientation);
-              }
-            });
-          }, 100);
-        });
-
-        // Clean up observers when page unloads
-        window.addEventListener("beforeunload", () => {
-          resizeObservers.forEach((observer, container) => {
-            observer.disconnect();
-          });
-          resizeObservers.clear();
-        });
-      });
-
-      // ============================================= //
-      // PARTICLE DENSITY BUFFER SYSTEM - FIXED RESIZE ISSUE //
-      // ============================================= //
-      let particles = [];
-      let containers = [];
-      let hoveredContainer = null;
-
-      // New constants for density buffer system
-      const DENSITY = 1000;
-      const DENSITY_BUFFER_FACTOR = 2.5; // 50% more particles than needed
-      const VIEWPORT_MARGIN = 200; // How far outside viewport particles can exist
-      const DISPLAY_MARGIN = VIEWPORT_MARGIN * 2; // Only render particles within this margin
-      const CONFETTI_SCALE = 0.28;
-      const PARTICLE_SPEED = 0.1;
-
-      const NEUTRAL_COLOR = [150, 150, 150, 170];
-      const ATTRACT_COLOR = [255, 255, 255, 240];
-      const STICKY_COLOR = [180, 220, 255, 255];
-      const EMITTED_COLOR = [255, 215, 0, 230];
-
-      let colors = {};
-      let lastEmissionTime = 0;
-      let targetParticleCount = 0;
-
-      const settings = {
-        attractRadius: 96.0,
-        attractStrength: 1.2,
-        stickinessDistance: 1.6,
-        stickinessStrength: 0.6,
-        emissionRate: 4.0,
-        particleSpeed: 0.2,
-      };
-
-      // Resize optimization variables
-      let resizeTimeout;
-      let isResizing = false;
-
-      function isMobileDevice() {
-        return window.innerWidth <= 768;
-      }
-
-      // ============================================= //
-      // ENHANCED PARTICLE CLASS WITH DENSITY BUFFER //
-      // ============================================= //
-      class Particle {
-        constructor(isEmitted = false) {
-          this.isEmitted = isEmitted;
-          this.reset();
-
-          // Initialize with random position (can be outside viewport)
-          if (!isEmitted) {
-            const margin = VIEWPORT_MARGIN;
-            this.x = random(-margin, width + margin);
-            this.y = random(-margin, height + margin);
-          }
-        }
-
-        reset() {
-          if (this.isEmitted) {
-            this.spawnAtEdge();
-            this.lifetime = 255;
-            this.color = colors.emitted;
-          } else {
-            // Allow particles to spawn outside viewport
-            const margin = VIEWPORT_MARGIN;
-            this.x = random(-margin, width + margin);
-            this.y = random(-margin, height + margin);
-
-            // Check if it's too close to containers only if within viewport
-            if (this.isWithinViewport() && this.isNearAnyContainer(80)) {
-              this.reset(); // Try again
-              return;
-            }
-            this.color = colors.neutral;
-          }
-
-          this.size = random(4, 11) * CONFETTI_SCALE;
-
-          let angle = random(TWO_PI);
-          this.baseSpeed = PARTICLE_SPEED * random(0.7, 1.2);
-          this.baseDx = cos(angle) * this.baseSpeed;
-          this.baseDy = sin(angle) * this.baseSpeed;
-          this.dx = this.baseDx;
-          this.dy = this.baseDy;
-
-          this.angle = random(TWO_PI);
-          this.rotSpeed = random(-0.03, 0.03);
-
-          this.isAttracted = false;
-          this.isStuck = false;
-          this.stuckTimer = 0;
-          this.floatOffsetX = random(1000);
-          this.floatOffsetY = random(1000);
-          this.targetContainer = null;
-        }
-
-        // New helper method
-        isWithinViewport() {
-          return (
-            this.x >= 0 && this.x <= width && this.y >= 0 && this.y <= height
-          );
-        }
-
-        spawnAtEdge() {
-          if (!hoveredContainer) return;
-
-          const container = hoveredContainer;
-          const left = container.x - container.w / 2;
-          const right = container.x + container.w / 2;
-          const top = container.y - container.h / 2;
-          const bottom = container.y + container.h / 2;
-
-          const edge = floor(random(4));
-          switch (edge) {
-            case 0:
-              this.x = random(left, right);
-              this.y = top;
-              break;
-            case 1:
-              this.x = right;
-              this.y = random(top, bottom);
-              break;
-            case 2:
-              this.x = random(left, right);
-              this.y = bottom;
-              break;
-            case 3:
-              this.x = left;
-              this.y = random(top, bottom);
-              break;
-          }
-
-          const pushAngle = [PI, 0, -PI / 2, PI / 2][edge];
-          const pushStrength = random(0.5, 1.5);
-          this.dx += cos(pushAngle) * pushStrength;
-          this.dy += sin(pushAngle) * pushStrength;
-        }
-
-        isNearAnyContainer(distance) {
-          return containers.some(
-            (container) =>
-              dist(this.x, this.y, container.x, container.y) < distance
-          );
-        }
-
-        isInAttractionZone(container) {
-          const margin = settings.attractRadius;
-          const left = container.x - container.w / 2 - margin;
-          const right = container.x + container.w / 2 + margin;
-          const top = container.y - container.h / 2 - margin;
-          const bottom = container.y + container.h / 2 + margin;
-
-          return (
-            this.x > left && this.x < right && this.y > top && this.y < bottom
-          );
-        }
-
-        isCloseToEdge(container) {
-          const edgeDistance = map(
-            settings.stickinessDistance,
-            0.1,
-            2.0,
-            40,
-            5
-          );
-          const left = container.x - container.w / 2;
-          const right = container.x + container.w / 2;
-          const top = container.y - container.h / 2;
-          const bottom = container.y + container.h / 2;
-
-          return (
-            (this.x > left - edgeDistance && this.x < left + edgeDistance) ||
-            (this.x > right - edgeDistance && this.x < right + edgeDistance) ||
-            (this.y > top - edgeDistance && this.y < top + edgeDistance) ||
-            (this.y > bottom - edgeDistance && this.y < bottom + edgeDistance)
-          );
-        }
-
-        getClosestEdgePoint(container) {
-          const left = container.x - container.w / 2;
-          const right = container.x + container.w / 2;
-          const top = container.y - container.h / 2;
-          const bottom = container.y + container.h / 2;
-
-          if (
-            this.x >= left &&
-            this.x <= right &&
-            this.y >= top &&
-            this.y <= bottom
-          ) {
-            const distToLeft = this.x - left;
-            const distToRight = right - this.x;
-            const distToTop = this.y - top;
-            const distToBottom = bottom - this.y;
-            const minDist = min(
-              distToLeft,
-              distToRight,
-              distToTop,
-              distToBottom
-            );
-
-            if (minDist === distToLeft) return { x: left, y: this.y };
-            else if (minDist === distToRight) return { x: right, y: this.y };
-            else if (minDist === distToTop) return { x: this.x, y: top };
-            else return { x: this.x, y: bottom };
-          }
-
-          const nearestX = constrain(this.x, left, right);
-          const nearestY = constrain(this.y, top, bottom);
-          const distToLeft = abs(this.x - left);
-          const distToRight = abs(this.x - right);
-          const distToTop = abs(this.y - top);
-          const distToBottom = abs(this.y - bottom);
-          const minDist = min(distToLeft, distToRight, distToTop, distToBottom);
-
-          if (minDist === distToLeft) return { x: left, y: nearestY };
-          else if (minDist === distToRight) return { x: right, y: nearestY };
-          else if (minDist === distToTop) return { x: nearestX, y: top };
-          else return { x: nearestX, y: bottom };
-        }
-
-        update() {
-          this.isAttracted = false;
-          this.isStuck = false;
-          this.targetContainer = null;
-
-          if (hoveredContainer && this.isInAttractionZone(hoveredContainer)) {
-            this.targetContainer = hoveredContainer;
-            this.applyEdgeAttraction();
-            this.isAttracted = true;
-
-            if (this.isCloseToEdge(hoveredContainer)) {
-              this.applyStickiness();
-              this.isStuck = true;
-              this.stuckTimer++;
-            } else {
-              this.stuckTimer = max(0, this.stuckTimer - 1);
-            }
-          } else {
-            this.returnToNatural();
-            this.stuckTimer = max(0, this.stuckTimer - 2);
-
-            if (this.isEmitted) {
-              this.lifetime -= 2;
-              if (this.lifetime <= 0) this.lifetime = 0;
-            }
-          }
-
-          this.x += this.dx;
-          this.y += this.dy;
-          this.angle += this.rotSpeed;
-
-          // Wrap around screen edges with buffer margin
-          if (!this.isEmitted) {
-            const margin = VIEWPORT_MARGIN;
-            if (this.x < -margin) this.x = width + margin;
-            if (this.x > width + margin) this.x = -margin;
-            if (this.y < -margin) this.y = height + margin;
-            if (this.y > height + margin) this.y = -margin;
-          }
-        }
-
-        applyEdgeAttraction() {
-          if (!this.targetContainer) return;
-
-          const attractStrength = settings.attractStrength * 0.08;
-          const edgePoint = this.getClosestEdgePoint(this.targetContainer);
-          const angleToEdge = atan2(edgePoint.y - this.y, edgePoint.x - this.x);
-
-          this.dx += cos(angleToEdge) * attractStrength;
-          this.dy += sin(angleToEdge) * attractStrength;
-          this.dx = constrain(this.dx, -8, 8);
-          this.dy = constrain(this.dy, -8, 8);
-
-          if (this.isEmitted) {
-            const brighten = map(settings.attractStrength, 0.3, 2.5, 0, 0.3);
-            this.color = lerpColor(this.color, color(255, 255, 255), brighten);
-          } else {
-            this.color = lerpColor(this.color, colors.attract, 0.1);
-          }
-        }
-
-        applyStickiness() {
-          if (!this.targetContainer) return;
-
-          const stickinessStrength = settings.stickinessStrength;
-          const edgePoint = this.getClosestEdgePoint(this.targetContainer);
-          const stickStrength = stickinessStrength * 0.15;
-          const angleToEdge = atan2(edgePoint.y - this.y, edgePoint.x - this.x);
-
-          this.dx += cos(angleToEdge) * stickStrength;
-          this.dy += sin(angleToEdge) * stickStrength;
-
-          const floatAmount = map(stickinessStrength, 0.1, 1.5, 0.5, 0.1);
-          const floatX =
-            sin(millis() * 0.002 + this.floatOffsetX) * floatAmount;
-          const floatY =
-            cos(millis() * 0.002 + this.floatOffsetY) * floatAmount;
-
-          this.dx += floatX;
-          this.dy += floatY;
-
-          const damping = map(stickinessStrength, 0.1, 1.5, 0.92, 0.8);
-          this.dx *= damping;
-          this.dy *= damping;
-
-          const stickIntensity = map(this.stuckTimer, 0, 10, 0, 1);
-
-          if (this.isEmitted) {
-            this.color = lerpColor(
-              this.color,
-              colors.sticky,
-              stickIntensity * 0.5
-            );
-          } else {
-            this.color = lerpColor(this.color, colors.sticky, stickIntensity);
-          }
-        }
-
-        returnToNatural() {
-          this.dx = lerp(this.dx, this.baseDx, 0.06);
-          this.dy = lerp(this.dy, this.baseDy, 0.06);
-
-          if (!this.isEmitted) {
-            this.color = lerpColor(this.color, colors.neutral, 0.08);
-          }
-        }
-
-        display() {
-          push();
-          translate(this.x, this.y);
-          rotate(this.angle);
-
-          if (this.isEmitted) {
-            fill(
-              red(this.color),
-              green(this.color),
-              blue(this.color),
-              this.lifetime
-            );
-          } else {
-            fill(this.color);
-          }
-
-          noStroke();
-          rectMode(CENTER);
-          rect(0, 0, this.size, this.size * 0.6, 2);
-          pop();
-        }
-      }
-
-      // ============================================= //
-      // PARTICLE DENSITY CALCULATION //
-      // ============================================= //
-      function calculateOptimalParticleCount() {
-        const baseDensity = DENSITY;
-        const viewportArea = width * height;
-        const baseArea = 1920 * 1080; // Reference area (typical screen)
-
-        // Scale by area and add buffer
-        const scaledCount = Math.floor(baseDensity * (viewportArea / baseArea));
-        return Math.floor(scaledCount * DENSITY_BUFFER_FACTOR);
-      }
-
-      // ============================================= //
-      // SETUP WITH DENSITY BUFFER //
-      // ============================================= //
-      function setup() {
-        if (isMobileDevice()) {
-          noCanvas();
-          return;
-        }
-
-        const canvas = createCanvas(windowWidth, windowHeight);
-        canvas.parent("particle-canvas");
-
-        colors.neutral = color(...NEUTRAL_COLOR);
-        colors.attract = color(...ATTRACT_COLOR);
-        colors.sticky = color(...STICKY_COLOR);
-        colors.emitted = color(...EMITTED_COLOR);
-
-        initializeContainers();
-
-        // Calculate target particle count with buffer
-        targetParticleCount = calculateOptimalParticleCount();
-
-        particles = [];
-        for (let i = 0; i < targetParticleCount; i++) {
-          particles.push(new Particle(false));
-        }
-
-        setupHoverDetection();
-      }
-
-      function initializeContainers() {
-        if (isMobileDevice()) return;
-
-        const projectContainers = [
-          "project-container-1",
-          "project-container-2",
-          "project-container-3",
-          "project-container-4",
-          "project-container-5",
-          "project-container-6",
-          "project-container-7",
-        ];
-
-        projectContainers.forEach((id) => {
-          const element = document.getElementById(id);
-          if (element) {
-            const rect = element.getBoundingClientRect();
-            containers.push({
-              element: element,
-              x: rect.left + rect.width / 2,
-              y: rect.top + rect.height / 2,
-              w: rect.width,
-              h: rect.height,
-              id: id,
-            });
-          }
-        });
-      }
-
-      function setupHoverDetection() {
-        if (isMobileDevice()) return;
-
-        containers.forEach((container) => {
-          container.element.addEventListener("mouseenter", () => {
-            hoveredContainer = container;
-          });
-
-          container.element.addEventListener("mouseleave", () => {
-            if (hoveredContainer && hoveredContainer.id === container.id) {
-              hoveredContainer = null;
-            }
-          });
-        });
-      }
-
-      // ============================================= //
-      // OPTIMIZED DRAW WITH DENSITY BUFFER //
-      // ============================================= //
-      function draw() {
-        if (isMobileDevice()) return;
-
-        background(10, 10, 10, 80);
-
-        updateContainerPositions();
-
-        if (hoveredContainer) {
-          const currentTime = millis();
-          if (
-            currentTime - lastEmissionTime >
-            1000 / (settings.emissionRate + 1)
-          ) {
-            for (let i = 0; i < settings.emissionRate; i++) {
-              particles.push(new Particle(true));
-            }
-            lastEmissionTime = currentTime;
-          }
-        }
-
-        // Update and display only particles that are within or near viewport
-        for (let i = particles.length - 1; i >= 0; i--) {
-          const p = particles[i];
-
-          if (p.isEmitted && p.lifetime <= 0) {
-            particles.splice(i, 1);
-            continue;
-          }
-
-          p.update();
-
-          // Only draw particles that are within or near the viewport
-          if (
-            p.x > -DISPLAY_MARGIN &&
-            p.x < width + DISPLAY_MARGIN &&
-            p.y > -DISPLAY_MARGIN &&
-            p.y < height + DISPLAY_MARGIN
-          ) {
-            p.display();
-          }
-        }
-      }
-
-      function updateContainerPositions() {
-        if (isMobileDevice()) return;
-
-        containers.forEach((container) => {
-          const rect = container.element.getBoundingClientRect();
-          container.x = rect.left + rect.width / 2;
-          container.y = rect.top + rect.height / 2;
-          container.w = rect.width;
-          container.h = rect.height;
-        });
-      }
-
-      // ============================================= //
-      // OPTIMIZED WINDOW RESIZE WITH DENSITY BUFFER //
-      // ============================================= //
-      function windowResized() {
-        if (isMobileDevice()) return;
-
-        const oldWidth = width;
-        const oldHeight = height;
-
-        resizeCanvas(windowWidth, windowHeight);
-
-        // Calculate new optimal particle count
-        const newTargetCount = calculateOptimalParticleCount();
-
-        // Add or remove particles as needed
-        if (newTargetCount > particles.length) {
-          const particlesToAdd = newTargetCount - particles.length;
-          for (let i = 0; i < particlesToAdd; i++) {
-            particles.push(new Particle(false));
-          }
-        } else if (newTargetCount < particles.length) {
-          // Remove non-emitted particles (keep emitted ones for visual continuity)
-          const particlesToRemove = particles.length - newTargetCount;
-          for (
-            let i = particles.length - 1;
-            i >= 0 && particlesToRemove > 0;
-            i--
-          ) {
-            if (!particles[i].isEmitted) {
-              particles.splice(i, 1);
-              particlesToRemove--;
-            }
-          }
-        }
-
-        // Update target count
-        targetParticleCount = newTargetCount;
-
-        // Immediately reposition all particles proportionally
-        const scaleX = width / oldWidth;
-        const scaleY = height / oldHeight;
-
-        for (let p of particles) {
-          // Scale particle positions
-          p.x *= scaleX;
-          p.y *= scaleY;
-
-          // Adjust base speeds for new dimensions
-          p.baseDx *= scaleX;
-          p.baseDy *= scaleY;
-        }
-
-        // Force immediate redraw
-        redraw();
-      }
-
-      // ============================================= //
-      // ADDITIONAL OPTIMIZATION: RESIZE DEBOUNCER //
-      // ============================================= //
-      window.addEventListener("resize", function () {
-        if (isMobileDevice()) return;
-
-        clearTimeout(resizeTimeout);
-
-        if (!isResizing) {
-          // Optionally show a subtle visual indicator
-          const particleCanvas = document.querySelector(
-            "#particle-canvas canvas"
-          );
-          if (particleCanvas) {
-            particleCanvas.style.opacity = "0.9";
-          }
-          isResizing = true;
-        }
-
-        resizeTimeout = setTimeout(function () {
-          windowResized(); // Call our p5.js resize function
-          isResizing = false;
-
-          // Restore opacity
-          const particleCanvas = document.querySelector(
-            "#particle-canvas canvas"
-          );
-          if (particleCanvas) {
-            particleCanvas.style.opacity = "1";
-          }
-        }, 50); // 50ms debounce - optimal for performance
       });
     </script>
   </body>
 </html>
-[file content end]
