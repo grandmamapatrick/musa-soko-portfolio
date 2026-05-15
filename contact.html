@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Musa Soko · Contact</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=DM+Serif+Display:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0092c9;
+        --secondary: #f0d4a8;
+        --accent: #f69223;
+        --red: #e24632;
+        --ink: #0d1f26;
+        --success: #a8f0b4;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        border-radius: 0 !important;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--bg);
+        color: #000;
+        line-height: 1.4;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9999;
+        opacity: 0.04;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      }
+
+      nav {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 23px 72px;
+        background: rgba(0, 146, 201, 0.9);
+        backdrop-filter: blur(12px);
+        z-index: 999;
+      }
+
+      nav::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 87%;
+        height: 2px;
+        background-color: #000;
+      }
+
+      .logo {
+        font-size: 19px;
+        font-weight: 900;
+        color: #000;
+        text-decoration: none;
+        letter-spacing: -0.02em;
+      }
+      .nav-links {
+        display: flex;
+        gap: 40px;
+      }
+      .nav-links a {
+        font-size: 13px;
+        font-weight: 700;
+        color: #000;
+        text-decoration: none;
+        text-transform: lowercase;
+        opacity: 0.75;
+      }
+
+      main {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        min-height: 100vh;
+        padding-top: 80px;
+      }
+
+      .content-side {
+        padding: 80px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        position: relative;
+      }
+
+      .section-num {
+        font-family: "Inter", sans-serif;
+        font-weight: 900;
+        font-size: 18px;
+        margin-bottom: 24px;
+        letter-spacing: 0.1em;
+      }
+
+      h1 {
+        font-size: clamp(40px, 6vw, 72px);
+        font-weight: 800;
+        letter-spacing: -0.04em;
+        line-height: 1.1;
+        margin-bottom: 20px;
+      }
+
+      .hl-wanna {
+        color: var(--secondary);
+      }
+      .hl-together {
+        color: var(--accent);
+      }
+
+      .signal-area {
+        position: absolute;
+        bottom: 60px;
+        left: 80px;
+        display: flex;
+        align-items: flex-end;
+        gap: 12px;
+        text-decoration: none;
+        color: inherit;
+        z-index: 10;
+        height: 30px;
+        cursor: pointer;
+      }
+
+      .peak-container {
+        display: flex;
+        align-items: flex-end;
+        gap: 3px;
+        height: 20px;
+        margin-bottom: 2px;
+      }
+
+      .peak-bar {
+        width: 4px;
+        height: 4px;
+        background: #000;
+        transition:
+          height 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+          background 0.2s;
+      }
+
+      .peak-bar.active {
+        background: var(--accent);
+      }
+
+      .signal-label {
+        font-size: 10px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        opacity: 0.5;
+        line-height: 1;
+      }
+
+      .waving {
+        opacity: 1 !important;
+        color: var(--accent);
+      }
+      .waving span {
+        display: inline-block;
+        animation: wave-text 1.2s ease-in-out infinite;
+      }
+      @keyframes wave-text {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-5px);
+        }
+      }
+
+      .form-side {
+        padding: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-image: radial-gradient(
+          rgba(0, 0, 0, 0.1) 1.5px,
+          transparent 0
+        );
+        background-size: 40px 40px;
+      }
+
+      #contactForm {
+        width: 100%;
+        max-width: 480px;
+      }
+      .input-group {
+        margin-bottom: 24px;
+      }
+      .input-group label {
+        display: block;
+        font-size: 11px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 8px;
+      }
+
+      .input-group input,
+      .input-group textarea {
+        width: 100%;
+        background: var(--secondary);
+        border: 2px solid #000;
+        padding: 18px;
+        font-family: "Inter", sans-serif;
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--ink);
+      }
+
+      .input-group input:focus,
+      .input-group textarea:focus {
+        outline: none;
+        background: #fff;
+      }
+
+      button {
+        width: 100%;
+        background: #f69223;
+        color: #000000;
+        border: 2px solid #000;
+        padding: 20px;
+        font-size: 14px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        transition:
+          background 0.3s,
+          color 0.3s;
+      }
+
+      button:hover:not(:disabled) {
+        background: var(--red);
+        color: #000;
+      }
+
+      button:disabled {
+        cursor: wait;
+      }
+
+      button.encoding {
+        background: var(--ink);
+        color: #fff;
+      }
+
+      button.success {
+        background: var(--success);
+        color: var(--ink);
+        border-color: var(--ink);
+        cursor: default;
+      }
+
+      button.error {
+        background: var(--red);
+        color: #fff;
+        border-color: #000;
+      }
+
+      .btn-progress {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.15);
+        width: 0%;
+        transition: width 0.1s linear;
+      }
+
+      @media (max-width: 900px) {
+        main {
+          grid-template-columns: 1fr;
+        }
+        .content-side {
+          padding: 120px 40px 100px;
+        }
+        .form-side {
+          padding: 60px 40px;
+        }
+        .signal-area {
+          bottom: 40px;
+          left: 40px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="index.html" class="logo">Musa Soko</a>
+      <div class="nav-links">
+        <a href="index.html">Work</a>
+        <a href="#" class="active">Contact</a>
+      </div>
+    </nav>
+
+    <main>
+      <section class="content-side">
+        <span class="section-num">04</span>
+        <h1>
+          <span class="hl-wanna">wanna work</span><br /><span
+            class="hl-together"
+            >together?</span
+          >
+        </h1>
+        <p style="font-size: 18px; font-weight: 500; opacity: 0.6">
+          let's make something memorable.
+        </p>
+
+        <a href="index.html" class="signal-area">
+          <div class="peak-container">
+            <div class="peak-bar" id="bar1"></div>
+            <div class="peak-bar" id="bar2"></div>
+            <div class="peak-bar" id="bar3"></div>
+          </div>
+          <span class="signal-label" id="signalLabel">Input Signal</span>
+        </a>
+      </section>
+
+      <section class="form-side">
+        <form
+          id="contactForm"
+          action="https://api.web3forms.com/submit"
+          method="POST"
+        >
+          <input
+            type="hidden"
+            name="access_key"
+            value="db0c33f1-c6ab-4902-a9ee-327ea04f3472"
+          />
+          <input
+            type="hidden"
+            name="subject"
+            id="subjectField"
+            value="New enquiry from your portfolio"
+          />
+          <input type="hidden" name="replyto" id="replytoField" value="" />
+          <input type="hidden" name="from_name" value="Musa Soko Portfolio" />
+          <input type="hidden" name="redirect" value="false" />
+
+          <div class="input-group">
+            <label>name</label>
+            <input
+              type="text"
+              name="name"
+              id="name"
+              placeholder="your name"
+              required
+            />
+          </div>
+          <div class="input-group">
+            <label>email</label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              placeholder="hello@domain.com"
+              required
+            />
+          </div>
+          <div class="input-group">
+            <label>message</label>
+            <textarea
+              name="message"
+              id="message"
+              rows="5"
+              placeholder="what's the project?"
+            ></textarea>
+          </div>
+          <button type="submit" id="submitBtn">
+            <div class="btn-progress" id="btnProgress"></div>
+            <span id="btnText">send message</span>
+          </button>
+        </form>
+      </section>
+    </main>
+
+    <script>
+      // ── Signal bars ──
+      const bars = [
+        document.getElementById("bar1"),
+        document.getElementById("bar2"),
+        document.getElementById("bar3"),
+      ];
+      const signalLabel = document.getElementById("signalLabel");
+      const messageArea = document.getElementById("message");
+
+      document
+        .querySelectorAll("input[type=text], input[type=email], textarea")
+        .forEach((input) => {
+          input.addEventListener("input", () => {
+            bars.forEach((b) => {
+              b.style.height = `${Math.floor(Math.random() * 20) + 10}px`;
+              b.classList.add("active");
+            });
+            if (messageArea.value.length > 25) {
+              if (!signalLabel.classList.contains("waving")) {
+                signalLabel.innerHTML = "wanna see something cool?"
+                  .split("")
+                  .map(
+                    (c, i) =>
+                      `<span style="animation-delay:${i * 0.05}s">${c === " " ? "&nbsp;" : c}</span>`,
+                  )
+                  .join("");
+                signalLabel.classList.add("waving");
+              }
+            } else {
+              signalLabel.innerText = "Input Signal";
+              signalLabel.classList.remove("waving");
+            }
+            clearTimeout(input._t);
+            input._t = setTimeout(() => {
+              bars.forEach((b) => {
+                b.style.height = "4px";
+                b.classList.remove("active");
+              });
+            }, 150);
+          });
+        });
+
+      // ── Form submission ──
+      const form = document.getElementById("contactForm");
+      const submitBtn = document.getElementById("submitBtn");
+      const btnText = document.getElementById("btnText");
+      const btnProgress = document.getElementById("btnProgress");
+      const subjectField = document.getElementById("subjectField");
+      const replytoField = document.getElementById("replytoField");
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const name = document.getElementById("name").value.trim();
+        const email = document.getElementById("email").value.trim();
+
+        if (!name || !email) {
+          btnText.innerText = "name & email required ↑";
+          setTimeout(() => {
+            btnText.innerText = "send message";
+          }, 2500);
+          return;
+        }
+
+        // Update dynamic hidden fields
+        subjectField.value = `New enquiry from ${name}`;
+        replytoField.value = email;
+
+        // Lock button + start encoding animation
+        submitBtn.disabled = true;
+        submitBtn.classList.add("encoding");
+        let pct = 0;
+        const iv = setInterval(() => {
+          pct = Math.min(pct + Math.floor(Math.random() * 12) + 4, 90);
+          btnText.innerText = `ENCODING: ${pct}%`;
+          btnProgress.style.width = pct + "%";
+          if (pct >= 90) clearInterval(iv);
+        }, 80);
+
+        try {
+          const res = await fetch("https://api.web3forms.com/submit", {
+            method: "POST",
+            body: new FormData(form),
+          });
+          const data = await res.json();
+
+          clearInterval(iv);
+
+          if (res.ok && data.success) {
+            // ✅ Success
+            btnProgress.style.width = "100%";
+            btnText.innerText = "RENDER COMPLETE ✓";
+            submitBtn.classList.remove("encoding");
+            submitBtn.classList.add("success");
+            form.reset();
+            bars.forEach((b) => {
+              b.style.height = "4px";
+              b.classList.remove("active");
+            });
+            signalLabel.innerText = "Input Signal";
+            signalLabel.classList.remove("waving");
+            setTimeout(() => {
+              submitBtn.classList.remove("success");
+              submitBtn.disabled = false;
+              btnText.innerText = "send message";
+              btnProgress.style.width = "0%";
+            }, 4500);
+          } else {
+            throw new Error(data.message || "Submission failed");
+          }
+        } catch (err) {
+          clearInterval(iv);
+          btnProgress.style.width = "0%";
+          btnText.innerText = "FAILED — try again";
+          submitBtn.classList.remove("encoding");
+          submitBtn.classList.add("error");
+          setTimeout(() => {
+            submitBtn.classList.remove("error");
+            submitBtn.disabled = false;
+            btnText.innerText = "send message";
+          }, 3000);
+          console.error("Form error:", err);
+        }
+      });
+    </script>
+  </body>
+</html>

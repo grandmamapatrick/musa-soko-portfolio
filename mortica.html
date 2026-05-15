@@ -1,0 +1,785 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MORTICA · Musa Soko</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --deep: #080f12;
+        --teal: #00455e;
+        --red: #e24632;
+        --orange: #f69223;
+        --cream: #f7e3c2;
+        --muted: rgba(247, 227, 194, 0.5);
+        --dim: rgba(247, 227, 194, 0.25);
+        --border: rgba(247, 227, 194, 0.1);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        font-size: 16px;
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--deep);
+        color: var(--cream);
+        line-height: 1.6;
+      }
+
+      /* Grain */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9999;
+        opacity: 0.02;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        background-size: 180px;
+      }
+
+      ::-webkit-scrollbar {
+        width: 3px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--deep);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--teal);
+      }
+
+      /* ══════════════════
+       NAV
+    ══════════════════ */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 22px 72px;
+        background: rgba(8, 15, 18, 0.9);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .back-link {
+        text-decoration: none;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: color 0.2s;
+      }
+      .back-link:hover {
+        color: var(--orange);
+      }
+
+      .back-arrow {
+        width: 26px;
+        height: 26px;
+        border: 1px solid var(--border);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        transition: border-color 0.2s;
+      }
+      .back-link:hover .back-arrow {
+        border-color: var(--orange);
+      }
+
+      .nav-title {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--dim);
+        letter-spacing: 0.04em;
+      }
+
+      /* ══════════════════
+       MAIN WRAPPER
+    ══════════════════ */
+      .page-wrap {
+        max-width: 1360px;
+        margin: 0 auto;
+        padding: 0 72px;
+      }
+
+      /* ══════════════════
+       TWO-COLUMN HERO
+       Video left, info right
+    ══════════════════ */
+      .portrait-hero {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 56px;
+        padding-top: 96px; /* nav offset */
+        padding-bottom: 80px;
+        align-items: start;
+      }
+
+      /* ── VIDEO SIDE ── */
+      .video-side {
+        position: sticky;
+        top: 88px; /* sticks just below nav */
+      }
+
+      .video-frame {
+        background: #000;
+        border-radius: 8px;
+        overflow: hidden;
+        /* 9:16 at a comfortable viewing height */
+        height: 76vh;
+        width: calc(76vh * 9 / 16);
+      }
+
+      .video-frame iframe,
+      .video-frame video {
+        width: 100%;
+        height: 100%;
+        border: none;
+        display: block;
+      }
+
+      /* Piece number under the video */
+      .video-counter {
+        margin-top: 14px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .video-counter-num {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        color: var(--dim);
+      }
+
+      .video-counter-bar {
+        flex: 1;
+        height: 1px;
+        background: var(--border);
+        position: relative;
+      }
+
+      /* Progress fill — set via inline style or JS */
+      .video-counter-bar::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 60%; /* piece 3 of 5 = 60% */
+        background: var(--orange);
+      }
+
+      .video-counter-total {
+        font-size: 11px;
+        font-weight: 400;
+        color: var(--dim);
+        letter-spacing: 0.08em;
+      }
+
+      /* ── INFO SIDE ── */
+      .info-side {
+        padding-top: 8px;
+      }
+
+      /* Eyebrow */
+      .eyebrow {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--orange);
+        margin-bottom: 14px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .eyebrow::before {
+        content: "";
+        width: 20px;
+        height: 1.5px;
+        background: var(--orange);
+      }
+
+      /* Title */
+      .piece-title {
+        font-size: clamp(42px, 5vw, 72px);
+        font-weight: 900;
+        letter-spacing: -0.04em;
+        line-height: 0.9;
+        color: var(--cream);
+        margin-bottom: 20px;
+      }
+      .piece-title .accent {
+        color: var(--red);
+      }
+
+      /* Meta row */
+      .meta-row {
+        display: flex;
+        align-items: center;
+        gap: 0;
+        margin-bottom: 40px;
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+        padding: 12px 0;
+      }
+
+      .meta-item {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--muted);
+        padding-right: 20px;
+        margin-right: 20px;
+        border-right: 1px solid var(--border);
+      }
+      .meta-item:last-child {
+        border-right: none;
+        margin-right: 0;
+        padding-right: 0;
+      }
+
+      /* Description */
+      .description {
+        margin-bottom: 36px;
+      }
+
+      .description p {
+        font-size: 15px;
+        font-weight: 300;
+        line-height: 1.85;
+        color: var(--muted);
+        margin-bottom: 16px;
+      }
+      .description p:last-child {
+        margin-bottom: 0;
+      }
+
+      /* Brief box */
+      .brief-box {
+        background: rgba(0, 0, 0, 0.3);
+        border-left: 3px solid var(--orange);
+        padding: 22px 24px;
+        margin-bottom: 36px;
+      }
+
+      .brief-label {
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--orange);
+        margin-bottom: 12px;
+      }
+
+      .brief-text {
+        font-size: 15px;
+        font-weight: 300;
+        font-style: italic;
+        color: var(--cream);
+        line-height: 1.7;
+      }
+
+      .brief-full {
+        display: none;
+        margin-top: 10px;
+      }
+      .brief-full.open {
+        display: block;
+      }
+
+      .brief-toggle {
+        display: inline-block;
+        margin-top: 12px;
+        background: none;
+        border: none;
+        color: var(--orange);
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        cursor: pointer;
+        font-family: "Inter", sans-serif;
+        text-decoration: underline;
+        text-decoration-style: dotted;
+        text-underline-offset: 3px;
+        padding: 0;
+        transition: color 0.2s;
+      }
+      .brief-toggle:hover {
+        color: var(--red);
+      }
+
+      /* Tools */
+      .tools-block {
+        margin-bottom: 36px;
+      }
+
+      .block-label {
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--red);
+        margin-bottom: 14px;
+      }
+
+      .tool-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .tool-tag {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        color: var(--muted);
+        border: 1px solid var(--teal);
+        background: rgba(0, 69, 94, 0.2);
+        padding: 5px 12px;
+        border-radius: 2px;
+        transition:
+          border-color 0.2s,
+          color 0.2s;
+      }
+      .tool-tag:hover {
+        border-color: var(--orange);
+        color: var(--cream);
+      }
+
+      /* ══════════════════
+       CREDITS
+    ══════════════════ */
+      .credits-section {
+        border-top: 1px solid var(--border);
+        padding: 56px 0 64px;
+      }
+
+      .credits-title {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--red);
+        margin-bottom: 36px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      .credits-title::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--border);
+      }
+
+      .credits-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 32px 40px;
+      }
+
+      .credit-item {
+      }
+
+      .credit-role {
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--orange);
+        margin-bottom: 6px;
+      }
+
+      .credit-name {
+        font-size: 16px;
+        font-weight: 500;
+        color: var(--cream);
+        line-height: 1.4;
+      }
+
+      .credit-name a {
+        color: var(--cream);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.2s;
+      }
+      .credit-name a:hover {
+        border-bottom-color: var(--orange);
+      }
+
+      /* ══════════════════
+       FOOTER NAV
+    ══════════════════ */
+      .project-footer {
+        border-top: 1px solid var(--border);
+        padding: 32px 0 60px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .footer-nav-link {
+        text-decoration: none;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: color 0.2s;
+      }
+      .footer-nav-link:hover {
+        color: var(--orange);
+      }
+      .footer-nav-link.disabled {
+        opacity: 0.2;
+        pointer-events: none;
+      }
+
+      .footer-nav-label {
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--dim);
+        display: block;
+        margin-bottom: 3px;
+      }
+
+      .footer-nav-title {
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--cream);
+        letter-spacing: -0.01em;
+      }
+
+      .footer-center-link {
+        text-decoration: none;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        border: 1px solid var(--border);
+        padding: 9px 20px;
+        transition:
+          border-color 0.2s,
+          color 0.2s;
+      }
+      .footer-center-link:hover {
+        border-color: var(--orange);
+        color: var(--orange);
+      }
+
+      /* ══════════════════
+       ANIMATIONS
+    ══════════════════ */
+      .fade-in {
+        opacity: 0;
+        transform: translateY(16px);
+        animation: up 0.6s ease forwards;
+      }
+      .fade-in:nth-child(1) {
+        animation-delay: 0.05s;
+      }
+      .fade-in:nth-child(2) {
+        animation-delay: 0.15s;
+      }
+      .fade-in:nth-child(3) {
+        animation-delay: 0.22s;
+      }
+      .fade-in:nth-child(4) {
+        animation-delay: 0.3s;
+      }
+      .fade-in:nth-child(5) {
+        animation-delay: 0.38s;
+      }
+
+      @keyframes up {
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(20px);
+        transition:
+          opacity 0.65s ease,
+          transform 0.65s ease;
+      }
+      .reveal.visible {
+        opacity: 1;
+        transform: none;
+      }
+
+      /* ══════════════════
+       RESPONSIVE
+    ══════════════════ */
+      @media (max-width: 1100px) {
+        .portrait-hero {
+          gap: 40px;
+        }
+        .video-frame {
+          height: 68vh;
+          width: calc(68vh * 9 / 16);
+        }
+      }
+
+      @media (max-width: 900px) {
+        .portrait-hero {
+          grid-template-columns: 1fr;
+          padding-top: 80px;
+        }
+        .video-side {
+          position: relative;
+          top: auto;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+        .video-frame {
+          height: 65vh;
+          width: calc(65vh * 9 / 16);
+        }
+        .page-wrap {
+          padding: 0 32px;
+        }
+        nav {
+          padding: 18px 32px;
+        }
+        .credits-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      @media (max-width: 560px) {
+        .video-frame {
+          height: 55vh;
+          width: calc(55vh * 9 / 16);
+        }
+        .page-wrap {
+          padding: 0 20px;
+        }
+        nav {
+          padding: 16px 20px;
+        }
+        .meta-row {
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+        .meta-item {
+          border-right: none;
+          padding-right: 0;
+        }
+        .credits-grid {
+          grid-template-columns: 1fr;
+        }
+        .project-footer {
+          flex-direction: column;
+          gap: 24px;
+          align-items: flex-start;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- NAV -->
+    <nav>
+      <a href="index.html" class="back-link">
+        <span class="back-arrow">←</span>
+        Motion Pieces
+      </a>
+      <span class="nav-title">MORTICA · 2023</span>
+    </nav>
+
+    <div class="page-wrap">
+      <!-- TWO-COLUMN HERO -->
+      <div class="portrait-hero">
+        <!-- LEFT: Portrait video, sticky -->
+        <div class="video-side">
+          <div class="video-frame fade-in">
+            <!-- Replace with Vimeo embed when live -->
+            <iframe
+              src="https://player.vimeo.com/video/1121503730?autoplay=1&loop=1&muted=1&title=0&byline=0&portrait=0&background=1"
+              allow="autoplay; fullscreen; picture-in-picture"
+              allowfullscreen
+            >
+            </iframe>
+          </div>
+
+          <!-- Progress indicator -->
+          <div class="video-counter fade-in">
+            <span class="video-counter-num">03</span>
+            <div class="video-counter-bar" style="--fill: 60%"></div>
+            <span class="video-counter-total">05</span>
+          </div>
+        </div>
+
+        <!-- RIGHT: Info -->
+        <div class="info-side">
+          <div class="eyebrow fade-in">Title Sequence · Portrait</div>
+
+          <h1 class="piece-title fade-in">
+            MORT<span class="accent">ICA</span>
+          </h1>
+
+          <div class="meta-row fade-in">
+            <span class="meta-item">2023</span>
+            <span class="meta-item">Title Sequence</span>
+            <span class="meta-item">1:52 min</span>
+            <span class="meta-item">9:16</span>
+          </div>
+
+          <div class="description fade-in">
+            <p>
+              The client wanted something nostalgic and warm. This is a spec
+              piece exploring golden hour lighting and the specific feeling of
+              summer storms — that moment where the air is heavy before the sky
+              breaks.
+            </p>
+            <p>
+              Made in 3 days as a personal challenge to work faster without
+              sacrificing atmosphere. The rain was built from a mix of practical
+              footage and digital compositing.
+            </p>
+          </div>
+
+          <!-- Brief — collapsible -->
+          <div class="brief-box fade-in">
+            <div class="brief-label">Brief</div>
+            <div class="brief-text" id="briefPreview">
+              "Create something that feels like memory and captures the warmth
+              of summer evenings when the rain hits hot pavement and...
+            </div>
+            <div class="brief-full brief-text" id="briefFull">
+              the whole world smells like wet earth. The piece should feel both
+              nostalgic and present — like remembering a dream while you're
+              still in it. Evoke golden hour light, the sound of rain on leaves,
+              and that specific feeling of being warm inside while it's storming
+              outside."
+            </div>
+            <button class="brief-toggle" id="briefToggle">Read more</button>
+          </div>
+
+          <!-- Tools -->
+          <div class="tools-block fade-in">
+            <div class="block-label">Tools</div>
+            <div class="tool-tags">
+              <span class="tool-tag">After Effects</span>
+              <span class="tool-tag">Premiere Pro</span>
+              <span class="tool-tag">Procreate</span>
+              <span class="tool-tag">Photoshop</span>
+            </div>
+          </div>
+        </div>
+        <!-- /info-side -->
+      </div>
+      <!-- /portrait-hero -->
+
+      <!-- CREDITS -->
+      <div class="credits-section reveal">
+        <div class="credits-title">Credits</div>
+        <div class="credits-grid">
+          <div class="credit-item">
+            <div class="credit-role">Design &amp; Animation</div>
+            <div class="credit-name">Musa Soko</div>
+          </div>
+          <div class="credit-item">
+            <div class="credit-role">Music</div>
+            <div class="credit-name">Artist Name</div>
+          </div>
+          <div class="credit-item">
+            <div class="credit-role">Client</div>
+            <div class="credit-name">Personal Project</div>
+          </div>
+          <div class="credit-item">
+            <div class="credit-role">Colour Grade</div>
+            <div class="credit-name">Musa Soko</div>
+          </div>
+          <div class="credit-item">
+            <div class="credit-role">Year</div>
+            <div class="credit-name">2024</div>
+          </div>
+          <div class="credit-item">
+            <div class="credit-role">Special Thanks</div>
+            <div class="credit-name">Name / Name</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FOOTER NAV -->
+      <div class="project-footer reveal">
+        <a href="cuvee.html" class="footer-nav-link">
+          <span>←</span>
+          <span>
+            <span class="footer-nav-label">Previous</span>
+            <span class="footer-nav-title">CUVÉE</span>
+          </span>
+        </a>
+
+        <a href="index.html" class="footer-center-link">All Work</a>
+
+        <a href="#" class="footer-nav-link disabled">
+          <span>
+            <span class="footer-nav-label">Next</span>
+            <span class="footer-nav-title">—</span>
+          </span>
+          <span>→</span>
+        </a>
+      </div>
+    </div>
+    <!-- /page-wrap -->
+
+    <script>
+      // Brief toggle
+      const toggle = document.getElementById("briefToggle");
+      const full = document.getElementById("briefFull");
+      toggle.addEventListener("click", () => {
+        const open = full.classList.toggle("open");
+        toggle.textContent = open ? "Read less" : "Read more";
+      });
+
+      // Scroll reveal
+      const obs = new IntersectionObserver(
+        (entries) =>
+          entries.forEach((e) => {
+            if (e.isIntersecting) e.target.classList.add("visible");
+          }),
+        { threshold: 0.1 },
+      );
+      document.querySelectorAll(".reveal").forEach((el) => obs.observe(el));
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1234 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NOVUS F. // MUSA SOKO</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Space+Mono:wght@400;700&family=Bebas+Neue&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --deep: #080f12;
+        --teal: #00455e;
+        --red: #e24632;
+        --orange: #f69223;
+        --cream: #f7e3c2;
+        --black: #000000;
+        --white: #ffffff;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--deep);
+        color: var(--cream);
+        line-height: 1;
+        overflow-x: hidden;
+        background-image:
+          linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+          linear-gradient(
+            90deg,
+            rgba(255, 0, 0, 0.03),
+            rgba(0, 255, 0, 0.01),
+            rgba(0, 0, 255, 0.03)
+          );
+        background-size:
+          100% 4px,
+          3px 100%;
+      }
+
+      /* ─── NAV ─── */
+      nav {
+        position: fixed;
+        top: 25px;
+        left: 25px;
+        right: 25px;
+        z-index: 1000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        pointer-events: none;
+        background: transparent;
+      }
+
+      /* ─── PAGE RULE: lives in the page, locks to top on scroll ─── */
+      .page-rule {
+        display: block;
+        height: 2px;
+        width: 87%;
+        margin: 62px auto 0;
+        background: var(--orange);
+        position: relative;
+        z-index: 998;
+        pointer-events: none;
+        transition: none;
+      }
+
+      /* Once JS locks it — snaps to top, stays forever */
+      .page-rule.locked {
+        position: fixed;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        margin: 0;
+        width: 87%;
+      }
+
+      .nav-btn {
+        pointer-events: auto;
+        background: var(--red);
+        color: var(--black);
+        padding: 8px 20px;
+        font-weight: 900;
+        text-transform: uppercase;
+        text-decoration: none;
+        transform: rotate(-1.5deg);
+        border: 3px solid var(--black);
+        font-size: 13px;
+        letter-spacing: -0.02em;
+        transition: 0.1s;
+      }
+
+      .nav-btn:hover {
+        transform: rotate(0deg) scale(1.1);
+        background: var(--orange);
+      }
+
+      /* ─── MASTER WRAPPER ─── */
+      .master-wrap {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 140px 40px;
+      }
+
+      /* ─── VIDEO: CLEAN, NO DOT PATTERN, NO SHADOW ─── */
+      .video-presentation {
+        width: 100%;
+        max-width: 1100px;
+        margin: 0 auto 60px;
+        background: var(--black);
+        padding: 2px;
+        border: 4px solid var(--cream);
+        position: relative;
+      }
+
+      /* Corner accent marks — industrial registration crosses */
+      .video-presentation::before {
+        content: "";
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        width: 20px;
+        height: 20px;
+        border-top: 3px solid var(--orange);
+        border-right: 3px solid var(--orange);
+        z-index: 2;
+      }
+
+      .corner-bl {
+        position: absolute;
+        bottom: -10px;
+        left: -10px;
+        width: 20px;
+        height: 20px;
+        border-bottom: 3px solid var(--orange);
+        border-left: 3px solid var(--orange);
+        z-index: 2;
+      }
+
+      .aspect-scaler {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        background: #000;
+        border: 2px solid #111;
+      }
+
+      .aspect-scaler iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+
+      /* ─── HERO TITLE ─── */
+      .hero-title {
+        position: relative;
+        margin: 80px 0 120px;
+        text-align: left;
+      }
+
+      .main-h1 {
+        font-size: clamp(70px, 16vw, 220px);
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: -0.08em;
+        line-height: 0.8;
+        color: var(--white);
+      }
+
+      .main-h1 span {
+        display: inline-block;
+        color: var(--red);
+        transform: rotate(-1deg);
+
+        padding: 0 20px;
+        margin-left: -10px;
+      }
+
+      .tape-label {
+        display: inline-block;
+        background: var(--orange);
+        color: var(--black);
+        padding: 6px 15px;
+        font-family: "Space Mono", monospace;
+        font-weight: 700;
+        font-size: 13px;
+        transform: rotate(-3deg);
+        border: 2px solid var(--black);
+        margin-bottom: 20px;
+      }
+
+      /* ─── TECH CARD ─── */
+      .tech-card {
+        background: var(--cream);
+        color: var(--black);
+        padding: 50px;
+        border: 5px solid var(--black);
+        transform: rotate(1.2deg);
+        box-shadow: 15px 15px 0 var(--teal);
+        margin-bottom: 150px;
+        position: relative;
+      }
+
+      .tech-card::before {
+        content: "";
+        position: absolute;
+        top: -15px;
+        left: 50%;
+        width: 120px;
+        height: 35px;
+        background: rgba(247, 227, 194, 0.4);
+        transform: translateX(-50%) rotate(2deg);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+      }
+
+      .tech-header {
+        border-bottom: 3px solid var(--black);
+        margin-bottom: 30px;
+        padding-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .tech-header h2 {
+        font-family: "Space Mono", monospace;
+        font-size: 20px;
+        text-transform: uppercase;
+      }
+
+      .tech-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 30px;
+      }
+
+      .tech-item label {
+        display: block;
+        font-size: 10px;
+        font-weight: 900;
+        color: var(--teal);
+        text-transform: uppercase;
+        margin-bottom: 8px;
+      }
+
+      .tech-item p {
+        font-size: 22px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: -0.02em;
+      }
+
+      /* ─── MANIFESTO ─── */
+      .story-section {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 60px;
+        margin-top: 100px;
+      }
+
+      .manifesto {
+        font-size: clamp(30px, 5vw, 55px);
+        font-weight: 900;
+        line-height: 0.85;
+        text-transform: uppercase;
+        letter-spacing: -0.05em;
+      }
+
+      .manifesto span {
+        background: var(--red);
+        color: var(--black);
+        padding: 2px 10px;
+        display: inline-block;
+        transform: rotate(1deg);
+      }
+
+      .copy-block {
+        font-size: 18px;
+        line-height: 1.5;
+        font-weight: 500;
+        color: rgba(247, 227, 194, 0.8);
+      }
+
+      .stamp-wrap {
+        position: relative;
+        height: 200px;
+      }
+
+      .stamp {
+        position: absolute;
+        width: 140px;
+        height: 140px;
+        border: 4px double var(--red);
+        border-radius: 50%;
+        color: var(--red);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-weight: 900;
+        font-size: 11px;
+        text-transform: uppercase;
+        transform: rotate(-20deg);
+        padding: 15px;
+      }
+
+      /* ─── FOOTER: CONCERT FLYER NEXT SHOW STYLE ─── */
+      footer {
+        margin-top: 40px;
+        position: relative;
+      }
+
+      /* Torn-edge divider */
+      .tear-divider {
+        width: 100%;
+        height: 28px;
+        background: var(--orange);
+        clip-path: polygon(
+          0% 100%,
+          0% 60%,
+          1% 80%,
+          2% 50%,
+          3% 75%,
+          4% 40%,
+          5% 65%,
+          6% 30%,
+          7% 60%,
+          8% 20%,
+          9% 55%,
+          10% 25%,
+          11% 70%,
+          12% 35%,
+          13% 80%,
+          14% 45%,
+          15% 90%,
+          16% 50%,
+          17% 75%,
+          18% 30%,
+          19% 65%,
+          20% 20%,
+          21% 55%,
+          22% 35%,
+          23% 70%,
+          24% 40%,
+          25% 80%,
+          26% 50%,
+          27% 25%,
+          28% 60%,
+          29% 35%,
+          30% 75%,
+          31% 45%,
+          32% 85%,
+          33% 55%,
+          34% 30%,
+          35% 70%,
+          36% 40%,
+          37% 65%,
+          38% 25%,
+          39% 55%,
+          40% 20%,
+          41% 60%,
+          42% 80%,
+          43% 45%,
+          44% 70%,
+          45% 30%,
+          46% 65%,
+          47% 40%,
+          48% 80%,
+          49% 50%,
+          50% 25%,
+          51% 60%,
+          52% 35%,
+          53% 75%,
+          54% 45%,
+          55% 85%,
+          56% 55%,
+          57% 25%,
+          58% 70%,
+          59% 40%,
+          60% 80%,
+          61% 50%,
+          62% 30%,
+          63% 65%,
+          64% 40%,
+          65% 75%,
+          66% 45%,
+          67% 20%,
+          68% 60%,
+          69% 35%,
+          70% 70%,
+          71% 50%,
+          72% 80%,
+          73% 30%,
+          74% 65%,
+          75% 40%,
+          76% 75%,
+          77% 55%,
+          78% 25%,
+          79% 70%,
+          80% 45%,
+          81% 85%,
+          82% 55%,
+          83% 30%,
+          84% 60%,
+          85% 35%,
+          86% 75%,
+          87% 50%,
+          88% 20%,
+          89% 65%,
+          90% 40%,
+          91% 70%,
+          92% 45%,
+          93% 80%,
+          94% 55%,
+          95% 30%,
+          96% 65%,
+          97% 40%,
+          98% 70%,
+          99% 50%,
+          100% 60%,
+          100% 100%
+        );
+        margin-bottom: 0;
+      }
+
+      .footer-next {
+        background: var(--orange);
+        padding: 50px 40px 40px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* Big background NEXT text as texture */
+      .footer-next::before {
+        content: "NEXT";
+        position: absolute;
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 40vw;
+        color: rgba(0, 0, 0, 0.07);
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        white-space: nowrap;
+        pointer-events: none;
+        line-height: 1;
+      }
+
+      .footer-inner {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 40px;
+        flex-wrap: wrap;
+      }
+
+      .next-label-block {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .next-eyebrow {
+        font-family: "Space Mono", monospace;
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--black);
+        opacity: 0.6;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .next-project-title {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(70px, 14vw, 180px);
+        line-height: 0.85;
+        color: var(--black);
+        text-decoration: none;
+        display: block;
+        letter-spacing: -0.01em;
+        transition:
+          letter-spacing 0.3s cubic-bezier(0.785, 0.135, 0.15, 0.86),
+          color 0.15s;
+      }
+
+      .next-project-title:hover {
+        letter-spacing: 0.05em;
+        color: var(--deep);
+      }
+
+      /* Next badge — torn sticker shape, diagonal clip */
+      .next-badge {
+        flex-shrink: 0;
+        align-self: flex-end;
+        margin-bottom: 8px;
+        background: var(--red);
+        border: 3px solid var(--black);
+        color: var(--black);
+        font-family: "Space Mono", monospace;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        text-decoration: none;
+        padding: 14px 22px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transform: rotate(3deg);
+        clip-path: polygon(0 0, 100% 0, 100% 70%, 88% 100%, 0 100%);
+        transition:
+          transform 0.2s cubic-bezier(0.785, 0.135, 0.15, 0.86),
+          background 0.15s,
+          clip-path 0.2s;
+        letter-spacing: 0.05em;
+      }
+
+      .next-badge:hover {
+        transform: rotate(0deg) scale(1.08);
+        background: var(--cream);
+        clip-path: polygon(0 0, 100% 0, 100% 60%, 85% 100%, 0 100%);
+      }
+
+      .next-badge .badge-arrow {
+        font-size: 18px;
+        transition: transform 0.2s;
+      }
+
+      .next-badge:hover .badge-arrow {
+        transform: translateX(4px);
+      }
+
+      .footer-meta {
+        background: var(--black);
+        display: flex;
+        justify-content: space-between;
+        font-family: "Space Mono", monospace;
+        font-size: 10px;
+        font-weight: bold;
+        padding: 14px 40px;
+        opacity: 0.8;
+        color: var(--cream);
+      }
+
+      /* ─── RESPONSIVE ─── */
+      @media (max-width: 900px) {
+        .story-section {
+          grid-template-columns: 1fr;
+        }
+        .video-presentation {
+          padding: 15px;
+        }
+        .video-presentation::after {
+          display: none;
+        }
+        .footer-inner {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
+
+      /* ─── EASTER EGG: FRICTION MODE ─── */
+      #friction-trigger {
+        cursor: help;
+        user-select: none;
+      }
+
+      /* The full-page glitch overlay */
+      .friction-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 9000;
+        pointer-events: none;
+        opacity: 0;
+      }
+
+      /* RGB split — applied to body during glitch */
+      body.friction-active {
+        animation: bodyGlitch 0.12s steps(1) infinite;
+      }
+
+      @keyframes bodyGlitch {
+        0% {
+          filter: none;
+        }
+        20% {
+          filter: hue-rotate(90deg) saturate(3) contrast(1.4);
+        }
+        40% {
+          filter: hue-rotate(-90deg) saturate(2) brightness(1.5);
+        }
+        60% {
+          filter: invert(0.08) hue-rotate(180deg);
+        }
+        80% {
+          filter: saturate(0) brightness(0.7);
+        }
+        100% {
+          filter: none;
+        }
+      }
+
+      /* Scan line pulse */
+      body.friction-active::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 9500;
+        pointer-events: none;
+        background: repeating-linear-gradient(
+          0deg,
+          rgba(0, 0, 0, 0.35) 0px,
+          rgba(0, 0, 0, 0.35) 2px,
+          transparent 2px,
+          transparent 4px
+        );
+        animation: scanPulse 0.08s steps(1) infinite;
+      }
+
+      @keyframes scanPulse {
+        0% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        50% {
+          opacity: 0.6;
+          transform: translateY(2px);
+        }
+      }
+
+      /* RGB ghost layers */
+      body.friction-active .master-wrap {
+        animation: rgbSplit 0.1s steps(1) infinite;
+      }
+
+      @keyframes rgbSplit {
+        0% {
+          text-shadow: none;
+        }
+        25% {
+          text-shadow:
+            -4px 0 rgba(226, 70, 50, 0.7),
+            4px 0 rgba(0, 180, 255, 0.7);
+        }
+        50% {
+          text-shadow:
+            4px 0 rgba(226, 70, 50, 0.7),
+            -4px 0 rgba(0, 180, 255, 0.7);
+        }
+        75% {
+          text-shadow:
+            -2px 2px rgba(246, 146, 35, 0.6),
+            2px -2px rgba(0, 69, 94, 0.6);
+        }
+        100% {
+          text-shadow: none;
+        }
+      }
+
+      /* PROCESSING stamp */
+      .friction-stamp {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(-8deg) scale(0);
+        z-index: 9999;
+        border: 6px solid var(--red);
+        color: var(--red);
+        font-family: "Space Mono", monospace;
+        font-weight: 700;
+        font-size: clamp(28px, 5vw, 52px);
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        padding: 18px 40px;
+        pointer-events: none;
+        white-space: nowrap;
+        opacity: 0;
+        transition: none;
+        mix-blend-mode: screen;
+      }
+
+      .friction-stamp.stamp-in {
+        animation: stampSlap 2.8s forwards;
+      }
+
+      @keyframes stampSlap {
+        0% {
+          transform: translate(-50%, -50%) rotate(-8deg) scale(0);
+          opacity: 0;
+        }
+        8% {
+          transform: translate(-50%, -50%) rotate(-8deg) scale(1.15);
+          opacity: 1;
+        }
+        12% {
+          transform: translate(-50%, -50%) rotate(-8deg) scale(0.95);
+          opacity: 1;
+        }
+        15% {
+          transform: translate(-50%, -50%) rotate(-8deg) scale(1);
+          opacity: 1;
+        }
+        75% {
+          transform: translate(-50%, -50%) rotate(-8deg) scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: translate(-50%, -50%) rotate(-8deg) scale(1);
+          opacity: 0;
+        }
+      }
+
+      /* ─── VIDEO COUNTER ─── */
+      .video-counter {
+        max-width: 1100px;
+        margin: 18px auto 0;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .counter-tag {
+        font-family: "Space Mono", monospace;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        color: var(--black);
+        background: var(--orange);
+        padding: 3px 8px;
+        border: 2px solid var(--black);
+      }
+
+      .counter-bar {
+        flex: 1;
+        height: 2px;
+        background: rgba(247, 227, 194, 0.12);
+        position: relative;
+      }
+
+      .counter-bar::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 20%; /* piece 1 of 5 */
+        background: var(--orange);
+      }
+
+      .counter-total {
+        font-family: "Space Mono", monospace;
+        font-size: 10px;
+        color: rgba(247, 227, 194, 0.5);
+        letter-spacing: 0.1em;
+      }
+
+      /* ─── BRIEF BOX ─── */
+      .brief-box {
+        border: 3px solid var(--black);
+        background: rgba(0, 0, 0, 0.4);
+        margin-bottom: 60px;
+        margin-top: 80px;
+        max-width: 680px;
+      }
+
+      .brief-header {
+        background: var(--red);
+        padding: 6px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .brief-header-label {
+        font-family: "Space Mono", monospace;
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        color: var(--black);
+      }
+
+      .brief-stamp {
+        font-family: "Space Mono", monospace;
+        font-size: 9px;
+        font-weight: 700;
+        color: var(--black);
+        opacity: 0.5;
+        letter-spacing: 0.05em;
+      }
+
+      .brief-body {
+        padding: 20px;
+        border-left: 3px solid var(--orange);
+        margin: 16px;
+      }
+
+      .brief-text {
+        font-size: 14px;
+        font-weight: 300;
+        font-style: italic;
+        color: var(--cream);
+        line-height: 1.75;
+      }
+
+      .brief-full {
+        display: none;
+        margin-top: 10px;
+      }
+      .brief-full.open {
+        display: block;
+      }
+
+      .brief-toggle {
+        display: block;
+        width: 100%;
+        background: none;
+        border: none;
+        border-top: 2px solid rgba(247, 227, 194, 0.1);
+        color: var(--orange);
+        font-family: "Space Mono", monospace;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        cursor: pointer;
+        padding: 10px 16px;
+        text-align: left;
+        transition:
+          background 0.15s,
+          color 0.15s;
+      }
+
+      .brief-toggle:hover {
+        background: rgba(226, 70, 50, 0.1);
+        color: var(--red);
+      }
+
+      /* ─── TOOLS BLOCK ─── */
+      .tools-block {
+        margin-bottom: 0;
+      }
+
+      .block-label {
+        font-family: "Space Mono", monospace;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--red);
+        margin-bottom: 14px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .block-label::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: rgba(247, 227, 194, 0.1);
+      }
+
+      .tool-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .tool-tag {
+        font-family: "Space Mono", monospace;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--black);
+        background: var(--cream);
+        border: 2px solid var(--black);
+        padding: 5px 12px;
+        transform: rotate(-0.5deg);
+        transition:
+          background 0.1s,
+          transform 0.1s;
+      }
+
+      .tool-tag:hover {
+        background: var(--orange);
+        transform: rotate(0deg) scale(1.05);
+      }
+
+      /* ─── CREDITS ─── */
+      .credits-section {
+        margin-top: 100px;
+        padding-top: 60px;
+        padding-bottom: 64px;
+      }
+
+      .credits-title {
+        font-family: "Space Mono", monospace;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--red);
+        margin-bottom: 40px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .credits-title::after {
+        content: "";
+        flex: 1;
+        height: 2px;
+        background: rgba(247, 227, 194, 0.08);
+      }
+
+      .credits-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 32px 40px;
+      }
+
+      .credit-role {
+        font-family: "Space Mono", monospace;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--orange);
+        margin-bottom: 6px;
+      }
+
+      .credit-name {
+        font-size: 17px;
+        font-weight: 700;
+        color: var(--cream);
+        letter-spacing: -0.01em;
+      }
+
+      /* ─── SCROLL REVEAL ─── */
+      .reveal {
+        opacity: 0;
+        transform: translateY(20px);
+        transition:
+          opacity 0.65s ease,
+          transform 0.65s ease;
+      }
+      .reveal.visible {
+        opacity: 1;
+        transform: none;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="index.html" class="nav-btn">← HOME</a>
+      <div
+        class="nav-btn"
+        style="background: var(--cream); transform: rotate(2deg)"
+      >
+        MUSA_SOKO // 2024
+      </div>
+    </nav>
+
+    <div id="pageRule" class="page-rule"></div>
+    <main class="master-wrap">
+      <!-- VIDEO FRAME: clean, no dot pattern -->
+      <section class="video-presentation">
+        <div class="corner-bl"></div>
+        <div class="aspect-scaler">
+          <iframe
+            src="https://player.vimeo.com/video/1108056464?autoplay=1&loop=1&muted=1&title=0&byline=0&portrait=0&background=1"
+            allow="autoplay; fullscreen"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </section>
+
+      <!-- VIDEO COUNTER -->
+      <div class="video-counter">
+        <span class="counter-tag">01</span>
+        <div class="counter-bar"></div>
+        <span class="counter-total">/ 05</span>
+      </div>
+
+      <!-- TITLE -->
+      <section class="hero-title">
+        <div class="tape-label">ARCHIVE_REF: NOVUS_F</div>
+        <h1 class="main-h1">
+          NOVUS
+          <span id="friction-trigger" title="Hey, how you doin. Click ME!"
+            >F.</span
+          >
+        </h1>
+      </section>
+
+      <!-- TECH CARD -->
+      <section class="tech-card">
+        <div class="tech-header">
+          <h2>Technical Rider</h2>
+          <div
+            style="
+              font-family: &quot;Space Mono&quot;;
+              font-size: 10px;
+              font-weight: bold;
+            "
+          >
+            [ INTERNAL USE ONLY ]
+          </div>
+        </div>
+
+        <div class="tech-grid">
+          <div class="tech-item">
+            <label>Sequence</label>
+            <p>001_Final</p>
+          </div>
+          <div class="tech-item">
+            <label>Duration</label>
+            <p>03:42:00</p>
+          </div>
+          <div class="tech-item">
+            <label>Encoding</label>
+            <p>ProRes 4444</p>
+          </div>
+          <div class="tech-item">
+            <label>Pipeline</label>
+            <p>AE + DAVINCI</p>
+          </div>
+        </div>
+
+        <div
+          style="
+            margin-top: 40px;
+            font-family: &quot;Space Mono&quot;, monospace;
+            font-size: 12px;
+            line-height: 1.6;
+            border-left: 4px solid var(--black);
+            padding-left: 20px;
+            font-weight: bold;
+          "
+        >
+          NOTE: This piece was built on the principle of creative destruction.
+          Every asset was processed through at least three stages of degradation
+          to achieve the final "Friction" aesthetic.
+        </div>
+      </section>
+
+      <!-- MANIFESTO + COPY -->
+      <div class="story-section">
+        <div class="manifesto">
+          THIS ISN'T A <span>VIDEO</span>. IT'S A VISUAL REACTION TO A FREQUENCY
+          THAT NOBODY ELSE <span>WANTED</span> TO HEAR.
+        </div>
+
+        <div class="right-col">
+          <div class="copy-block">
+            <p style="margin-bottom: 30px">
+              The "F" in Novus F stands for Friction. The goal was to remove the
+              polished, corporate sheen of modern motion design and replace it
+              with something that felt like it was crumbling as you watched it.
+            </p>
+            <p>
+              I spent more time destroying the image than building it. Using
+              digital scan-lines, custom grain overlays, and aggressive color
+              shifts, the piece became a living document of the editing process
+              itself.
+            </p>
+          </div>
+          <div class="stamp-wrap">
+            <div class="stamp">
+              Verified for <br />
+              Portfolio <br />
+              Release 2024
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CLIENT BRIEF -->
+      <div class="brief-box reveal">
+        <div class="brief-header">
+          <span class="brief-header-label">Creative Brief</span>
+          <span class="brief-stamp">[ INTERNAL USE ONLY ]</span>
+        </div>
+        <div class="brief-body">
+          <div class="brief-text" id="briefPreview">
+            "The brief was self-imposed. No client. No deadline. Build something
+            that feels like signal decay — like watching a transmission break
+            apart...
+          </div>
+          <div class="brief-full brief-text" id="briefFull">
+            in real time. The piece had to destroy itself in the process of
+            being made. Every layer of polish stripped back. Every clean edge
+            roughened. The friction wasn't a stylistic choice — it was the only
+            honest answer to the question: what does motion design look like
+            when it stops pretending to be invisible?"
+          </div>
+        </div>
+        <button class="brief-toggle" id="briefToggle">↓ READ MORE</button>
+      </div>
+
+      <!-- TOOLS -->
+      <div class="tools-block reveal">
+        <div class="block-label">Tools Used</div>
+        <div class="tool-tags">
+          <span class="tool-tag">After Effects</span>
+          <span class="tool-tag">DaVinci Resolve</span>
+          <span class="tool-tag">Premiere Pro</span>
+          <span class="tool-tag">Photoshop</span>
+        </div>
+      </div>
+
+      <!-- CREDITS -->
+      <div class="credits-section reveal">
+        <div class="credits-title">Credits</div>
+        <div class="credits-grid">
+          <div class="credit-item">
+            <div class="credit-role">Design &amp; Animation</div>
+            <div class="credit-name">Musa Soko</div>
+          </div>
+          <div class="credit-item">
+            <div class="credit-role">Colour Grade</div>
+            <div class="credit-name">Musa Soko</div>
+          </div>
+          <div class="credit-item">
+            <div class="credit-role">Music</div>
+            <div class="credit-name">Artist Name</div>
+          </div>
+          <div class="credit-item">
+            <div class="credit-role">Client</div>
+            <div class="credit-name">Personal Project</div>
+          </div>
+          <div class="credit-item">
+            <div class="credit-role">Year</div>
+            <div class="credit-name">2024</div>
+          </div>
+          <div class="credit-item">
+            <div class="credit-role">Special Thanks</div>
+            <div class="credit-name">Name / Name</div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- FOOTER: Concert flyer NEXT SHOW style -->
+    <footer>
+      <div class="tear-divider"></div>
+      <div class="footer-next">
+        <div class="footer-inner">
+          <div class="next-label-block">
+            <span class="next-eyebrow">// UP NEXT ON THE REEL</span>
+            <a href="cuvee.html" class="next-project-title">CUVÉE</a>
+          </div>
+          <a href="cuvee.html" class="next-badge">
+            LOAD IT <span class="badge-arrow">→</span>
+          </a>
+        </div>
+      </div>
+      <div class="footer-meta">
+        <span>DATA_STREAM: ACTIVE</span>
+        <span>END_OF_PAGE</span>
+      </div>
+    </footer>
+
+    <div class="friction-stamp" id="frictionStamp">FRICTION_MODE.EXE</div>
+
+    <script>
+      // ── BRIEF TOGGLE ──
+      const toggle = document.getElementById("briefToggle");
+      const full = document.getElementById("briefFull");
+      toggle.addEventListener("click", () => {
+        const open = full.classList.toggle("open");
+        toggle.textContent = open ? "↑ READ LESS" : "↓ READ MORE";
+      });
+
+      // ── SCROLL REVEAL ──
+      const obs = new IntersectionObserver(
+        (entries) =>
+          entries.forEach((e) => {
+            if (e.isIntersecting) e.target.classList.add("visible");
+          }),
+        { threshold: 0.1 },
+      );
+      document.querySelectorAll(".reveal").forEach((el) => obs.observe(el));
+
+      // ── RULE LOCK: scrolls with page, locks at top forever ──
+      const rule = document.getElementById("pageRule");
+      let ruleLocked = false;
+
+      window.addEventListener(
+        "scroll",
+        () => {
+          if (ruleLocked) return;
+          if (rule.getBoundingClientRect().top <= 1) {
+            ruleLocked = true;
+            rule.classList.add("locked");
+          }
+        },
+        { passive: true },
+      );
+
+      // ── FRICTION EASTER EGG ──
+      const trigger = document.getElementById("friction-trigger");
+      const stamp = document.getElementById("frictionStamp");
+      let glitching = false;
+
+      trigger.addEventListener("click", () => {
+        if (glitching) return;
+        glitching = true;
+
+        document.body.classList.add("friction-active");
+        stamp.classList.add("stamp-in");
+
+        // Kill it after 3s
+        setTimeout(() => {
+          document.body.classList.remove("friction-active");
+          stamp.classList.remove("stamp-in");
+          glitching = false;
+        }, 3000);
+      });
+    </script>
+  </body>
+</html>
