@@ -3,24 +3,33 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MORTICA · Musa Soko</title>
+    <title>MORTICA | MUSA SOKO</title>
+    <link rel="icon" type="image/png" href="images/favicon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Permanent+Marker&family=Space+Mono:wght@400;700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
       rel="stylesheet"
     />
-
     <style>
       :root {
+        /* ── DEFAULT (clean) palette — matches Cuvée / Novus F ── */
         --deep: #080f12;
         --teal: #00455e;
         --red: #e24632;
         --orange: #f69223;
         --cream: #f7e3c2;
+        --black: #000000;
         --muted: rgba(247, 227, 194, 0.5);
-        --dim: rgba(247, 227, 194, 0.25);
-        --border: rgba(247, 227, 194, 0.1);
+        --dim: rgba(247, 227, 194, 0.2);
+
+        /* ── MESS (grunge) palette — vibrant, reckless ── */
+        --mag: #d32850;
+        --gteal: #1e7689;
+        --green: #288966;
+        --amber: #dc8813;
+        --coral: #ed474a;
+        --paper: #f4ecdd;
       }
 
       * {
@@ -37,171 +46,210 @@
         font-family: "Inter", sans-serif;
         background: var(--deep);
         color: var(--cream);
-        line-height: 1.6;
+        line-height: 1.5;
+        overflow-x: hidden;
+        position: relative;
+        transition:
+          background 0.55s ease,
+          color 0.55s ease;
       }
 
-      /* Grain */
+      /* Subtle grain — present in both modes */
       body::before {
         content: "";
         position: fixed;
         inset: 0;
         pointer-events: none;
-        z-index: 9999;
-        opacity: 0.02;
+        z-index: 9998;
+        opacity: 0.04;
         background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-        background-size: 180px;
+        background-size: 200px;
       }
 
       ::-webkit-scrollbar {
-        width: 3px;
+        width: 4px;
       }
       ::-webkit-scrollbar-track {
         background: var(--deep);
       }
       ::-webkit-scrollbar-thumb {
-        background: var(--teal);
+        background: var(--orange);
       }
 
-      /* ══════════════════
-       NAV
-    ══════════════════ */
+      /* SOLID spray-painted graffiti backdrop — only in mess mode */
+      #graffitiBackdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.55s ease;
+      }
+      body.mess-active #graffitiBackdrop {
+        opacity: 1;
+      }
+
+      /* keep real content above backdrop */
+      nav,
+      .page-rule,
+      .page-wrap,
+      footer,
+      .friction-stamp {
+        position: relative;
+        z-index: 1;
+      }
+
+      /* ─── NAV (torn buttons) ─── */
       nav {
         position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 100;
+        top: 25px;
+        left: 25px;
+        right: 25px;
+        z-index: 1000;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 22px 72px;
-        background: rgba(8, 15, 18, 0.9);
-        backdrop-filter: blur(14px);
-        -webkit-backdrop-filter: blur(14px);
-        border-bottom: 1px solid var(--border);
+        pointer-events: none;
+        background: transparent;
       }
-
-      .back-link {
-        text-decoration: none;
-        color: var(--muted);
-        font-size: 12px;
-        font-weight: 600;
-        letter-spacing: 0.1em;
+      .nav-btn {
+        pointer-events: auto;
+        background: var(--red);
+        color: var(--black);
+        padding: 8px 20px;
+        font-weight: 900;
         text-transform: uppercase;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        transition: color 0.2s;
-      }
-      .back-link:hover {
-        color: var(--orange);
-      }
-
-      .back-arrow {
-        width: 26px;
-        height: 26px;
-        border: 1px solid var(--border);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 12px;
-        transition: border-color 0.2s;
-      }
-      .back-link:hover .back-arrow {
-        border-color: var(--orange);
-      }
-
-      .nav-title {
+        text-decoration: none;
+        transform: rotate(-1.5deg);
+        border: 3px solid var(--black);
         font-size: 13px;
-        font-weight: 500;
-        color: var(--dim);
-        letter-spacing: 0.04em;
+        letter-spacing: -0.02em;
+        transition:
+          0.1s,
+          background 0.4s ease;
+      }
+      .nav-btn:hover {
+        transform: rotate(0deg) scale(1.1);
+        background: var(--orange);
+      }
+      body.mess-active .nav-btn {
+        background: var(--coral);
+      }
+      body.mess-active .nav-btn[style*="cream"],
+      body.mess-active .nav-btn.solid {
+        background: var(--paper) !important;
       }
 
-      /* ══════════════════
-       MAIN WRAPPER
-    ══════════════════ */
+      /* ─── SCROLL-LOCK STROKE ─── */
+      .page-rule {
+        display: block;
+        height: 2px;
+        width: 87%;
+        margin: 62px auto 0;
+        background: var(--orange);
+        position: relative;
+        z-index: 998;
+        pointer-events: none;
+        transition: background 0.4s ease;
+      }
+      .page-rule.locked {
+        position: fixed;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        margin: 0;
+        width: 87%;
+      }
+      body.mess-active .page-rule {
+        height: 3px;
+        animation: ruleFlash 0.22s steps(1) infinite;
+      }
+      @keyframes ruleFlash {
+        0% {
+          background: var(--coral);
+        }
+        33% {
+          background: var(--green);
+        }
+        66% {
+          background: var(--amber);
+        }
+      }
+
+      /* ─── PAGE WRAPPER ─── */
       .page-wrap {
         max-width: 1360px;
         margin: 0 auto;
-        padding: 0 72px;
+        padding: 0 40px;
       }
 
-      /* ══════════════════
-       TWO-COLUMN HERO
-       Video left, info right
-    ══════════════════ */
+      /* ─── TWO-COLUMN HERO ─── */
       .portrait-hero {
         display: grid;
         grid-template-columns: auto 1fr;
         gap: 56px;
-        padding-top: 96px; /* nav offset */
+        padding-top: 80px;
         padding-bottom: 80px;
         align-items: start;
       }
 
-      /* ── VIDEO SIDE ── */
       .video-side {
         position: sticky;
-        top: 88px; /* sticks just below nav */
+        top: 50px;
       }
-
       .video-frame {
-        background: #000;
-        border-radius: 8px;
-        overflow: hidden;
-        /* 9:16 at a comfortable viewing height */
+        background: var(--black);
+        border: 4px solid #000000;
+        padding: 2px;
+        position: relative;
         height: 76vh;
-        width: calc(76vh * 9 / 16);
+        width: fit-content;
+        margin: 0 auto;
+        overflow: visible;
       }
-
-      .video-frame iframe,
-      .video-frame video {
+      .video-aspect {
+        position: relative;
+        height: 100%;
+        aspect-ratio: 9 / 16;
+        background: #000;
+      }
+      .video-aspect iframe {
+        position: absolute;
+        inset: 0;
         width: 100%;
         height: 100%;
         border: none;
         display: block;
       }
-
-      /* Piece number under the video */
-      .video-counter {
-        margin-top: 14px;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-      }
-
-      .video-counter-num {
-        font-size: 11px;
-        font-weight: 700;
-        letter-spacing: 0.16em;
-        color: var(--dim);
-      }
-
-      .video-counter-bar {
-        flex: 1;
-        height: 1px;
-        background: var(--border);
-        position: relative;
-      }
-
-      /* Progress fill — set via inline style or JS */
-      .video-counter-bar::before {
+      .video-frame::before {
         content: "";
         position: absolute;
-        left: 0;
-        top: 0;
-        height: 100%;
-        width: 60%; /* piece 3 of 5 = 60% */
-        background: var(--orange);
+        top: -6px;
+        right: -6px;
+        width: 22px;
+        height: 22px;
+        border-top: 3px solid var(--orange);
+        border-right: 3px solid var(--orange);
+        z-index: 2;
+        transition: border-color 0.4s ease;
       }
-
-      .video-counter-total {
-        font-size: 11px;
-        font-weight: 400;
-        color: var(--dim);
-        letter-spacing: 0.08em;
+      .video-frame::after {
+        content: "";
+        position: absolute;
+        bottom: -6px;
+        left: -6px;
+        width: 22px;
+        height: 22px;
+        border-bottom: 3px solid var(--orange);
+        border-left: 3px solid var(--orange);
+        z-index: 2;
+        transition: border-color 0.4s ease;
+      }
+      body.mess-active .video-frame::before {
+        border-color: var(--mag);
+      }
+      body.mess-active .video-frame::after {
+        border-color: var(--green);
       }
 
       /* ── INFO SIDE ── */
@@ -210,328 +258,521 @@
       }
 
       /* Eyebrow */
-      .eyebrow {
-        font-size: 10px;
-        font-weight: 700;
-        letter-spacing: 0.22em;
-        text-transform: uppercase;
-        color: var(--orange);
-        margin-bottom: 14px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-      .eyebrow::before {
-        content: "";
-        width: 20px;
-        height: 1.5px;
+      .tape-eyebrow {
+        display: inline-block;
         background: var(--orange);
+        color: var(--black);
+        padding: 5px 14px;
+        font-family: "Space Mono", monospace;
+        font-weight: 700;
+        font-size: 11px;
+        text-transform: uppercase;
+        transform: rotate(-2deg);
+        border: 2px solid var(--black);
+        margin-bottom: 24px;
+        letter-spacing: 0.05em;
+        transition: background 0.4s ease;
+      }
+      body.mess-active .tape-eyebrow {
+        background: var(--amber);
+        font-family: "Permanent Marker", cursive;
+        font-size: 15px;
+        letter-spacing: 0.02em;
       }
 
-      /* Title */
+      /* Title — clean by default, poster-punk in mess mode */
       .piece-title {
-        font-size: clamp(42px, 5vw, 72px);
+        font-size: clamp(52px, 7vw, 100px);
         font-weight: 900;
-        letter-spacing: -0.04em;
-        line-height: 0.9;
-        color: var(--cream);
-        margin-bottom: 20px;
+        letter-spacing: -0.06em;
+        line-height: 0.85;
+        color: #ffffff;
+        margin-bottom: 32px;
+        text-transform: uppercase;
+        transition:
+          color 0.45s ease,
+          text-shadow 0.45s ease,
+          transform 0.45s ease;
       }
       .piece-title .accent {
         color: var(--red);
+        user-select: none;
+        display: inline-block;
+        padding: 0 3px 0 8px;
+        transition: color 0.3s ease;
+      }
+      body.mess-active .piece-title {
+        font-family: "Anton", sans-serif;
+        font-weight: 400;
+        letter-spacing: 0.005em;
+        line-height: 0.9;
+        color: var(--paper);
+        transform: rotate(-1.5deg);
+        text-shadow:
+          4px 4px 0 var(--mag),
+          8px 8px 0 var(--gteal);
+        animation: titleJitter 0.18s steps(2) infinite;
+      }
+      body.mess-active .piece-title .accent {
+        color: var(--coral);
+      }
+      @keyframes titleJitter {
+        0% {
+          transform: rotate(-1.5deg) translate(0, 0);
+        }
+        50% {
+          transform: rotate(-1.5deg) translate(2px, -1px);
+        }
+        100% {
+          transform: rotate(-1.5deg) translate(-1px, 1px);
+        }
       }
 
-      /* Meta row */
-      .meta-row {
-        display: flex;
-        align-items: center;
-        gap: 0;
+      /* Piece Info card */
+      .meta-card {
+        background: var(--cream);
+        color: var(--black);
+        padding: 32px;
+        border: 4px solid var(--black);
+        transform: rotate(0.8deg);
         margin-bottom: 40px;
-        border-top: 1px solid var(--border);
-        border-bottom: 1px solid var(--border);
-        padding: 12px 0;
+        position: relative;
+        transition: box-shadow 0.4s ease;
+      }
+      body.mess-active .meta-card {
+        box-shadow: 8px 8px 0 var(--mag); /* drop shadow lives in the mess */
+      }
+      .meta-card::before {
+        content: "";
+        position: absolute;
+        top: -12px;
+        left: 50%;
+        width: 100px;
+        height: 24px;
+        background: rgba(247, 227, 194, 0.5);
+        transform: translateX(-50%) rotate(1deg);
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        transition: all 0.4s ease;
+      }
+      body.mess-active .meta-card::before {
+        content: "PIECE";
+        background: var(--green);
+        color: var(--paper);
+        font-family: "Permanent Marker", cursive;
+        font-size: 12px;
+        letter-spacing: 0.1em;
+        line-height: 24px;
+        text-align: center;
+        border: 2px solid var(--black);
+        transform: translateX(-50%) rotate(-2deg);
       }
 
-      .meta-item {
-        font-size: 11px;
-        font-weight: 600;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        color: var(--muted);
-        padding-right: 20px;
-        margin-right: 20px;
-        border-right: 1px solid var(--border);
+      .meta-card-header {
+        border-bottom: 3px solid var(--black);
+        margin-bottom: 20px;
+        padding-bottom: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
       }
-      .meta-item:last-child {
-        border-right: none;
-        margin-right: 0;
-        padding-right: 0;
+      .meta-card-header h2 {
+        font-family: "Space Mono", monospace;
+        font-size: 15px;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: var(--black);
+      }
+      .meta-card-tag {
+        font-family: "Space Mono", monospace;
+        font-size: 9px;
+        font-weight: 700;
+        color: var(--black);
+      }
+      .meta-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+      .meta-item label {
+        display: block;
+        font-size: 9px;
+        font-weight: 900;
+        text-transform: uppercase;
+        color: var(--teal);
+        letter-spacing: 0.1em;
+        margin-bottom: 6px;
+        transition: color 0.4s ease;
+      }
+      body.mess-active .meta-item label {
+        color: var(--mag);
+      }
+      .meta-item p {
+        font-size: 18px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: -0.02em;
+        color: var(--black);
+      }
+      .meta-note {
+        margin-top: 24px;
+        font-family: "Space Mono", monospace;
+        font-size: 11px;
+        line-height: 1.6;
+        border-left: 4px solid var(--black);
+        padding-left: 16px;
+        font-weight: 700;
+        color: var(--black);
+        transition: border-color 0.4s ease;
+      }
+      body.mess-active .meta-note {
+        border-left-color: var(--mag);
       }
 
       /* Description */
       .description {
         margin-bottom: 36px;
       }
-
       .description p {
-        font-size: 15px;
-        font-weight: 300;
-        line-height: 1.85;
-        color: var(--muted);
-        margin-bottom: 16px;
+        font-size: 18px;
+        font-weight: 500;
+        line-height: 1.5;
+        color: rgba(247, 227, 194, 0.82);
+        margin-bottom: 18px;
+        transition: color 0.4s ease;
       }
       .description p:last-child {
         margin-bottom: 0;
       }
-
-      /* Brief box */
-      .brief-box {
-        background: rgba(0, 0, 0, 0.3);
-        border-left: 3px solid var(--orange);
-        padding: 22px 24px;
-        margin-bottom: 36px;
-      }
-
-      .brief-label {
-        font-size: 9px;
-        font-weight: 700;
-        letter-spacing: 0.22em;
-        text-transform: uppercase;
-        color: var(--orange);
-        margin-bottom: 12px;
-      }
-
-      .brief-text {
-        font-size: 15px;
-        font-weight: 300;
-        font-style: italic;
-        color: var(--cream);
-        line-height: 1.7;
-      }
-
-      .brief-full {
-        display: none;
-        margin-top: 10px;
-      }
-      .brief-full.open {
-        display: block;
-      }
-
-      .brief-toggle {
-        display: inline-block;
-        margin-top: 12px;
-        background: none;
-        border: none;
-        color: var(--orange);
-        font-size: 12px;
-        font-weight: 600;
-        letter-spacing: 0.08em;
-        cursor: pointer;
-        font-family: "Inter", sans-serif;
-        text-decoration: underline;
-        text-decoration-style: dotted;
-        text-underline-offset: 3px;
-        padding: 0;
-        transition: color 0.2s;
-      }
-      .brief-toggle:hover {
-        color: var(--red);
+      body.mess-active .description p {
+        color: rgba(244, 236, 221, 0.85);
       }
 
       /* Tools */
       .tools-block {
-        margin-bottom: 36px;
+        margin-bottom: 8px;
       }
-
       .block-label {
+        font-family: "Space Mono", monospace;
         font-size: 9px;
         font-weight: 700;
-        letter-spacing: 0.22em;
         text-transform: uppercase;
+        letter-spacing: 0.22em;
         color: var(--red);
         margin-bottom: 14px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: color 0.4s ease;
       }
-
+      .block-label::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: rgba(247, 227, 194, 0.1);
+        transition: background 0.4s ease;
+      }
+      body.mess-active .block-label {
+        color: var(--coral);
+      }
+      body.mess-active .block-label::after {
+        background: rgba(244, 236, 221, 0.18);
+      }
       .tool-tags {
         display: flex;
         flex-wrap: wrap;
         gap: 8px;
       }
-
       .tool-tag {
-        font-size: 11px;
-        font-weight: 600;
+        font-family: "Space Mono", monospace;
+        font-size: 10px;
+        font-weight: 700;
         letter-spacing: 0.06em;
-        color: var(--muted);
-        border: 1px solid var(--teal);
-        background: rgba(0, 69, 94, 0.2);
         padding: 5px 12px;
-        border-radius: 2px;
+        border: 2px solid var(--black);
+        color: var(--black);
+        background: var(--cream);
+        text-transform: uppercase;
+        transform: rotate(-0.5deg);
         transition:
-          border-color 0.2s,
-          color 0.2s;
+          background 0.4s ease,
+          color 0.4s ease,
+          border-color 0.4s ease,
+          transform 0.4s ease;
       }
       .tool-tag:hover {
-        border-color: var(--orange);
-        color: var(--cream);
+        background: var(--orange);
+        transform: rotate(0deg) scale(1.05);
+      }
+      /* mess mode → ransom-note vibrant stickers */
+      body.mess-active .tool-tag {
+        color: var(--black);
+        border-color: var(--black);
+      }
+      body.mess-active .tool-tag:nth-child(1) {
+        background: var(--coral);
+        transform: rotate(-2deg);
+      }
+      body.mess-active .tool-tag:nth-child(2) {
+        background: var(--gteal);
+        color: var(--paper);
+        transform: rotate(1.5deg);
+      }
+      body.mess-active .tool-tag:nth-child(3) {
+        background: var(--amber);
+        transform: rotate(-1deg);
+      }
+      body.mess-active .tool-tag:nth-child(n + 4) {
+        background: var(--green);
+        color: var(--paper);
+        transform: rotate(2deg);
       }
 
-      /* ══════════════════
-       CREDITS
-    ══════════════════ */
+      /* ─── CREDITS ─── */
       .credits-section {
-        border-top: 1px solid var(--border);
-        padding: 56px 0 64px;
+        border-top: 3px solid rgba(247, 227, 194, 0.08);
+        padding: 60px 0 64px;
       }
-
       .credits-title {
+        font-family: "Space Mono", monospace;
         font-size: 11px;
         font-weight: 700;
         letter-spacing: 0.22em;
         text-transform: uppercase;
         color: var(--red);
-        margin-bottom: 36px;
+        margin-bottom: 40px;
         display: flex;
         align-items: center;
         gap: 16px;
+        transition: color 0.4s ease;
       }
       .credits-title::after {
         content: "";
         flex: 1;
-        height: 1px;
-        background: var(--border);
+        height: 2px;
+        background: rgba(247, 227, 194, 0.08);
+        transition: background 0.4s ease;
       }
-
+      body.mess-active .credits-title {
+        color: var(--coral);
+      }
+      body.mess-active .credits-title::after {
+        background: var(--mag);
+      }
       .credits-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 32px 40px;
       }
-
-      .credit-item {
-      }
-
       .credit-role {
+        font-family: "Space Mono", monospace;
         font-size: 9px;
         font-weight: 700;
-        letter-spacing: 0.2em;
         text-transform: uppercase;
+        letter-spacing: 0.2em;
         color: var(--orange);
         margin-bottom: 6px;
+        transition: color 0.4s ease;
       }
-
+      body.mess-active .credit-role {
+        color: var(--amber);
+      }
       .credit-name {
-        font-size: 16px;
-        font-weight: 500;
-        color: var(--cream);
-        line-height: 1.4;
-      }
-
-      .credit-name a {
-        color: var(--cream);
-        text-decoration: none;
-        border-bottom: 1px solid transparent;
-        transition: border-color 0.2s;
-      }
-      .credit-name a:hover {
-        border-bottom-color: var(--orange);
-      }
-
-      /* ══════════════════
-       FOOTER NAV
-    ══════════════════ */
-      .project-footer {
-        border-top: 1px solid var(--border);
-        padding: 32px 0 60px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      .footer-nav-link {
-        text-decoration: none;
-        color: var(--muted);
-        font-size: 13px;
-        font-weight: 500;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        transition: color 0.2s;
-      }
-      .footer-nav-link:hover {
-        color: var(--orange);
-      }
-      .footer-nav-link.disabled {
-        opacity: 0.2;
-        pointer-events: none;
-      }
-
-      .footer-nav-label {
-        font-size: 9px;
-        font-weight: 700;
-        letter-spacing: 0.16em;
-        text-transform: uppercase;
-        color: var(--dim);
-        display: block;
-        margin-bottom: 3px;
-      }
-
-      .footer-nav-title {
-        font-size: 15px;
+        font-size: 17px;
         font-weight: 700;
         color: var(--cream);
         letter-spacing: -0.01em;
+        transition: color 0.4s ease;
+      }
+      body.mess-active .credit-name {
+        color: var(--paper);
       }
 
-      .footer-center-link {
+      /* ─── PREV STRIP ─── */
+      .prev-strip {
+        padding: 24px 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .prev-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
         text-decoration: none;
-        color: var(--muted);
+        color: var(--black);
+        background: var(--cream);
+        border: 3px solid var(--black);
+        padding: 8px 20px;
+        font-family: "Space Mono", monospace;
         font-size: 11px;
         font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        transform: rotate(-1deg);
+        transition:
+          transform 0.1s,
+          background 0.1s;
+      }
+      .prev-link:hover {
+        transform: rotate(0deg) scale(1.05);
+        background: var(--orange);
+      }
+      body.mess-active .prev-link:hover {
+        background: var(--coral);
+      }
+      .prev-eyebrow {
+        font-family: "Space Mono", monospace;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        color: var(--muted);
+      }
+
+      /* ─── FOOTER ─── */
+      footer {
+        margin-top: 90px;
+        position: relative;
+      }
+      .tear-divider {
+        width: 100%;
+        height: 26px;
+        background: var(--orange);
+        transition: background 0.4s ease;
+        clip-path: polygon(
+          0% 100%,
+          0% 55%,
+          2% 78%,
+          4% 45%,
+          6% 70%,
+          8% 35%,
+          10% 62%,
+          12% 28%,
+          14% 66%,
+          16% 38%,
+          18% 72%,
+          20% 42%,
+          22% 75%,
+          24% 33%,
+          26% 64%,
+          28% 40%,
+          30% 70%,
+          32% 30%,
+          34% 60%,
+          36% 44%,
+          38% 74%,
+          40% 36%,
+          42% 66%,
+          44% 32%,
+          46% 70%,
+          48% 42%,
+          50% 76%,
+          52% 34%,
+          54% 64%,
+          56% 40%,
+          58% 72%,
+          60% 30%,
+          62% 62%,
+          64% 44%,
+          66% 74%,
+          68% 36%,
+          70% 66%,
+          72% 32%,
+          74% 70%,
+          76% 42%,
+          78% 76%,
+          80% 34%,
+          82% 64%,
+          84% 40%,
+          86% 72%,
+          88% 30%,
+          90% 62%,
+          92% 44%,
+          94% 74%,
+          96% 36%,
+          98% 66%,
+          100% 50%,
+          100% 100%
+        );
+      }
+      body.mess-active .tear-divider {
+        background: var(--mag);
+      }
+      .footer-next {
+        background: var(--orange);
+        color: var(--black);
+        padding: 50px 40px;
+        transition: background 0.4s ease;
+      }
+      body.mess-active .footer-next {
+        background: var(--amber);
+      }
+      .footer-inner {
+        max-width: 1360px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 24px;
+      }
+      .next-eyebrow {
+        font-family: "Space Mono", monospace;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        display: block;
+        margin-bottom: 10px;
+      }
+      .next-project-title {
+        font-size: clamp(36px, 6vw, 72px);
+        font-weight: 900;
+        text-transform: uppercase;
+        color: var(--black);
+        text-decoration: none;
+        letter-spacing: -0.02em;
+      }
+      body.mess-active .next-project-title {
+        font-family: "Anton", sans-serif;
+        font-weight: 400;
+        letter-spacing: 0.02em;
+      }
+      .next-badge {
+        background: var(--black);
+        color: var(--orange);
+        font-weight: 900;
+        text-transform: uppercase;
+        font-size: 14px;
+        letter-spacing: 0.08em;
+        padding: 16px 26px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        white-space: nowrap;
+        transition:
+          transform 0.15s,
+          color 0.4s ease;
+      }
+      .next-badge:hover {
+        transform: scale(1.05) rotate(-1deg);
+      }
+      body.mess-active .next-badge {
+        color: var(--amber);
+      }
+      .footer-meta {
+        max-width: 1360px;
+        margin: 0 auto;
+        padding: 20px 40px;
+        display: flex;
+        justify-content: space-between;
+        font-family: "Space Mono", monospace;
+        font-size: 10px;
         letter-spacing: 0.14em;
         text-transform: uppercase;
-        border: 1px solid var(--border);
-        padding: 9px 20px;
-        transition:
-          border-color 0.2s,
-          color 0.2s;
-      }
-      .footer-center-link:hover {
-        border-color: var(--orange);
-        color: var(--orange);
+        color: var(--muted);
       }
 
-      /* ══════════════════
-       ANIMATIONS
-    ══════════════════ */
-      .fade-in {
-        opacity: 0;
-        transform: translateY(16px);
-        animation: up 0.6s ease forwards;
-      }
-      .fade-in:nth-child(1) {
-        animation-delay: 0.05s;
-      }
-      .fade-in:nth-child(2) {
-        animation-delay: 0.15s;
-      }
-      .fade-in:nth-child(3) {
-        animation-delay: 0.22s;
-      }
-      .fade-in:nth-child(4) {
-        animation-delay: 0.3s;
-      }
-      .fade-in:nth-child(5) {
-        animation-delay: 0.38s;
-      }
-
-      @keyframes up {
-        to {
-          opacity: 1;
-          transform: none;
-        }
-      }
-
+      /* ─── SCROLL REVEAL ─── */
       .reveal {
         opacity: 0;
         transform: translateY(20px);
@@ -544,19 +785,99 @@
         transform: none;
       }
 
-      /* ══════════════════
-       RESPONSIVE
-    ══════════════════ */
-      @media (max-width: 1100px) {
-        .portrait-hero {
-          gap: 40px;
+      /* ═══════════════════════════════════════════════
+         EASTER EGG — burst layer (reversible)
+      ═══════════════════════════════════════════════ */
+      .mess-layer {
+        position: fixed;
+        inset: 0;
+        z-index: 9000;
+        pointer-events: none;
+        overflow: hidden;
+      }
+      .mess-bit {
+        position: absolute;
+        opacity: 0;
+        transform: scale(0) rotate(var(--rot, 0deg));
+        animation: messPop 0.5s cubic-bezier(0.18, 1.4, 0.4, 1) forwards;
+        animation-delay: var(--delay, 0s);
+      }
+      @keyframes messPop {
+        0% {
+          opacity: 0;
+          transform: scale(0) rotate(var(--rot, 0deg));
         }
-        .video-frame {
-          height: 68vh;
-          width: calc(68vh * 9 / 16);
+        70% {
+          opacity: 1;
+          transform: scale(1.18) rotate(var(--rot, 0deg));
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1) rotate(var(--rot, 0deg));
+        }
+      }
+      /* exit — they just fade away, no reverse */
+      .mess-bit.out {
+        animation: messFade 0.4s ease forwards;
+        animation-delay: var(--odelay, 0s);
+      }
+      @keyframes messFade {
+        0% {
+          opacity: 1;
+          transform: scale(1) rotate(var(--rot, 0deg));
+        }
+        100% {
+          opacity: 0;
+          transform: scale(1.08) rotate(var(--rot, 0deg)) translateY(-6px);
         }
       }
 
+      .friction-stamp {
+        position: fixed;
+        bottom: 32px;
+        right: 32px;
+        z-index: 9600;
+        font-family: "Permanent Marker", cursive;
+        font-size: 26px;
+        color: var(--paper);
+        background: var(--mag);
+        border: 3px solid var(--black);
+        padding: 10px 20px;
+        transform: rotate(-6deg) scale(0);
+        opacity: 0;
+        transition:
+          transform 0.35s cubic-bezier(0.18, 1.5, 0.4, 1),
+          opacity 0.3s;
+        pointer-events: none;
+        text-transform: uppercase;
+        box-shadow: 5px 5px 0 var(--black);
+      }
+      .friction-stamp.stamp-in {
+        transform: rotate(-6deg) scale(1);
+        opacity: 1;
+      }
+
+      .mess-hint {
+        font-family: "Space Mono", monospace;
+        font-size: 10px;
+        color: var(--muted);
+        letter-spacing: 0.12em;
+        margin-top: 14px;
+        text-transform: uppercase;
+      }
+
+      /* ─── RESPONSIVE ─── */
+      @media (max-width: 1100px) {
+        .portrait-hero {
+          gap: 36px;
+        }
+        .video-frame {
+          height: 68vh;
+        }
+        .credits-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
       @media (max-width: 900px) {
         .portrait-hero {
           grid-template-columns: 1fr;
@@ -571,142 +892,119 @@
         }
         .video-frame {
           height: 65vh;
-          width: calc(65vh * 9 / 16);
         }
         .page-wrap {
-          padding: 0 32px;
+          padding: 0 24px;
         }
-        nav {
-          padding: 18px 32px;
-        }
-        .credits-grid {
-          grid-template-columns: 1fr 1fr;
+        .footer-inner {
+          flex-direction: column;
+          align-items: flex-start;
         }
       }
-
       @media (max-width: 560px) {
         .video-frame {
           height: 55vh;
-          width: calc(55vh * 9 / 16);
         }
         .page-wrap {
-          padding: 0 20px;
-        }
-        nav {
-          padding: 16px 20px;
-        }
-        .meta-row {
-          flex-wrap: wrap;
-          gap: 8px;
-        }
-        .meta-item {
-          border-right: none;
-          padding-right: 0;
+          padding: 0 16px;
         }
         .credits-grid {
           grid-template-columns: 1fr;
-        }
-        .project-footer {
-          flex-direction: column;
-          gap: 24px;
-          align-items: flex-start;
         }
       }
     </style>
   </head>
   <body>
-    <!-- NAV -->
+    <div id="graffitiBackdrop" aria-hidden="true"></div>
+    <div id="pageRule" class="page-rule"></div>
+
     <nav>
-      <a href="index.html" class="back-link">
-        <span class="back-arrow">←</span>
-        Motion Pieces
-      </a>
-      <span class="nav-title">MORTICA · 2023</span>
+      <a href="index.html" class="nav-btn">← HOME</a>
+      <div
+        class="nav-btn solid"
+        style="background: var(--cream); transform: rotate(2deg)"
+      >
+        MUSA_SOKO // 2023
+      </div>
     </nav>
 
     <div class="page-wrap">
-      <!-- TWO-COLUMN HERO -->
       <div class="portrait-hero">
-        <!-- LEFT: Portrait video, sticky -->
+        <!-- LEFT: sticky portrait video -->
         <div class="video-side">
-          <div class="video-frame fade-in">
-            <!-- Replace with Vimeo embed when live -->
-            <iframe
-              src="https://player.vimeo.com/video/1121503730?autoplay=1&loop=1&muted=1&title=0&byline=0&portrait=0&background=1"
-              allow="autoplay; fullscreen; picture-in-picture"
-              allowfullscreen
-            >
-            </iframe>
-          </div>
-
-          <!-- Progress indicator -->
-          <div class="video-counter fade-in">
-            <span class="video-counter-num">03</span>
-            <div class="video-counter-bar" style="--fill: 60%"></div>
-            <span class="video-counter-total">05</span>
+          <div class="video-frame">
+            <div class="video-aspect">
+              <iframe
+                src="https://player.vimeo.com/video/900842265?autoplay=1&loop=1&title=0&byline=0&portrait=0&background=0"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowfullscreen
+              ></iframe>
+            </div>
           </div>
         </div>
 
-        <!-- RIGHT: Info -->
+        <!-- RIGHT: info -->
         <div class="info-side">
-          <div class="eyebrow fade-in">Title Sequence · Portrait</div>
+          <div class="tape-eyebrow">Music Video · Portrait</div>
 
-          <h1 class="piece-title fade-in">
-            MORT<span class="accent">ICA</span>
+          <h1 class="piece-title">
+            MORT<span class="accent" id="messTrigger">ICA</span>
           </h1>
 
-          <div class="meta-row fade-in">
-            <span class="meta-item">2023</span>
-            <span class="meta-item">Title Sequence</span>
-            <span class="meta-item">1:52 min</span>
-            <span class="meta-item">9:16</span>
+          <div class="meta-card">
+            <div class="meta-card-header">
+              <h2>Piece Info</h2>
+              <span class="meta-card-tag">[ MORTICA // 2023 ]</span>
+            </div>
+            <div class="meta-grid">
+              <div class="meta-item">
+                <label>Year</label>
+                <p>2023</p>
+              </div>
+              <div class="meta-item">
+                <label>Format</label>
+                <p>9:16</p>
+              </div>
+              <div class="meta-item">
+                <label>Category</label>
+                <p>Music Video</p>
+              </div>
+              <div class="meta-item">
+                <label>Runtime</label>
+                <p>00:56</p>
+              </div>
+            </div>
+            <div class="meta-note">
+              NOTE: Umm... A full process breakdown of how this was made is
+              coming soon.
+            </div>
           </div>
 
-          <div class="description fade-in">
+          <div class="description">
             <p>
-              The client wanted something nostalgic and warm. This is a spec
-              piece exploring golden hour lighting and the specific feeling of
-              summer storms — that moment where the air is heavy before the sky
-              breaks.
+              MORTICA came together the second exams were over — all that
+              pent-up energy finally let loose. A music video and full
+              motion-graphics piece built as a deliberate beautiful mess:
+              graffiti, spray-paint splashes and torn textures crashing into
+              soft flora, like something refreshing pushing up through concrete.
             </p>
             <p>
-              Made in 3 days as a personal challenge to work faster without
-              sacrificing atmosphere. The rain was built from a mix of practical
-              footage and digital compositing.
+              Vibrant to the point of reckless. Every rule of "clean" motion
+              design got broken on purpose — and it's still one of my
+              favourites.
             </p>
           </div>
 
-          <!-- Brief — collapsible -->
-          <div class="brief-box fade-in">
-            <div class="brief-label">Brief</div>
-            <div class="brief-text" id="briefPreview">
-              "Create something that feels like memory and captures the warmth
-              of summer evenings when the rain hits hot pavement and...
-            </div>
-            <div class="brief-full brief-text" id="briefFull">
-              the whole world smells like wet earth. The piece should feel both
-              nostalgic and present — like remembering a dream while you're
-              still in it. Evoke golden hour light, the sound of rain on leaves,
-              and that specific feeling of being warm inside while it's storming
-              outside."
-            </div>
-            <button class="brief-toggle" id="briefToggle">Read more</button>
-          </div>
-
-          <!-- Tools -->
-          <div class="tools-block fade-in">
-            <div class="block-label">Tools</div>
+          <div class="tools-block">
+            <div class="block-label">Tools Used</div>
             <div class="tool-tags">
               <span class="tool-tag">After Effects</span>
               <span class="tool-tag">Premiere Pro</span>
-              <span class="tool-tag">Procreate</span>
               <span class="tool-tag">Photoshop</span>
             </div>
           </div>
         </div>
-        <!-- /info-side -->
       </div>
-      <!-- /portrait-hero -->
 
       <!-- CREDITS -->
       <div class="credits-section reveal">
@@ -717,61 +1015,75 @@
             <div class="credit-name">Musa Soko</div>
           </div>
           <div class="credit-item">
+            <div class="credit-role">Editing</div>
+            <div class="credit-name">Musa Soko</div>
+          </div>
+          <div class="credit-item">
             <div class="credit-role">Music</div>
-            <div class="credit-name">Artist Name</div>
+            <div class="credit-name">38Gee.z</div>
           </div>
           <div class="credit-item">
             <div class="credit-role">Client</div>
             <div class="credit-name">Personal Project</div>
           </div>
           <div class="credit-item">
-            <div class="credit-role">Colour Grade</div>
-            <div class="credit-name">Musa Soko</div>
-          </div>
-          <div class="credit-item">
             <div class="credit-role">Year</div>
-            <div class="credit-name">2024</div>
+            <div class="credit-name">2023</div>
           </div>
           <div class="credit-item">
             <div class="credit-role">Special Thanks</div>
-            <div class="credit-name">Name / Name</div>
+            <div class="credit-name">38Gee.z</div>
           </div>
         </div>
       </div>
 
-      <!-- FOOTER NAV -->
-      <div class="project-footer reveal">
-        <a href="cuvee.html" class="footer-nav-link">
-          <span>←</span>
-          <span>
-            <span class="footer-nav-label">Previous</span>
-            <span class="footer-nav-title">CUVÉE</span>
-          </span>
-        </a>
-
-        <a href="index.html" class="footer-center-link">All Work</a>
-
-        <a href="#" class="footer-nav-link disabled">
-          <span>
-            <span class="footer-nav-label">Next</span>
-            <span class="footer-nav-title">—</span>
-          </span>
-          <span>→</span>
-        </a>
+      <!-- PREV STRIP -->
+      <div class="prev-strip reveal">
+        <a href="cuvee.html" class="prev-link">← CUVÉE</a>
+        <span class="prev-eyebrow">Previous piece</span>
       </div>
     </div>
-    <!-- /page-wrap -->
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="tear-divider"></div>
+      <div class="footer-next">
+        <div class="footer-inner">
+          <div class="next-label-block">
+            <span class="next-eyebrow">// UP NEXT ON THE REEL</span>
+            <a href="index.html" class="next-project-title">COMING SOON</a>
+          </div>
+          <a href="index.html" class="next-badge">
+            BACK TO WORK <span>→</span>
+          </a>
+        </div>
+      </div>
+      <div class="footer-meta">
+        <span>MADE IN A FEVER</span>
+        <span>END_OF_PAGE</span>
+      </div>
+    </footer>
+
+    <div class="friction-stamp" id="messStamp">Beautiful Mess</div>
+    <div class="mess-layer" id="messLayer" aria-hidden="true"></div>
 
     <script>
-      // Brief toggle
-      const toggle = document.getElementById("briefToggle");
-      const full = document.getElementById("briefFull");
-      toggle.addEventListener("click", () => {
-        const open = full.classList.toggle("open");
-        toggle.textContent = open ? "Read less" : "Read more";
-      });
+      // ── SCROLL-LOCK STROKE ──
+      const rule = document.getElementById("pageRule");
+      let ruleLocked = false;
+      window.addEventListener(
+        "scroll",
+        () => {
+          if (ruleLocked) return;
+          if (rule.getBoundingClientRect().top <= 1) {
+            ruleLocked = true;
+            rule.classList.add("locked");
+          }
+        },
+        { passive: true },
+      );
 
-      // Scroll reveal
+      // ── SCROLL REVEAL ──
       const obs = new IntersectionObserver(
         (entries) =>
           entries.forEach((e) => {
@@ -780,6 +1092,174 @@
         { threshold: 0.1 },
       );
       document.querySelectorAll(".reveal").forEach((el) => obs.observe(el));
+
+      // ── SHARED ART HELPERS ──
+      const palette = ["#d32850", "#1e7689", "#288966", "#dc8813", "#ed474a"];
+      const rand = (min, max) => Math.random() * (max - min) + min;
+      const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+      // 5-petal flower — flora as "refreshing"
+      function flowerSVG(c1, c2) {
+        let petals = "";
+        for (let i = 0; i < 5; i++) {
+          petals += `<ellipse cx="32" cy="14" rx="9" ry="16" fill="${c1}"
+            transform="rotate(${i * 72} 32 32)"/>`;
+        }
+        return `<svg width="64" height="64" viewBox="0 0 64 64"
+          xmlns="http://www.w3.org/2000/svg">${petals}
+          <circle cx="32" cy="32" r="9" fill="${c2}"/></svg>`;
+      }
+
+      // Spray-paint splat — solid blobs + scattered droplets
+      function spraySVG(c, op = 0.9) {
+        let dots = "";
+        for (let i = 0; i < 14; i++) {
+          dots += `<circle cx="${rand(6, 74)}" cy="${rand(6, 74)}"
+            r="${rand(1.5, 5)}" fill="${c}" opacity="${rand(0.5, 1)}"/>`;
+        }
+        return `<svg width="80" height="80" viewBox="0 0 80 80"
+          xmlns="http://www.w3.org/2000/svg">
+          <circle cx="40" cy="40" r="20" fill="${c}" opacity="${op}"/>
+          <circle cx="30" cy="34" r="12" fill="${c}" opacity="${op * 0.8}"/>
+          <circle cx="52" cy="46" r="14" fill="${c}" opacity="${op * 0.8}"/>
+          ${dots}</svg>`;
+      }
+
+      // ── BUILD THE SOLID GRAFFITI BACKDROP (permanent during mess mode) ──
+      const backdrop = document.getElementById("graffitiBackdrop");
+      (function buildBackdrop() {
+        let html = "";
+        // big solid spray splats anchored around the edges
+        const spots = [
+          [6, 12, 5.5],
+          [82, 8, 4.5],
+          [70, 70, 6],
+          [10, 76, 5],
+          [44, 40, 4],
+          [90, 48, 3.5],
+          [26, 50, 3],
+          [56, 90, 4.5],
+        ];
+        spots.forEach(([x, y, s]) => {
+          const c = pick(palette);
+          html += `<div style="position:absolute;left:${x}vw;top:${y}vh;
+            width:${80 * s}px;height:${80 * s}px;opacity:0.5;
+            transform:rotate(${rand(-30, 30)}deg)">${spraySVG(c, 1)}</div>`;
+        });
+        // a couple of oversized faded marker tags = graffiti wall
+        const wallTags = ["MESS", "BLOOM"];
+        wallTags.forEach((t, i) => {
+          html += `<div style="position:absolute;
+            left:${i ? 58 : 8}vw;top:${i ? 22 : 58}vh;
+            font-family:'Permanent Marker',cursive;
+            font-size:${rand(120, 200)}px;color:${pick(palette)};
+            opacity:0.14;transform:rotate(${i ? 6 : -8}deg);
+            white-space:nowrap">${t}</div>`;
+        });
+        backdrop.innerHTML = html;
+      })();
+
+      // ── BURST: comedic tags, censored swears, exclamations ──
+      const tags = [
+        "OH SH*T",
+        "WTF",
+        "?!?!",
+        "!!!",
+        "OOPS",
+        "F*CK YEAH",
+        "BLOOM",
+        "!!!",
+        "LOUD",
+        "BLOOM",
+      ];
+      function tagEl(txt, c) {
+        const el = document.createElement("div");
+        el.textContent = txt;
+        el.style.fontFamily = "'Permanent Marker', cursive";
+        el.style.fontSize = rand(28, 64) + "px";
+        el.style.color = c;
+        el.style.textShadow = "2px 2px 0 rgba(0,0,0,0.6)";
+        el.style.whiteSpace = "nowrap";
+        return el;
+      }
+
+      const trigger = document.getElementById("messTrigger");
+      const stamp = document.getElementById("messStamp");
+      const layer = document.getElementById("messLayer");
+      let messOn = false;
+      let clearTimer = null;
+
+      function detonate() {
+        if (clearTimer) {
+          clearTimeout(clearTimer);
+          clearTimer = null;
+        }
+        layer.innerHTML = "";
+        const count = 34;
+        for (let i = 0; i < count; i++) {
+          const bit = document.createElement("div");
+          bit.className = "mess-bit";
+          bit.style.left = rand(-2, 96) + "vw";
+          bit.style.top = rand(-2, 94) + "vh";
+          bit.style.setProperty("--rot", rand(-40, 40) + "deg");
+          bit.style.setProperty("--delay", rand(0, 0.22) + "s");
+
+          const roll = Math.random();
+          if (roll < 0.4) {
+            bit.innerHTML = spraySVG(pick(palette));
+            const s = rand(0.8, 3.2);
+            bit.firstChild.style.width = 80 * s + "px";
+            bit.firstChild.style.height = 80 * s + "px";
+          } else if (roll < 0.78) {
+            bit.innerHTML = flowerSVG(pick(palette), pick(palette));
+            const s = rand(0.7, 2.4);
+            bit.firstChild.style.width = 64 * s + "px";
+            bit.firstChild.style.height = 64 * s + "px";
+          } else {
+            bit.appendChild(tagEl(pick(tags), pick(palette)));
+          }
+          layer.appendChild(bit);
+        }
+      }
+
+      // reverse them back out, then clear
+      function collapse() {
+        const bits = layer.querySelectorAll(".mess-bit");
+        let maxDelay = 0;
+        bits.forEach((bit) => {
+          const d = rand(0, 0.18);
+          maxDelay = Math.max(maxDelay, d);
+          bit.style.setProperty("--odelay", d + "s");
+          bit.classList.add("out");
+        });
+        clearTimer = setTimeout(
+          () => {
+            layer.innerHTML = "";
+          },
+          (maxDelay + 0.5) * 1000,
+        );
+      }
+
+      // The burst is ONLY a transition: it rapid-fires in, holds a beat, then
+      // sucks back out — leaving the toggled look (clean ⇄ grunge) behind.
+      let transitioning = false;
+      function runTransition() {
+        if (transitioning) return;
+        transitioning = true;
+        detonate(); // rapid pop-in
+        stamp.classList.add("stamp-in");
+        setTimeout(() => {
+          collapse(); // reverse / suck back in
+          stamp.classList.remove("stamp-in");
+          transitioning = false;
+        }, 750); // brief hold, then it's gone — no lingering
+      }
+
+      trigger.addEventListener("click", () => {
+        messOn = !messOn;
+        document.body.classList.toggle("mess-active", messOn);
+        runTransition();
+      });
     </script>
   </body>
 </html>
