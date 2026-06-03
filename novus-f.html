@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NOVUS F. // MUSA SOKO</title>
+    <title>NOVUS F. | MUSA SOKO</title>
+    <link rel="icon" type="image/png" href="images/favicon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -21,6 +22,165 @@
         --white: #ffffff;
       }
 
+      /* ── FRICTION PALETTE — white base, video colours thrown everywhere ── */
+      body.palette-active {
+        background: #ffffff;
+        color: #072d53;
+        transition:
+          background 0.6s ease,
+          color 0.6s ease;
+      }
+
+      /* NAV — yellow bar, dark navy text */
+
+      body.palette-active nav::after {
+        background: #072d53;
+      }
+      body.palette-active .nav-btn {
+        background: #c6271c;
+        color: #ffffff;
+        border-color: #c6271c;
+      }
+
+      /* PAGE RULE — purple stripe */
+      body.palette-active .page-rule {
+        background: #6513e0;
+      }
+
+      /* TAPE LABEL — purple bg, yellow text */
+      body.palette-active .tape-label {
+        background: #6513e0;
+        color: #f5ee9e;
+        border-color: #6513e0;
+      }
+
+      /* VIDEO COUNTER — red */
+      body.palette-active .video-counter {
+        color: #c6271c;
+      }
+
+      /* MAIN TITLE — navy, span accents in red + purple */
+      body.palette-active .main-h1 {
+        color: #072d53;
+      }
+      body.palette-active .main-h1 .glitch-word:nth-child(1) {
+        color: #c6271c;
+      }
+      body.palette-active .main-h1 .glitch-word:nth-child(2) {
+        color: #6513e0;
+      }
+
+      /* SPEC CARD — yellow bg, navy text, purple border */
+      body.palette-active .tech-card {
+        background: #f5ee9e;
+        border-color: #072d53;
+      }
+      body.palette-active .tech-header h2 {
+        color: #072d53;
+      }
+      body.palette-active .tech-item label {
+        color: #6513e0;
+      }
+      body.palette-active .tech-item p {
+        color: #072d53;
+      }
+
+      /* MANIFESTO — red text, purple spans */
+      body.palette-active .manifesto {
+        color: #c6271c;
+      }
+      body.palette-active .manifesto span {
+        color: #6513e0;
+      }
+
+      /* COPY BLOCK — dark navy */
+      body.palette-active .copy-block p {
+        color: #072d53;
+      }
+
+      /* STAMP — orange bg, navy text */
+      body.palette-active .stamp {
+        background: #fcb63f;
+        color: #072d53;
+        border-color: #072d53;
+      }
+
+      /* BLOCK LABELS — purple */
+      body.palette-active .block-label {
+        color: #6513e0;
+      }
+      body.palette-active .block-label::after {
+        background: #6513e0;
+      }
+
+      /* TOOL TAGS — alternating colours */
+      body.palette-active .tool-tag:nth-child(1) {
+        background: #072d53;
+        color: #f5ee9e;
+        border-color: #072d53;
+      }
+      body.palette-active .tool-tag:nth-child(2) {
+        background: #c6271c;
+        color: #ffffff;
+        border-color: #c6271c;
+      }
+      body.palette-active .tool-tag:nth-child(3) {
+        background: #6513e0;
+        color: #ffffff;
+        border-color: #6513e0;
+      }
+      body.palette-active .tool-tag:nth-child(4) {
+        background: #fcb63f;
+        color: #072d53;
+        border-color: #fcb63f;
+      }
+      body.palette-active .tool-tag:nth-child(5) {
+        background: #3b8ea5;
+        color: #ffffff;
+        border-color: #3b8ea5;
+      }
+      body.palette-active .tool-tag:nth-child(n + 6) {
+        background: #072d53;
+        color: #f5ee9e;
+        border-color: #072d53;
+      }
+
+      /* CREDITS — role in purple, name in navy */
+      body.palette-active .credits-title {
+        color: #6513e0;
+      }
+      body.palette-active .credits-title::after {
+        background: #c6271c;
+      }
+      body.palette-active .credit-role {
+        color: #6513e0;
+      }
+      body.palette-active .credit-name {
+        color: #072d53;
+      }
+
+      /* FOOTER — orange bg, navy text */
+      body.palette-active .footer-next {
+        background: #fcb63f;
+        color: #072d53;
+      }
+      body.palette-active .footer-next * {
+        color: #072d53;
+      }
+      body.palette-active .tear-divider {
+        background: #c6271c;
+      }
+      body.palette-active .footer-meta {
+        color: #3b8ea5;
+      }
+
+      /* FRICTION STAMP — purple */
+      body.palette-active .friction-stamp {
+        background: #6513e0;
+        color: #f5ee9e;
+        border-color: #f5ee9e;
+      }
+
       * {
         margin: 0;
         padding: 0;
@@ -33,6 +193,9 @@
         color: var(--cream);
         line-height: 1;
         overflow-x: hidden;
+      }
+
+      body.friction-active {
         background-image:
           linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
           linear-gradient(
@@ -150,7 +313,7 @@
         width: 100%;
         aspect-ratio: 16 / 9;
         background: #000;
-        border: 2px solid #111;
+        border: 0px solid #111;
       }
 
       .aspect-scaler iframe {
@@ -160,6 +323,40 @@
         width: 100%;
         height: 100%;
         border: none;
+      }
+
+      /* ── VIDEO CLICK-SHIELD ── */
+      .video-shield {
+        position: absolute;
+        inset: 0;
+        z-index: 10;
+        cursor: pointer;
+        background: transparent;
+      }
+      .video-hint {
+        position: absolute;
+        bottom: 14px;
+        left: 14px;
+        background: rgba(0, 0, 0, 0.15);
+        color: #ffffff;
+        font-family: "Space Mono", monospace;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        padding: 5px 14px;
+        border: 1px solid rgba(247, 227, 194, 0.12);
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.2s;
+        pointer-events: none;
+        z-index: 11;
+      }
+      .aspect-scaler:hover .video-hint {
+        opacity: 1;
+      }
+      .aspect-scaler.unlocked .video-hint {
+        opacity: 0 !important;
       }
 
       /* ─── HERO TITLE ─── */
@@ -207,7 +404,7 @@
         padding: 50px;
         border: 5px solid var(--black);
         transform: rotate(1.2deg);
-        box-shadow: 15px 15px 0 var(--teal);
+
         margin-bottom: 150px;
         position: relative;
       }
@@ -978,12 +1175,15 @@
       <!-- VIDEO FRAME: clean, no dot pattern -->
       <section class="video-presentation">
         <div class="corner-bl"></div>
-        <div class="aspect-scaler">
+        <div class="aspect-scaler" id="videoScaler">
           <iframe
-            src="https://player.vimeo.com/video/1108056464?autoplay=1&loop=1&muted=1&title=0&byline=0&portrait=0&background=1"
+            id="vimeoFrame"
+            src="https://player.vimeo.com/video/1195165495?autoplay=1&loop=1&title=0&byline=0&portrait=0&muted=0&background=0"
             allow="autoplay; fullscreen"
             allowfullscreen
           ></iframe>
+          <div class="video-shield" id="videoShield"></div>
+          <span class="video-hint">CLICK TO CONTROL</span>
         </div>
       </section>
 
@@ -1008,7 +1208,7 @@
       <!-- TECH CARD -->
       <section class="tech-card">
         <div class="tech-header">
-          <h2>Technical Rider</h2>
+          <h2>Piece Info</h2>
           <div
             style="
               font-family: &quot;Space Mono&quot;;
@@ -1016,26 +1216,26 @@
               font-weight: bold;
             "
           >
-            [ INTERNAL USE ONLY ]
+            [ NOVUS_F // 2024 ]
           </div>
         </div>
 
         <div class="tech-grid">
           <div class="tech-item">
-            <label>Sequence</label>
-            <p>001_Final</p>
+            <label>Year</label>
+            <p>2024</p>
           </div>
           <div class="tech-item">
-            <label>Duration</label>
-            <p>03:42:00</p>
+            <label>Type</label>
+            <p>Motion Piece</p>
           </div>
           <div class="tech-item">
-            <label>Encoding</label>
-            <p>ProRes 4444</p>
+            <label>Role</label>
+            <p>Direction · Motion · Grade</p>
           </div>
           <div class="tech-item">
-            <label>Pipeline</label>
-            <p>AE + DAVINCI</p>
+            <label>Status</label>
+            <p>Personal Project</p>
           </div>
         </div>
 
@@ -1050,64 +1250,39 @@
             font-weight: bold;
           "
         >
-          NOTE: This piece was built on the principle of creative destruction.
-          Every asset was processed through at least three stages of degradation
-          to achieve the final "Friction" aesthetic.
+          NOTE: No audio issues on your end — the video intentionally has no
+          sound. Sound design is still in production. This is the visual cut.
         </div>
       </section>
 
       <!-- MANIFESTO + COPY -->
       <div class="story-section">
         <div class="manifesto">
-          THIS ISN'T A <span>VIDEO</span>. IT'S A VISUAL REACTION TO A FREQUENCY
-          THAT NOBODY ELSE <span>WANTED</span> TO HEAR.
+          I LIKE MAKING <span>THINGS</span> <br />I LIKE LEARNING NEW THINGS
+          <span>THINGS</span>
         </div>
 
         <div class="right-col">
           <div class="copy-block">
             <p style="margin-bottom: 30px">
-              The "F" in Novus F stands for Friction. The goal was to remove the
-              polished, corporate sheen of modern motion design and replace it
-              with something that felt like it was crumbling as you watched it.
+              Novus is Latin for new — and the F stays open on purpose: frame,
+              form, film, whatever the work needs to be. It's less one piece
+              than a banner for all of it: 2D, 3D, motion graphics, every
+              medium, a new form each time.
             </p>
             <p>
-              I spent more time destroying the image than building it. Using
-              digital scan-lines, custom grain overlays, and aggressive color
-              shifts, the piece became a living document of the editing process
-              itself.
+              'Sucking at something is the first step to being sort of good at
+              something.' It's not perfect, but it's a start.
             </p>
           </div>
           <div class="stamp-wrap">
             <div class="stamp">
-              Verified for <br />
-              Portfolio <br />
-              Release 2024
+              process breakdown <br />
+              still<br />
+              in the works
             </div>
           </div>
         </div>
-      </div>
-
-      <!-- CLIENT BRIEF -->
-      <div class="brief-box reveal">
-        <div class="brief-header">
-          <span class="brief-header-label">Creative Brief</span>
-          <span class="brief-stamp">[ INTERNAL USE ONLY ]</span>
-        </div>
-        <div class="brief-body">
-          <div class="brief-text" id="briefPreview">
-            "The brief was self-imposed. No client. No deadline. Build something
-            that feels like signal decay — like watching a transmission break
-            apart...
-          </div>
-          <div class="brief-full brief-text" id="briefFull">
-            in real time. The piece had to destroy itself in the process of
-            being made. Every layer of polish stripped back. Every clean edge
-            roughened. The friction wasn't a stylistic choice — it was the only
-            honest answer to the question: what does motion design look like
-            when it stops pretending to be invisible?"
-          </div>
-        </div>
-        <button class="brief-toggle" id="briefToggle">↓ READ MORE</button>
       </div>
 
       <!-- TOOLS -->
@@ -1115,8 +1290,8 @@
         <div class="block-label">Tools Used</div>
         <div class="tool-tags">
           <span class="tool-tag">After Effects</span>
-          <span class="tool-tag">DaVinci Resolve</span>
-          <span class="tool-tag">Premiere Pro</span>
+          <span class="tool-tag">Krita</span>
+          <span class="tool-tag">Blender</span>
           <span class="tool-tag">Photoshop</span>
         </div>
       </div>
@@ -1126,16 +1301,12 @@
         <div class="credits-title">Credits</div>
         <div class="credits-grid">
           <div class="credit-item">
-            <div class="credit-role">Design &amp; Animation</div>
+            <div class="credit-role">Motion &amp; Direction</div>
             <div class="credit-name">Musa Soko</div>
           </div>
           <div class="credit-item">
-            <div class="credit-role">Colour Grade</div>
+            <div class="credit-role">Sound Design</div>
             <div class="credit-name">Musa Soko</div>
-          </div>
-          <div class="credit-item">
-            <div class="credit-role">Music</div>
-            <div class="credit-name">Artist Name</div>
           </div>
           <div class="credit-item">
             <div class="credit-role">Client</div>
@@ -1147,7 +1318,7 @@
           </div>
           <div class="credit-item">
             <div class="credit-role">Special Thanks</div>
-            <div class="credit-name">Name / Name</div>
+            <div class="credit-name">All My Love Ones</div>
           </div>
         </div>
       </div>
@@ -1168,7 +1339,7 @@
         </div>
       </div>
       <div class="footer-meta">
-        <span>DATA_STREAM: ACTIVE</span>
+        <span>Thank You For Watching</span>
         <span>END_OF_PAGE</span>
       </div>
     </footer>
@@ -1176,14 +1347,33 @@
     <div class="friction-stamp" id="frictionStamp">FRICTION_MODE.EXE</div>
 
     <script>
-      // ── BRIEF TOGGLE ──
-      const toggle = document.getElementById("briefToggle");
-      const full = document.getElementById("briefFull");
-      toggle.addEventListener("click", () => {
-        const open = full.classList.toggle("open");
-        toggle.textContent = open ? "↑ READ LESS" : "↓ READ MORE";
+      // ── VIDEO SHIELD: hide controls until click, restore on mouse leave ──
+      const scaler = document.getElementById("videoScaler");
+      const shield = document.getElementById("videoShield");
+      const vimeoFrame = document.getElementById("vimeoFrame");
+
+      shield.addEventListener("click", () => {
+        // Remove shield so Vimeo gets mouse events and shows controls
+        shield.remove();
+        scaler.classList.add("unlocked");
       });
 
+      scaler.addEventListener("mouseleave", () => {
+        if (scaler.classList.contains("unlocked")) {
+          // Re-attach shield when mouse leaves
+          scaler.classList.remove("unlocked");
+          const newShield = document.createElement("div");
+          newShield.className = "video-shield";
+          newShield.id = "videoShield";
+          scaler.appendChild(newShield);
+          newShield.addEventListener("click", function onClick() {
+            newShield.remove();
+            scaler.classList.add("unlocked");
+          });
+        }
+      });
+
+      // ── BRIEF TOGGLE ──
       // ── SCROLL REVEAL ──
       const obs = new IntersectionObserver(
         (entries) =>
@@ -1214,19 +1404,29 @@
       const trigger = document.getElementById("friction-trigger");
       const stamp = document.getElementById("frictionStamp");
       let glitching = false;
+      let paletteOn = false;
 
       trigger.addEventListener("click", () => {
         if (glitching) return;
         glitching = true;
 
+        // Glitch fires
         document.body.classList.add("friction-active");
         stamp.classList.add("stamp-in");
 
-        // Kill it after 3s
         setTimeout(() => {
+          // Glitch ends — palette switches
           document.body.classList.remove("friction-active");
           stamp.classList.remove("stamp-in");
           glitching = false;
+
+          if (!paletteOn) {
+            document.body.classList.add("palette-active");
+            paletteOn = true;
+          } else {
+            document.body.classList.remove("palette-active");
+            paletteOn = false;
+          }
         }, 3000);
       });
     </script>
