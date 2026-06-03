@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CUVÉE · MUSA SOKO</title>
+    <title>CUVÉE | MUSA SOKO</title>
+    <link rel="icon" type="image/png" href="images/favicon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -39,17 +40,6 @@
         color: var(--cream);
         line-height: 1.5;
         overflow-x: hidden;
-        background-image:
-          linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
-          linear-gradient(
-            90deg,
-            rgba(255, 0, 0, 0.03),
-            rgba(0, 255, 0, 0.01),
-            rgba(0, 0, 255, 0.03)
-          );
-        background-size:
-          100% 4px,
-          3px 100%;
       }
 
       ::-webkit-scrollbar {
@@ -148,15 +138,23 @@
        * ──────────────────────────────────────────────────────────────────
        */
       .video-frame {
-        --frame-pad: 8px; /* ← CHANGE THIS to widen/narrow the gap */
         background: var(--black);
         border: 4px solid #000000;
-        padding: 4px;
+        padding: 2px; /* thin black gap, like NOVUS F */
         position: relative;
         height: 76vh;
-        /* Width accounts for padding on both sides so the video stays 9:16 */
-        width: calc(76vh * 9 / 16 + var(--frame-pad) * 2);
+        width: fit-content; /* hug the locked-ratio video — no dead space */
+        margin: 0 auto;
         overflow: visible;
+      }
+
+      /* Locks the inner video to an exact 9:16 box sized off the frame height,
+         so the iframe fills it precisely and the border always hugs the video. */
+      .video-aspect {
+        position: relative;
+        height: 100%;
+        aspect-ratio: 9 / 16;
+        background: #000;
       }
 
       /* Corner marks: offset = half their own size (10px) + frame-pad, so
@@ -185,7 +183,9 @@
         z-index: 2;
       }
 
-      .video-frame iframe {
+      .video-aspect iframe {
+        position: absolute;
+        inset: 0;
         width: 100%;
         height: 100%;
         border: none;
@@ -269,7 +269,7 @@
         display: inline-block;
         color: var(--red);
 
-        padding: 0 3px 0 8px;
+        padding: 0 3px 0 3px;
         cursor: pointer;
         user-select: none;
       }
@@ -278,10 +278,9 @@
       .meta-card {
         background: var(--cream);
         color: var(--black);
-        padding: 28px 32px;
+        padding: 32px;
         border: 4px solid var(--black);
         transform: rotate(0.8deg);
-        box-shadow: 10px 10px 0 var(--teal);
         margin-bottom: 40px;
         position: relative;
       }
@@ -290,30 +289,42 @@
         content: "";
         position: absolute;
         top: -12px;
-        left: 30px;
-        width: 80px;
+        left: 50%;
+        width: 100px;
         height: 24px;
         background: rgba(247, 227, 194, 0.5);
-        transform: rotate(1deg);
+        transform: translateX(-50%) rotate(1deg);
         border: 1px solid rgba(0, 0, 0, 0.08);
       }
 
       .meta-card-header {
+        border-bottom: 2px solid var(--black);
+        margin-bottom: 20px;
+        padding-bottom: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+      }
+
+      .meta-card-header h2 {
+        font-family: "Space Mono", monospace;
+        font-size: 15px;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: var(--black);
+      }
+
+      .meta-card-tag {
         font-family: "Space Mono", monospace;
         font-size: 9px;
         font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.15em;
-        color: var(--teal);
-        border-bottom: 2px solid var(--black);
-        padding-bottom: 8px;
-        margin-bottom: 16px;
+        color: var(--black);
       }
 
       .meta-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 16px 24px;
+        gap: 20px;
       }
 
       .meta-item label {
@@ -323,14 +334,25 @@
         text-transform: uppercase;
         color: var(--teal);
         letter-spacing: 0.1em;
-        margin-bottom: 4px;
+        margin-bottom: 6px;
       }
 
       .meta-item p {
-        font-size: 15px;
+        font-size: 18px;
         font-weight: 900;
         text-transform: uppercase;
         letter-spacing: -0.02em;
+        color: var(--black);
+      }
+
+      .meta-note {
+        margin-top: 24px;
+        font-family: "Space Mono", monospace;
+        font-size: 11px;
+        line-height: 1.6;
+        border-left: 4px solid var(--black);
+        padding-left: 16px;
+        font-weight: 700;
         color: var(--black);
       }
 
@@ -340,11 +362,11 @@
       }
 
       .description p {
-        font-size: 15px;
-        font-weight: 400;
-        line-height: 1.85;
-        color: var(--muted);
-        margin-bottom: 14px;
+        font-size: 18px;
+        font-weight: 500;
+        line-height: 1.5;
+        color: rgba(247, 227, 194, 0.8);
+        margin-bottom: 18px;
       }
 
       .description p:last-child {
@@ -1005,7 +1027,6 @@
         }
         .video-frame {
           height: 68vh;
-          width: calc(68vh * 9 / 16);
         }
       }
 
@@ -1023,7 +1044,6 @@
         }
         .video-frame {
           height: 65vh;
-          width: calc(65vh * 9 / 16);
         }
         .page-wrap {
           padding: 0 24px;
@@ -1040,7 +1060,6 @@
       @media (max-width: 560px) {
         .video-frame {
           height: 55vh;
-          width: calc(55vh * 9 / 16);
         }
         .page-wrap {
           padding: 0 16px;
@@ -1072,17 +1091,13 @@
         <!-- LEFT: sticky portrait video -->
         <div class="video-side">
           <div class="video-frame">
-            <iframe
-              src="https://player.vimeo.com/video/1121503730?autoplay=1&loop=1&muted=1&title=0&byline=0&portrait=0&background=1"
-              allow="autoplay; fullscreen; picture-in-picture"
-              allowfullscreen
-            ></iframe>
-          </div>
-
-          <div class="video-counter">
-            <span class="counter-tag">02</span>
-            <div class="counter-bar"></div>
-            <span class="counter-total">/ 05</span>
+            <div class="video-aspect">
+              <iframe
+                src="https://player.vimeo.com/video/1172141046?autoplay=1&loop=1&title=0&byline=0&portrait=0&background=0"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowfullscreen
+              ></iframe>
+            </div>
           </div>
         </div>
 
@@ -1095,7 +1110,10 @@
           </h1>
 
           <div class="meta-card">
-            <div class="meta-card-header">// Spec Sheet</div>
+            <div class="meta-card-header">
+              <h2>Piece Info</h2>
+              <span class="meta-card-tag">[ CUVÉE // 2024 ]</span>
+            </div>
             <div class="meta-grid">
               <div class="meta-item">
                 <label>Year</label>
@@ -1106,49 +1124,35 @@
                 <p>9:16</p>
               </div>
               <div class="meta-item">
-                <label>Category</label>
+                <label>Type</label>
                 <p>Commercial</p>
               </div>
               <div class="meta-item">
                 <label>Duration</label>
-                <p>0:45</p>
+                <p>01:10</p>
               </div>
+            </div> 
+            <div class="meta-note">
+              NOTE: One of the last pieces made on my old ThinkCentre PC before
+              it gave out. RIP. A full process breakdown of how this was made is
+              coming soon.
             </div>
           </div>
 
           <div class="description">
             <p>
-              The client wanted something nostalgic and warm. This is a spec
-              piece exploring golden hour lighting and the specific feeling of
-              summer storms — that moment where the air is heavy before the sky
-              breaks.
+              I made this video to showcase a potential new visual direction for
+              the company. It was a concept piece. I took inspiration from wine
+              connoisseurs and sommeliers, who often gravitate toward black and
+              white. So I built the foundation in monochrome, then added subtle
+              gold accents with a grungy texture, like peeling the foil off a
+              champagne bottle
             </p>
             <p>
-              Made in 3 days as a personal challenge to work faster without
-              sacrificing atmosphere. The rain was built from a mix of practical
-              footage and digital compositing.
+              The purple came from the historical association between wine
+              drinkers and royalty (royalty wore purple). So there's a subtle
+              nod to that throughout.
             </p>
-          </div>
-
-          <div class="brief-box">
-            <div class="brief-header">
-              <span class="brief-header-label">Client Brief</span>
-              <span class="brief-stamp">[ CONFIDENTIAL ]</span>
-            </div>
-            <div class="brief-body">
-              <div class="brief-text" id="briefPreview">
-                "Create something that feels like memory and captures the warmth
-                of summer evenings when the rain hits hot pavement and...
-              </div>
-              <div class="brief-full brief-text" id="briefFull">
-                the whole world smells like wet earth. The piece should feel
-                both nostalgic and present — like remembering a dream while
-                you're still in it. Evoke golden hour light, the sound of rain
-                on leaves, and that specific feeling of being warm inside while
-                it's storming outside."
-              </div>
-            </div>
-            <button class="brief-toggle" id="briefToggle">↓ READ MORE</button>
           </div>
 
           <div class="tools-block">
@@ -1156,25 +1160,9 @@
             <div class="tool-tags">
               <span class="tool-tag">After Effects</span>
               <span class="tool-tag">Premiere Pro</span>
-              <span class="tool-tag">Procreate</span>
               <span class="tool-tag">Photoshop</span>
             </div>
           </div>
-        </div>
-      </div>
-
-      <!-- MANIFESTO — placeholder, edit the text inside .manifesto and the two <span> highlights -->
-      <div class="manifesto-section reveal">
-        <div class="manifesto-text">
-          NOT A <span>WINE</span> AD. THE SOUND THE FOIL MAKES<br />WHEN LUXURY
-          FINALLY <span>TEARS.</span>
-        </div>
-        <div class="manifesto-copy">
-          <p>
-            Wanted it to feel expensive but unstable — like something that cost
-            a lot and could still break at any second. That tension between
-            refinement and chaos is the whole piece.
-          </p>
         </div>
       </div>
 
@@ -1187,16 +1175,12 @@
             <div class="credit-name">Musa Soko</div>
           </div>
           <div class="credit-item">
-            <div class="credit-role">Music</div>
-            <div class="credit-name">Artist Name</div>
+            <div class="credit-role">Editing</div>
+            <div class="credit-name">Musa Soko</div>
           </div>
           <div class="credit-item">
             <div class="credit-role">Client</div>
-            <div class="credit-name">Personal Project</div>
-          </div>
-          <div class="credit-item">
-            <div class="credit-role">Colour Grade</div>
-            <div class="credit-name">Musa Soko</div>
+            <div class="credit-name">Winedrops</div>
           </div>
           <div class="credit-item">
             <div class="credit-role">Year</div>
@@ -1204,7 +1188,7 @@
           </div>
           <div class="credit-item">
             <div class="credit-role">Special Thanks</div>
-            <div class="credit-name">Name / Name</div>
+            <div class="credit-name">Johnny Inglis &amp; Team</div>
           </div>
         </div>
       </div>
@@ -1231,7 +1215,7 @@
         </div>
       </div>
       <div class="footer-meta">
-        <span>DATA_STREAM: ACTIVE</span>
+        <span>Thank You For Watching</span>
         <span>END_OF_PAGE</span>
       </div>
     </footer>
@@ -1253,14 +1237,6 @@
         },
         { passive: true },
       );
-
-      // ── BRIEF TOGGLE ──
-      const toggle = document.getElementById("briefToggle");
-      const full = document.getElementById("briefFull");
-      toggle.addEventListener("click", () => {
-        const open = full.classList.toggle("open");
-        toggle.textContent = open ? "↑ READ LESS" : "↓ READ MORE";
-      });
 
       // ── SCROLL REVEAL ──
       const obs = new IntersectionObserver(
