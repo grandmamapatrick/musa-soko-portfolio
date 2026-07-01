@@ -65,6 +65,7 @@
       }
 
       nav {
+        --nav-size: 16px; /* ← FONT SIZE of the About / Contact links */
         position: fixed;
         top: 0;
         width: 100%;
@@ -110,12 +111,12 @@
       }
 
       .nav-links a {
-        font-size: 13px;
+        font-size: var(--nav-size, 16px);
         font-weight: 700;
         color: var(--ink);
         text-decoration: none;
         letter-spacing: 0.04em;
-        text-transform: lowercase;
+        text-transform: none;
         padding: 6px 12px;
         border: 1px solid transparent;
       }
@@ -132,6 +133,14 @@
       }
 
       .hero {
+        /* ===== HERO TRANSFORM CONTROLS (tweak like AE) ===== */
+        --text-width: 860px; /* width of the words block — raise it and the role flows onto fewer lines */
+        --text-x: 0px; /* nudge words left (-) / right (+) */
+        --text-y: 0px; /* nudge words up (-) / down (+) */
+        --num-scale: 1.2; /* SIZE of the 24 (1 = 100%, 0.85 = smaller, 1.2 = bigger) */
+        --num-x: 0px; /* nudge the 24 left (-) / right (+) */
+        --num-y: 0px; /* nudge the 24 up (-) / down (+) */
+        /* =================================================== */
         position: relative;
         display: flex;
         align-items: center;
@@ -175,10 +184,11 @@
 
       .hero-text {
         flex: 1.2;
-        max-width: 860px;
+        max-width: var(--text-width, 860px);
         padding-right: 40px;
         position: relative;
         z-index: 1;
+        transform: translate(var(--text-x, 0px), var(--text-y, 0px));
       }
 
       .hero-eyebrow {
@@ -249,6 +259,11 @@
       }
 
       .welcome {
+        --welcome-x: 0px; /* move welcome line left (-) / right (+) */
+        --welcome-y: 0px; /* move up (-) / down (+); a large + value drops it to the bottom */
+        position: relative;
+        top: var(--welcome-y);
+        left: var(--welcome-x);
         font-size: clamp(26px, 3vw, 36px);
         font-weight: 300;
         color: #0092c9;
@@ -275,6 +290,9 @@
         max-width: 860px;
         height: auto;
         display: block;
+        transform: translate(var(--num-x, 0px), var(--num-y, 0px))
+          scale(var(--num-scale, 1));
+        transform-origin: center;
       }
 
       .section {
@@ -1242,6 +1260,26 @@
         box-shadow: 3px 3px 0 #000;
       }
 
+      /* work-in-progress placeholder card */
+      .bts-content .bts-wip-img {
+        width: 70%;
+        max-width: 220px;
+        transform: rotate(-3deg);
+        border: 4px solid #000;
+        background: #fff;
+        box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.35);
+        margin-bottom: 22px;
+      }
+      .bts-content .bts-credit {
+        display: block;
+        margin-top: 16px;
+        font-family: "Space Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: rgba(247, 227, 194, 0.4);
+      }
+
       .modal-details {
         border-top: 1px solid rgba(247, 227, 194, 0.1);
         padding-top: 22px;
@@ -1369,20 +1407,66 @@
 
       /* Responsive */
       @media (max-width: 800px) {
+        /* full-screen, social-style video takeover */
+        .modal-overlay {
+          align-items: stretch;
+        }
         .modal-panel {
           flex-direction: column;
-          max-height: 92vh;
-          overflow-y: auto;
+          width: 100vw;
+          max-width: 100vw;
+          height: 100vh;
+          height: 100dvh;
+          max-height: none;
+          border: none;
+          overflow: hidden; /* panel stays put; the info sheet scrolls */
         }
         .modal-video {
           width: 100%;
+          flex: 0 0 auto;
+          max-height: 56vh; /* video pinned up top, never runs off-screen */
           border-right: none;
           border-bottom: 1px solid rgba(247, 227, 194, 0.1);
+          background: #000;
         }
         .modal-info {
           width: 100%;
+          flex: 1 1 auto;
+          overflow-y: auto; /* the info sheet scrolls under the video */
+          -webkit-overflow-scrolling: touch;
+          border-left: none;
         }
         .modal-arrow {
+          display: none;
+        }
+        .modal-close {
+          position: fixed;
+          top: 12px;
+          right: 12px;
+          z-index: 2200;
+          width: 42px;
+          height: 42px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: rgba(0, 0, 0, 0.55);
+          border-radius: 50%;
+          backdrop-filter: blur(4px);
+        }
+        /* the Process panel doesn't work on phones — remove it entirely here */
+        .action-btn[data-action="behind"] {
+          display: none;
+        }
+        .bts-overlay {
+          display: none;
+        }
+        /* touch devices can't hover — show the play badge by default */
+        .thumbnail-container::after {
+          opacity: 1;
+          transform: none;
+        }
+        /* the big "24" hero video bleeds into the next section on mobile — drop it */
+        .hero-visual {
           display: none;
         }
       }
@@ -1432,12 +1516,14 @@
           height: 370px;
         }
         footer {
-          grid-template-columns: 1fr;
-          gap: 32px;
+          gap: 28px;
         }
-        .footer-center,
-        .footer-right {
+        .footer-center {
           display: none;
+        }
+        .footer-right {
+          flex-wrap: wrap;
+          gap: 10px;
         }
       }
     </style>
@@ -1449,14 +1535,14 @@
     <nav id="mainNav">
       <div class="logo">Musa Soko</div>
       <div class="nav-links">
-        <a href="about.html" class="nav-about">ABOUT</a>
-        <a href="contact.html" class="nav-contact">CONTACT</a>
+        <a href="about.html" class="nav-about">About</a>
+        <a href="contact.html" class="nav-contact">Contact</a>
       </div>
     </nav>
 
     <section class="hero">
       <img
-        src="images/background-shape.png"
+        src="images/background-shape.webp"
         alt=""
         class="bg-shape"
         aria-hidden="true"
@@ -1465,7 +1551,7 @@
         <p class="greeting">Hi There</p>
         <h1 class="name">I'm Musa Soko</h1>
         <p class="role">
-          A <span class="highlight">Video Editor</span><br />&amp;
+          A <span class="highlight">Video Editor</span> &amp;
           <span class="highlight">Motion Designer</span>
         </p>
         <div class="hero-divider"></div>
@@ -1503,9 +1589,9 @@
               /><span class="piece-num">01</span
               ><span class="piece-arrow">View Piece ↗</span>
               <div class="piece-content">
-                <div class="piece-year">2024</div>
+                <div class="piece-year">2026</div>
                 <div class="piece-title">NOVUS F.</div>
-                <div class="piece-category">motion piece</div>
+                <div class="piece-category">Personal Project</div>
               </div>
             </div></a
           >
@@ -1539,7 +1625,7 @@
               <div class="piece-content">
                 <div class="piece-year">2023</div>
                 <div class="piece-title">MORTICA</div>
-                <div class="piece-category">music video</div>
+                <div class="piece-category">Personal Project</div>
               </div>
             </div></a
           >
@@ -1602,7 +1688,7 @@
           </div>
           <div class="card-label">
             <div class="label-title">Spacegoods · Coffee Ad</div>
-            <div class="label-meta">2025 · edit+motion</div>
+            <div class="label-meta">2025</div>
           </div>
         </div>
         <div class="project-card" data-project="winedrops1">
@@ -1616,7 +1702,7 @@
           </div>
           <div class="card-label">
             <div class="label-title">Showreel 2025</div>
-            <div class="label-meta">2025 · personal</div>
+            <div class="label-meta">2025</div>
           </div>
         </div>
         <div class="project-card" data-project="strivetech1">
@@ -1630,7 +1716,7 @@
           </div>
           <div class="card-label">
             <div class="label-title">StriveTech · Social</div>
-            <div class="label-meta">2025 · explainer</div>
+            <div class="label-meta">2025</div>
           </div>
         </div>
         <div class="project-card" data-project="collab">
@@ -1644,7 +1730,7 @@
           </div>
           <div class="card-label">
             <div class="label-title">Brand Motion</div>
-            <div class="label-meta">2025 · AE</div>
+            <div class="label-meta">2025</div>
           </div>
         </div>
         <div class="project-card" data-project="sales">
@@ -1658,7 +1744,7 @@
           </div>
           <div class="card-label">
             <div class="label-title">Winedrops Highlight</div>
-            <div class="label-meta">2025 · reel</div>
+            <div class="label-meta">2025</div>
           </div>
         </div>
         <div class="project-card" data-project="winedrops2">
@@ -1672,7 +1758,7 @@
           </div>
           <div class="card-label">
             <div class="label-title">Sales Source Ad</div>
-            <div class="label-meta">2024 · B2B</div>
+            <div class="label-meta">2024</div>
           </div>
         </div>
         <div class="project-card" data-project="strivetech2">
@@ -1686,7 +1772,7 @@
           </div>
           <div class="card-label">
             <div class="label-title">Realistic Strategist</div>
-            <div class="label-meta">2023 · website</div>
+            <div class="label-meta">2023</div>
           </div>
         </div>
       </div>
@@ -1697,7 +1783,7 @@
       style="position: relative; overflow: hidden"
     >
       <img
-        src="images/FAQ(Right side).png"
+        src="images/FAQ(Right side).webp"
         alt=""
         class="faq-bg-shape"
         aria-hidden="true"
@@ -2007,29 +2093,22 @@
             tags: ["motion", "music video"],
             year: "2025",
             tools: ["After Effects", "Premiere Pro", "Illustrator"],
-            // ★ BTS IMAGES – Replace with your own paths ★
+            // ★ PROCESS / WIP — swap to real items (see commented example) when ready ★
             btsImages: [
               {
-                type: "text",
+                type: "wip",
+                imageUrl: "images/help-me.jpg",
+                title: "Process",
                 description:
-                  "This is where the magic happens. Rough cuts, mood boards, and the chaos that became the final piece.",
-                note: "🚧 WIP · More coming soon",
+                  "The full process is still being built — references, planning pages, clean frames and the final cut are on the way.",
+                note: "🚧 Work in progress",
+                credit: "found image · artist unknown — happy to credit",
               },
-              {
-                type: "image",
-                imageUrl: "images/bts/brand-motion-1.jpg",
-                description: "Early styleframes.",
-                note: "🎨 Phase 2",
-              },
-              {
-                type: "image",
-                imageUrl: "images/bts/brand-motion-2.gif",
-                description: "Animation test.",
-                note: "📐 Blocking",
-              },
-              // ... up to 7
+              // When ready, add real items like these:
+              // { type: "image", imageUrl: "images/bts/frame-01.jpg", description: "Early styleframes.", note: "🎨 Phase 2" },
+              // { type: "text", description: "A note about this stage.", note: "📐 Blocking" },
             ],
-            btsAspect: 4 / 3, // width/height of your BTS images
+            btsAspect: 1, // the WIP sketch is square
           },
           sales: {
             vimeoId: "1109940880",
@@ -2048,18 +2127,16 @@
             ],
             btsImages: [
               {
-                type: "text",
-                description: "This is where the magic happens.",
-                note: "🚧 WIP",
-              },
-              {
-                type: "image",
-                imageUrl: "images/bts/winedrops-1.jpg",
-                description: "Asset collection.",
-                note: "📁 Prep",
+                type: "wip",
+                imageUrl: "images/help-me.jpg",
+                title: "Process",
+                description:
+                  "The full process is still being built — references, planning pages, clean frames and the final cut are on the way.",
+                note: "🚧 Work in progress",
+                credit: "found image · artist unknown — happy to credit",
               },
             ],
-            btsAspect: 4 / 3,
+            btsAspect: 1,
           },
           winedrops2: {
             vimeoId: "1114326897",
@@ -2088,17 +2165,19 @@
         const arCache = new Map();
         async function getAR(vimeoId) {
           if (arCache.has(vimeoId)) return arCache.get(vimeoId);
+          const FALLBACK = 16 / 9;
           try {
             const res = await fetch(
               `https://vimeo.com/api/oembed.json?url=https://vimeo.com/${vimeoId}`,
             );
             const data = await res.json();
             const r = data.width / data.height;
-            arCache.set(vimeoId, r);
-            return r;
+            // guard against missing/garbage values so the box never collapses
+            const safe = Number.isFinite(r) && r > 0.2 && r < 4 ? r : FALLBACK;
+            arCache.set(vimeoId, safe);
+            return safe;
           } catch {
-            arCache.set(vimeoId, 16 / 9);
-            return 16 / 9;
+            return FALLBACK; // don't cache a failure — let it retry next open
           }
         }
 
@@ -2158,7 +2237,15 @@
           if (!p.btsImages) return;
           const item = p.btsImages[index];
 
-          if (item.type === "image" && item.imageUrl) {
+          if (item.type === "wip") {
+            btsContent.innerHTML = `
+              <img class="bts-wip-img" src="${item.imageUrl}" alt="Work in progress" />
+              <h3>${item.title || "Process"}</h3>
+              <p>${item.description}</p>
+              <span class="bts-note">${item.note}</span>
+              ${item.credit ? `<span class="bts-credit">${item.credit}</span>` : ""}
+            `;
+          } else if (item.type === "image" && item.imageUrl) {
             btsContent.innerHTML = `
               <img src="${item.imageUrl}" alt="BTS ${index + 1}" style="max-width:100%; max-height:100%;" />
               <p style="margin-top:16px;">${item.description}</p>
@@ -2166,7 +2253,7 @@
             `;
           } else {
             btsContent.innerHTML = `
-              <h3>Behind the Scenes</h3>
+              <h3>Process</h3>
               <p>${item.description}</p>
               <span class="bts-note">${item.note}</span>
             `;
@@ -2210,6 +2297,10 @@
           }
         }
 
+        // ── PROCESS panel paused until the real process/BTS content is ready.
+        //    Flip this to false to bring the PROCESS button back. ──
+        const PROCESS_PAUSED = true;
+
         function renderInfoPanel(key) {
           const p = projects[key];
           const idx = projectOrder.indexOf(key);
@@ -2221,7 +2312,7 @@
           // Always show FULLSCREEN and MUTE; add BEHIND if BTS exists
           const actionButtonsHtml = `
             <div class="action-buttons">
-              ${hasBts ? '<button class="action-btn" data-action="behind">BEHIND</button>' : ""}
+              ${hasBts && !PROCESS_PAUSED ? '<button class="action-btn" data-action="behind">PROCESS</button>' : ""}
               <button class="action-btn" data-action="fullscreen">FULLSCREEN</button>
               <button class="action-btn" data-action="mute">MUTE</button>
             </div>
