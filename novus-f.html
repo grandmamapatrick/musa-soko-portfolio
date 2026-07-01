@@ -85,11 +85,12 @@
         color: #072d53;
       }
 
-      /* MANIFESTO — red text, purple spans */
+      /* MANIFESTO — red text; spans = gold highlight, purple text */
       body.palette-active .manifesto {
         color: #c6271c;
       }
       body.palette-active .manifesto span {
+        background: #fdba4a; /* gold highlight (replaces red) */
         color: #6513e0;
       }
 
@@ -193,20 +194,6 @@
         color: var(--cream);
         line-height: 1;
         overflow-x: hidden;
-      }
-
-      body.friction-active {
-        background-image:
-          linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
-          linear-gradient(
-            90deg,
-            rgba(255, 0, 0, 0.03),
-            rgba(0, 255, 0, 0.01),
-            rgba(0, 0, 255, 0.03)
-          );
-        background-size:
-          100% 4px,
-          3px 100%;
       }
 
       /* ─── NAV ─── */
@@ -766,103 +753,41 @@
         }
       }
 
-      /* ─── EASTER EGG: FRICTION MODE ─── */
+      /* ─── EASTER EGG: CLEAN-PUNK REVEAL ─── */
       #friction-trigger {
         cursor: help;
         user-select: none;
       }
 
-      /* The full-page glitch overlay */
-      .friction-overlay {
+      /* layered colour wipe — three solids sweep in, then the stack wipes off */
+      #novusWipe {
         position: fixed;
         inset: 0;
         z-index: 9000;
         pointer-events: none;
-        opacity: 0;
+        overflow: hidden;
+        display: none;
       }
-
-      /* RGB split — applied to body during glitch */
-      body.friction-active {
-        animation: bodyGlitch 0.12s steps(1) infinite;
-      }
-
-      @keyframes bodyGlitch {
-        0% {
-          filter: none;
-        }
-        20% {
-          filter: hue-rotate(90deg) saturate(3) contrast(1.4);
-        }
-        40% {
-          filter: hue-rotate(-90deg) saturate(2) brightness(1.5);
-        }
-        60% {
-          filter: invert(0.08) hue-rotate(180deg);
-        }
-        80% {
-          filter: saturate(0) brightness(0.7);
-        }
-        100% {
-          filter: none;
-        }
-      }
-
-      /* Scan line pulse */
-      body.friction-active::after {
-        content: "";
-        position: fixed;
+      #novusWipe .nw-panel {
+        position: absolute;
         inset: 0;
-        z-index: 9500;
-        pointer-events: none;
-        background: repeating-linear-gradient(
-          0deg,
-          rgba(0, 0, 0, 0.35) 0px,
-          rgba(0, 0, 0, 0.35) 2px,
-          transparent 2px,
-          transparent 4px
-        );
-        animation: scanPulse 0.08s steps(1) infinite;
+        transform: translateX(-101%);
+        will-change: transform;
+      }
+      #novusWipe .nw-panel:nth-child(1) {
+        background: #4494ab; /* Pacific cyan */
+        z-index: 1;
+      }
+      #novusWipe .nw-panel:nth-child(2) {
+        background: #fdba4a; /* Sunflower gold */
+        z-index: 2;
+      }
+      #novusWipe .nw-panel:nth-child(3) {
+        background: #ca3227; /* Flag red */
+        z-index: 3;
       }
 
-      @keyframes scanPulse {
-        0% {
-          opacity: 1;
-          transform: translateY(0);
-        }
-        50% {
-          opacity: 0.6;
-          transform: translateY(2px);
-        }
-      }
-
-      /* RGB ghost layers */
-      body.friction-active .master-wrap {
-        animation: rgbSplit 0.1s steps(1) infinite;
-      }
-
-      @keyframes rgbSplit {
-        0% {
-          text-shadow: none;
-        }
-        25% {
-          text-shadow:
-            -4px 0 rgba(226, 70, 50, 0.7),
-            4px 0 rgba(0, 180, 255, 0.7);
-        }
-        50% {
-          text-shadow:
-            4px 0 rgba(226, 70, 50, 0.7),
-            -4px 0 rgba(0, 180, 255, 0.7);
-        }
-        75% {
-          text-shadow:
-            -2px 2px rgba(246, 146, 35, 0.6),
-            2px -2px rgba(0, 69, 94, 0.6);
-        }
-        100% {
-          text-shadow: none;
-        }
-      }
+      /* (glitch transition removed — replaced by the clean wipe above) */
 
       /* PROCESSING stamp */
       .friction-stamp {
@@ -883,7 +808,7 @@
         white-space: nowrap;
         opacity: 0;
         transition: none;
-        mix-blend-mode: screen;
+        mix-blend-mode: normal;
       }
 
       .friction-stamp.stamp-in {
@@ -1216,14 +1141,14 @@
               font-weight: bold;
             "
           >
-            [ NOVUS_F // 2026 ]
+            [ NOVUS_F // 2024 ]
           </div>
         </div>
 
         <div class="tech-grid">
           <div class="tech-item">
             <label>Year</label>
-            <p>2026</p>
+            <p>2024</p>
           </div>
           <div class="tech-item">
             <label>Type</label>
@@ -1250,7 +1175,7 @@
             font-weight: bold;
           "
         >
-          NOTE: No audio issues on your end — the video intentionally has no
+          NOTE: No audio issues on your end, the video intentionally has no
           sound. Sound design is still in production. This is the visual cut.
         </div>
       </section>
@@ -1264,15 +1189,27 @@
 
         <div class="right-col">
           <div class="copy-block">
-            <p style="margin-bottom: 30px">
-              Novus is Latin for new — and the F stays open on purpose: frame,
-              form, film, whatever the work needs to be. It's less one piece
-              than a banner for all of it: 2D, 3D, motion graphics, every
-              medium, a new form each time.
+            <p style="margin-bottom: 24px">
+              Novus F is a personal project of mine. "Novus" is Latin for new,
+              and the F can really mean anything: frame, film, form. I left it
+              open on purpose, so it can be... whatever. It actually began as a
+              short little intro, then I kept throwing new ideas at it and
+              couldn't stop, so it grew into a full motion piece, way bigger
+              than I planned.
             </p>
-            <p>
-              'Sucking at something is the first step to being sort of good at
-              something.' It's not perfect, but it's a start.
+            <p style="margin-bottom: 24px">
+              It really kicked off with a song. An instrumental. It hit like a
+              freight train, the biggest light bulb moment ever, and suddenly I
+              had a hundred ideas at once(I know that sounds cliche, but that's
+              what really happened). From there it was mostly planning. I pulled
+              a ton of references for the shapes and the color palette, then
+              sketched out storyboards for a few key frames to figure out how it
+              all fit together.
+            </p>
+            <p style="margin-bottom: 30px">
+              This was the project where I got to try everything I'd been
+              sitting on. Some of those bits were fun, some were a challenge to
+              pull off, but really worth it.
             </p>
           </div>
           <div class="stamp-wrap">
@@ -1314,11 +1251,11 @@
           </div>
           <div class="credit-item">
             <div class="credit-role">Year</div>
-            <div class="credit-name">2026</div>
+            <div class="credit-name">2024</div>
           </div>
           <div class="credit-item">
             <div class="credit-role">Special Thanks</div>
-            <div class="credit-name">my loved ones</div>
+            <div class="credit-name">All My Love Ones</div>
           </div>
         </div>
       </div>
@@ -1344,7 +1281,11 @@
       </div>
     </footer>
 
-    <div class="friction-stamp" id="frictionStamp">FRICTION_MODE.EXE</div>
+    <div id="novusWipe" aria-hidden="true">
+      <div class="nw-panel"></div>
+      <div class="nw-panel"></div>
+      <div class="nw-panel"></div>
+    </div>
 
     <script>
       // ── VIDEO SHIELD: hide controls until click, restore on mouse leave ──
@@ -1400,34 +1341,60 @@
         { passive: true },
       );
 
-      // ── FRICTION EASTER EGG ──
+      // ── CLEAN-PUNK REVEAL: layered three-colour wipe (single-clock engine) ──
       const trigger = document.getElementById("friction-trigger");
-      const stamp = document.getElementById("frictionStamp");
-      let glitching = false;
-      let paletteOn = false;
+      const wipeBox = document.getElementById("novusWipe");
+      const panels = Array.from(wipeBox.querySelectorAll(".nw-panel")); // [cyan, gold, red]
+      let animating = false;
+
+      const W = 150; // ms for one colour to sweep across
+      const HOLD = 60; // ms beat between colours
+      const WOFF = 240; // ms for the stack to wipe off
+      const COVER = 2 * (W + HOLD) + W; // moment red has fully covered
+      const OFFSTART = COVER + HOLD;
+      const DUR = OFFSTART + WOFF;
+
+      const ease = (x) =>
+        x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
+      const easeIn = (x) => x * x; // slow start, accelerates into fast
+
+      function panelX(i, t) {
+        if (t >= OFFSTART) {
+          return 101 * ease(Math.min(1, (t - OFFSTART) / WOFF)); // whole stack slides off
+        }
+        const start = i * (W + HOLD);
+        if (t < start) return -101;
+        if (t < start + W) return -101 + 101 * easeIn((t - start) / W);
+        return 0;
+      }
 
       trigger.addEventListener("click", () => {
-        if (glitching) return;
-        glitching = true;
+        if (animating) return;
+        animating = true;
 
-        // Glitch fires
-        document.body.classList.add("friction-active");
-        stamp.classList.add("stamp-in");
+        let swapped = false;
+        wipeBox.style.display = "block";
+        panels.forEach((p) => (p.style.transform = "translateX(-101%)"));
+        const startT = performance.now();
 
-        setTimeout(() => {
-          // Glitch ends — palette switches
-          document.body.classList.remove("friction-active");
-          stamp.classList.remove("stamp-in");
-          glitching = false;
-
-          if (!paletteOn) {
-            document.body.classList.add("palette-active");
-            paletteOn = true;
-          } else {
-            document.body.classList.remove("palette-active");
-            paletteOn = false;
+        function tick(now) {
+          const t = now - startT;
+          for (let i = 0; i < panels.length; i++) {
+            panels[i].style.transform = "translateX(" + panelX(i, t) + "%)";
           }
-        }, 3000);
+          if (!swapped && t >= COVER) {
+            document.body.classList.toggle("palette-active"); // swap under cover
+            swapped = true;
+          }
+          if (t < DUR) {
+            requestAnimationFrame(tick);
+          } else {
+            wipeBox.style.display = "none";
+            panels.forEach((p) => (p.style.transform = "translateX(-101%)"));
+            animating = false;
+          }
+        }
+        requestAnimationFrame(tick);
       });
     </script>
   </body>
