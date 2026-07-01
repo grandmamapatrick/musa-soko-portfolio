@@ -83,12 +83,20 @@
         gap: 40px;
       }
       .nav-links a {
-        font-size: 13px;
+        font-size: 16px;
         font-weight: 700;
         color: #000;
         text-decoration: none;
-        text-transform: lowercase;
+        letter-spacing: 0.04em;
+        text-transform: none;
         opacity: 0.75;
+      }
+      .nav-links a.active {
+        opacity: 1;
+      }
+      .nav-links a:hover {
+        color: #000000;
+        opacity: 1;
       }
 
       main {
@@ -140,7 +148,26 @@
         color: inherit;
         z-index: 10;
         height: 30px;
+        cursor: default;
+      }
+
+      .signal-area.live {
         cursor: pointer;
+      }
+
+      .signal-area.live .peak-container,
+      .signal-area.live .signal-label {
+        animation: pulse-glow 1.2s ease-in-out infinite;
+      }
+
+      @keyframes pulse-glow {
+        0%,
+        100% {
+          filter: drop-shadow(0 0 0 rgba(246, 146, 35, 0));
+        }
+        50% {
+          filter: drop-shadow(0 0 7px rgba(246, 146, 35, 0.95));
+        }
       }
 
       .peak-container {
@@ -314,6 +341,7 @@
       <a href="index.html" class="logo">Musa Soko</a>
       <div class="nav-links">
         <a href="index.html">Work</a>
+        <a href="about.html">About</a>
         <a href="#" class="active">Contact</a>
       </div>
     </nav>
@@ -331,7 +359,8 @@
           let's make something memorable.
         </p>
 
-        <a href="index.html" class="signal-area">
+        <!-- live link target: replace "#" with your personal board URL when it's ready -->
+        <a href="scratchbook.html" class="signal-area">
           <div class="peak-container">
             <div class="peak-bar" id="bar1"></div>
             <div class="peak-bar" id="bar2"></div>
@@ -408,6 +437,12 @@
       ];
       const signalLabel = document.getElementById("signalLabel");
       const messageArea = document.getElementById("message");
+      const signalArea = document.querySelector(".signal-area");
+
+      // Keep the signal link inert until the "wanna see something cool?" state
+      signalArea.addEventListener("click", (e) => {
+        if (!signalArea.classList.contains("live")) e.preventDefault();
+      });
 
       document
         .querySelectorAll("input[type=text], input[type=email], textarea")
@@ -427,10 +462,12 @@
                   )
                   .join("");
                 signalLabel.classList.add("waving");
+                signalArea.classList.add("live");
               }
             } else {
               signalLabel.innerText = "Input Signal";
               signalLabel.classList.remove("waving");
+              signalArea.classList.remove("live");
             }
             clearTimeout(input._t);
             input._t = setTimeout(() => {
@@ -501,6 +538,7 @@
             });
             signalLabel.innerText = "Input Signal";
             signalLabel.classList.remove("waving");
+            signalArea.classList.remove("live");
             setTimeout(() => {
               submitBtn.classList.remove("success");
               submitBtn.disabled = false;
