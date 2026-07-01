@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Musa Soko | About</title>
+    <link rel="icon" type="image/png" href="images/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=DM+Serif+Display:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-bg: #e24632; /* Red */
+        --text-light: #f7e3c2; /* Cream */
+        --ink: #0d1f26;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: var(--primary-bg);
+        color: var(--text-light);
+        transition: background-color 0.4s ease; /* Smooth transition for the blue Easter egg */
+        overflow-x: hidden;
+      }
+
+      /* NAV & STROKE (Preserved exact dimensions) */
+      nav {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 26px 72px;
+        z-index: 999;
+        background-color: #e24632;
+      }
+
+      nav::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 87%;
+        height: 2px;
+        background-color: var(--text-light);
+      }
+
+      .logo {
+        font-size: 19px;
+        font-weight: 900;
+        color: var(--text-light);
+        text-decoration: none;
+      }
+      .nav-links {
+        display: flex;
+        gap: 40px;
+      }
+      .nav-links a {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text-light);
+        text-decoration: none;
+        letter-spacing: 0.04em;
+        text-transform: none;
+        opacity: 0.6;
+      }
+      .nav-links a.active {
+        opacity: 1;
+      }
+      .nav-links a:hover {
+        opacity: 1;
+      }
+
+      /* MAIN CONTENT */
+      main {
+        --photo-size: 380px; /* ← PORTRAIT SIZE. raise to enlarge, lower to shrink */
+        max-width: 87%;
+        margin: 160px auto 100px;
+      }
+
+      .hero-name {
+        font-size: clamp(60px, 15vw, 180px);
+        font-weight: 900;
+        line-height: 0.8;
+        letter-spacing: -0.06em;
+        margin-bottom: 80px;
+        text-transform: lowercase;
+      }
+
+      .signoff {
+        margin-top: 140px;
+        border-top: 1px solid rgba(247, 227, 194, 0.2);
+        padding-top: 60px;
+      }
+      .signoff-name {
+        font-size: clamp(60px, 15vw, 180px);
+        font-weight: 900;
+        line-height: 0.8;
+        letter-spacing: -0.06em;
+        text-transform: lowercase;
+      }
+      .signoff-tag {
+        font-size: clamp(18px, 3vw, 26px);
+        font-weight: 500;
+        opacity: 0.7;
+        margin-top: 28px;
+        text-transform: lowercase;
+        padding: 10px;
+      }
+
+      /* THE TIGHTER GRID */
+      .content-grid {
+        display: grid;
+        grid-template-columns: var(--photo-size) 1fr; /* photo width | text fills the rest */
+        gap: 59.2px; /* space between photo and text */
+        align-items: start; /* vertical alignment of photo vs text */
+        max-width: 1100px; /* width of the whole cluster — lower = tighter & more centered */
+        margin: 0 auto; /* centers the cluster on the page */
+      }
+
+      .portrait-area {
+        width: var(--photo-size); /* controlled by --photo-size above */
+        max-width: 100%;
+        aspect-ratio: 1 / 1.2;
+        background: var(--ink);
+        overflow: hidden;
+        border: 1px solid rgba(247, 227, 194, 0.2);
+      }
+
+      .portrait-area img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: grayscale(100%) contrast(1.1);
+        opacity: 0.8;
+      }
+
+      .bio-col {
+        max-width: 600px;
+      }
+
+      .bio-text {
+        font-size: 26px;
+        font-weight: 500;
+        line-height: 1.3;
+        margin-bottom: 28px;
+      }
+      .bio-sub {
+        font-size: 19px;
+        font-weight: 500;
+        line-height: 1.5;
+        margin-bottom: 24px;
+        opacity: 0.9;
+      }
+      .beyond-text {
+        font-size: 19px;
+        line-height: 1.55;
+        margin-bottom: 22px;
+        opacity: 0.92;
+      }
+      .beyond-text:last-child {
+        margin-bottom: 0;
+      }
+
+      .metadata {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        border-top: 1px solid rgba(247, 227, 194, 0.2);
+        padding-top: 30px;
+      }
+
+      .label {
+        font-size: 10px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        color: var(--ink);
+        margin-bottom: 12px;
+        display: block;
+      }
+
+      .list-item {
+        font-size: 14px;
+        opacity: 0.8;
+        margin-bottom: 4px;
+        list-style: none;
+      }
+
+      .eyebrow {
+        display: inline-block;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: var(--ink);
+        opacity: 0.75;
+      }
+      .beyond-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 36px;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: var(--ink);
+        text-decoration: none;
+        border-bottom: 1px solid rgba(13, 31, 38, 0.4);
+        padding-bottom: 5px;
+        transition:
+          gap 0.2s ease,
+          opacity 0.2s ease;
+      }
+      .beyond-link:hover {
+        gap: 16px;
+        opacity: 0.75;
+      }
+      .beyond-link .arrow {
+        font-size: 16px;
+        letter-spacing: 0;
+      }
+      .placeholder {
+        border: 1px dashed rgba(247, 227, 194, 0.45);
+        padding: 30px 32px;
+      }
+      .placeholder .lead {
+        font-size: 22px;
+        font-weight: 500;
+        font-style: italic;
+        line-height: 1.4;
+        margin-bottom: 22px;
+      }
+      .placeholder .hint {
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        opacity: 0.6;
+        margin-bottom: 14px;
+      }
+      .placeholder ul {
+        list-style: none;
+      }
+      .placeholder li {
+        font-size: 18px;
+        line-height: 1.75;
+        opacity: 0.85;
+      }
+
+      @media (max-width: 900px) {
+        .content-grid {
+          grid-template-columns: 1fr;
+        }
+        .portrait-area {
+          max-width: 100%;
+        }
+        nav {
+          padding: 20px 40px;
+        }
+      }
+    </style>
+  </head>
+  <body id="pageBody">
+    <nav>
+      <a href="index.html" class="logo">Musa Soko</a>
+      <div class="nav-links">
+        <a href="index.html">Work</a>
+        <a href="about.html" class="active">About</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </nav>
+
+    <main>
+      <div class="content-grid">
+        <div class="portrait-area">
+          <img src="images/Me/me.jpg" alt="Portrait" />
+        </div>
+
+        <div class="bio-col">
+          <p class="bio-text">
+            Hi! My name is Musa, and I love making stuff that makes people feel
+            something, through motion and video editing.
+          </p>
+          <p class="bio-sub">
+            I’m a 24-year-old South African motion designer and video editor
+            based in Johannesburg. I’ve been working in the motion design and
+            video editing industry for about four years now, with companies both
+            abroad and here at home.
+          </p>
+          <p class="bio-sub">
+            I love learning new things. I’m always on a new course, picking up a
+            new technique, honing my skills, or just experimenting. And in my
+            free time, I run around, play games, and draw a little.
+          </p>
+          <a class="beyond-link" href="scratchbook.html">
+            beyond the work <span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="signoff">
+        <h2 class="signoff-name">
+          grandmama <br />
+          patrick
+        </h2>
+        <p class="signoff-tag">i like making things.</p>
+      </div>
+    </main>
+  </body>
+</html>
