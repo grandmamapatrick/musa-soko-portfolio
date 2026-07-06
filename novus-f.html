@@ -626,7 +626,7 @@
 
       /* Big background NEXT text as texture */
       .footer-next::before {
-        content: "NEXT";
+        content: "FIN";
         position: absolute;
         font-family: "Bebas Neue", sans-serif;
         font-size: 40vw;
@@ -734,6 +734,46 @@
         padding: 14px 40px;
         opacity: 0.8;
         color: var(--cream);
+      }
+      /* ─── FOOTER PREV / NEXT BADGES ─── */
+      .footer-inner {
+        align-items: center;
+        justify-content: flex-end;
+      }
+      .nav-badges {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .nav-badges .next-badge {
+        align-self: center;
+        margin-bottom: 0;
+      }
+      .badge-num {
+        font-family: "Space Mono", monospace;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        background: var(--black);
+        color: var(--cream);
+        padding: 2px 6px;
+      }
+      .nav-badge-prev {
+        transform: rotate(-3deg);
+        clip-path: polygon(12% 0, 100% 0, 100% 100%, 0 100%, 0 30%);
+      }
+      .nav-badge-prev:hover {
+        transform: rotate(0deg) scale(1.08);
+        background: var(--cream);
+        clip-path: polygon(15% 0, 100% 0, 100% 100%, 0 100%, 0 40%);
+      }
+      .nav-badge-prev:hover .badge-arrow {
+        transform: translateX(-4px);
+      }
+      body.palette-active .badge-num {
+        background: #072d53;
+        color: #fcb63f;
       }
 
       /* ─── RESPONSIVE ─── */
@@ -1176,7 +1216,8 @@
           "
         >
           NOTE: No audio issues on your end, the video intentionally has no
-          sound. Sound design is still in production. This is the visual cut.
+          sound. This is the visual cut. A full process breakdown of how this
+          was made is coming soon.
         </div>
       </section>
 
@@ -1266,13 +1307,18 @@
       <div class="tear-divider"></div>
       <div class="footer-next">
         <div class="footer-inner">
-          <div class="next-label-block">
-            <span class="next-eyebrow">// UP NEXT ON THE REEL</span>
-            <a href="cuvee.html" class="next-project-title">CUVÉE</a>
+          <div class="nav-badges">
+            <a href="mortica.html" class="next-badge nav-badge-prev">
+              <span class="badge-arrow">⇦</span>
+              <span class="badge-num">03 / 05</span>
+              MORTICA
+            </a>
+            <a href="cuvee.html" class="next-badge nav-badge-next">
+              CUVÉE
+              <span class="badge-num">02 / 05</span>
+              <span class="badge-arrow">⇨</span>
+            </a>
           </div>
-          <a href="cuvee.html" class="next-badge">
-            LOAD IT <span class="badge-arrow">→</span>
-          </a>
         </div>
       </div>
       <div class="footer-meta">
