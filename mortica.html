@@ -788,6 +788,93 @@
         color: var(--muted);
       }
 
+      /* ─── FOOTER PREV / NEXT BADGES (ported from Cuée) ─── */
+      .footer-next {
+        position: relative;
+        overflow: hidden;
+      }
+      .footer-next::before {
+        content: "FIN";
+        position: absolute;
+        font-family: "Bebas Neue", "Anton", sans-serif;
+        font-size: 40vw;
+        color: rgba(0, 0, 0, 0.07);
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        white-space: nowrap;
+        pointer-events: none;
+        line-height: 1;
+      }
+      .footer-inner {
+        position: relative;
+        z-index: 1;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+      }
+      .nav-badges {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .next-badge {
+        background: var(--red);
+        border: 3px solid var(--black);
+        color: var(--black);
+        font-family: "Space Mono", monospace;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding: 14px 22px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transform: rotate(3deg);
+        clip-path: polygon(0 0, 100% 0, 100% 70%, 88% 100%, 0 100%);
+        transition:
+          transform 0.2s cubic-bezier(0.785, 0.135, 0.15, 0.86),
+          background 0.15s,
+          clip-path 0.2s;
+      }
+      .next-badge:hover {
+        transform: rotate(0deg) scale(1.08);
+        background: var(--cream);
+        clip-path: polygon(0 0, 100% 0, 100% 60%, 85% 100%, 0 100%);
+      }
+      .next-badge .badge-arrow {
+        font-size: 18px;
+        transition: transform 0.2s;
+      }
+      .next-badge:hover .badge-arrow {
+        transform: translateX(4px);
+      }
+      .badge-num {
+        font-family: "Space Mono", monospace;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        background: var(--black);
+        color: var(--cream);
+        padding: 2px 6px;
+      }
+      .nav-badge-prev {
+        transform: rotate(-3deg);
+        clip-path: polygon(12% 0, 100% 0, 100% 100%, 0 100%, 0 30%);
+      }
+      .nav-badge-prev:hover {
+        transform: rotate(0deg) scale(1.08);
+        background: var(--cream);
+        clip-path: polygon(15% 0, 100% 0, 100% 100%, 0 100%, 0 40%);
+      }
+      .nav-badge-prev:hover .badge-arrow {
+        transform: translateX(-4px);
+      }
+      body.mess-active .badge-num {
+        color: var(--amber);
+      }
+
       /* ─── SCROLL REVEAL ─── */
       .reveal {
         opacity: 0;
@@ -1054,10 +1141,6 @@
       </div>
 
       <!-- PREV STRIP -->
-      <div class="prev-strip reveal">
-        <a href="cuvee.html" class="prev-link">← CUVÉE</a>
-        <span class="prev-eyebrow">Previous piece</span>
-      </div>
     </div>
 
     <!-- FOOTER -->
@@ -1065,17 +1148,22 @@
       <div class="tear-divider"></div>
       <div class="footer-next">
         <div class="footer-inner">
-          <div class="next-label-block">
-            <span class="next-eyebrow">// UP NEXT ON THE REEL</span>
-            <a href="index.html" class="next-project-title">COMING SOON</a>
+          <div class="nav-badges">
+            <a href="cuvee.html" class="next-badge nav-badge-prev">
+              <span class="badge-arrow">⇦</span>
+              <span class="badge-num">02 / 05</span>
+              CUVÉE
+            </a>
+            <a href="novus-f.html" class="next-badge nav-badge-next">
+              NOVUS F.
+              <span class="badge-num">01 / 05</span>
+              <span class="badge-arrow">⇨</span>
+            </a>
           </div>
-          <a href="index.html" class="next-badge">
-            BACK TO WORK <span>→</span>
-          </a>
         </div>
       </div>
       <div class="footer-meta">
-        <span>MADE IN A FEVER</span>
+        <span>Thank You For Watching</span>
         <span>END_OF_PAGE</span>
       </div>
     </footer>
