@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Space+Mono:wght@400;700&family=Bebas+Neue&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Space+Mono:wght@400;700&family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400..900;1,400..700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap"
       rel="stylesheet"
     />
     <style>
@@ -195,6 +195,7 @@
       /* Tape counter */
       .video-counter {
         margin-top: 18px;
+        margin-bottom: 20px;
         display: flex;
         align-items: center;
         gap: 12px;
@@ -751,17 +752,18 @@
           100% 60%,
           100% 100%
         );
+        margin-bottom: -1px;
       }
 
       .footer-next {
         background: var(--orange);
-        padding: 50px 40px 40px;
+        padding: 40px 40px 36px;
         position: relative;
         overflow: hidden;
       }
 
       .footer-next::before {
-        content: "NEXT";
+        content: "FIN";
         position: absolute;
         font-family: "Bebas Neue", sans-serif;
         font-size: 40vw;
@@ -772,6 +774,7 @@
         white-space: nowrap;
         pointer-events: none;
         line-height: 1;
+        transition: color 0.25s ease;
       }
 
       .footer-inner {
@@ -869,142 +872,270 @@
         color: var(--cream);
       }
 
-      /* ─── EASTER EGG: FRICTION MODE (same as novus-f) ─── */
+      /* ─── FOOTER PREV / NEXT BADGES ─── */
+      .footer-inner {
+        align-items: center;
+        justify-content: flex-end;
+      }
+      .nav-eyebrow-block {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .nav-badges {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .nav-badges .next-badge {
+        align-self: center;
+        margin-bottom: 0;
+      }
+      .badge-num {
+        font-family: "Space Mono", monospace;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        background: var(--black);
+        color: var(--cream);
+        padding: 2px 6px;
+      }
+      .nav-badge-prev {
+        transform: rotate(-3deg);
+        clip-path: polygon(12% 0, 100% 0, 100% 100%, 0 100%, 0 30%);
+      }
+      .nav-badge-prev:hover {
+        transform: rotate(0deg) scale(1.08);
+        background: var(--cream);
+        clip-path: polygon(15% 0, 100% 0, 100% 100%, 0 100%, 0 40%);
+      }
+      .nav-badge-prev:hover .badge-arrow {
+        transform: translateX(-4px);
+      }
+
+      /* ─── EASTER EGG: SOMMELIER (Cuvée's own — smug, fancy, pristine) ─── */
       #golden-trigger {
-        cursor: help;
+        cursor: pointer;
         user-select: none;
       }
 
-      body.friction-active {
-        animation: bodyGlitch 0.12s steps(1) infinite;
-      }
-
-      @keyframes bodyGlitch {
-        0% {
-          filter: none;
-        }
-        20% {
-          filter: sepia(0.9) saturate(3) brightness(1.4) hue-rotate(-15deg);
-        }
-        40% {
-          filter: sepia(0.4) saturate(2.5) brightness(1.6) hue-rotate(20deg)
-            contrast(1.2);
-        }
-        60% {
-          filter: sepia(1) saturate(2) brightness(1.2) hue-rotate(-8deg);
-        }
-        80% {
-          filter: saturate(0.3) brightness(0.75) sepia(0.6);
-        }
-        100% {
-          filter: none;
-        }
-      }
-
-      body.friction-active::after {
-        content: "";
+      /* soft dissolve veil shown during the switch */
+      /* full-screen gold-foil scribble that draws on, then un-draws to reveal */
+      #sommScribble {
         position: fixed;
         inset: 0;
+        width: 100vw;
+        height: 100vh;
         z-index: 9500;
         pointer-events: none;
-        background: repeating-linear-gradient(
-          0deg,
-          rgba(0, 0, 0, 0.35) 0px,
-          rgba(0, 0, 0, 0.35) 2px,
-          transparent 2px,
-          transparent 4px
+        display: none;
+      }
+      #scribblePath {
+        stroke-width: 50;
+      }
+
+      /* the whole page crossfades into a deep, fancy wine-cellar look */
+      body {
+        transition:
+          background 0.6s ease,
+          color 0.6s ease;
+      }
+      body.sommelier {
+        background-color: #faf7ef;
+        background-image:
+          url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><g fill='%23241f2e'><circle cx='12' cy='18' r='.8' opacity='.5'/><circle cx='34' cy='9' r='.6' opacity='.35'/><circle cx='58' cy='24' r='1' opacity='.55'/><circle cx='80' cy='12' r='.7' opacity='.4'/><circle cx='104' cy='20' r='.9' opacity='.5'/><circle cx='126' cy='10' r='.6' opacity='.3'/><circle cx='20' cy='42' r='.7' opacity='.45'/><circle cx='46' cy='52' r='1.1' opacity='.6'/><circle cx='70' cy='40' r='.6' opacity='.3'/><circle cx='92' cy='50' r='.8' opacity='.45'/><circle cx='118' cy='44' r='.7' opacity='.4'/><circle cx='10' cy='70' r='.9' opacity='.5'/><circle cx='38' cy='78' r='.6' opacity='.3'/><circle cx='60' cy='68' r='.8' opacity='.45'/><circle cx='84' cy='80' r='1' opacity='.55'/><circle cx='110' cy='72' r='.7' opacity='.4'/><circle cx='132' cy='82' r='.6' opacity='.3'/><circle cx='24' cy='100' r='.8' opacity='.45'/><circle cx='50' cy='108' r='.6' opacity='.3'/><circle cx='74' cy='96' r='.9' opacity='.5'/><circle cx='98' cy='106' r='.7' opacity='.4'/><circle cx='122' cy='100' r='.8' opacity='.45'/><circle cx='16' cy='126' r='.7' opacity='.4'/><circle cx='44' cy='132' r='.9' opacity='.5'/><circle cx='68' cy='122' r='.6' opacity='.3'/><circle cx='92' cy='130' r='.8' opacity='.45'/><circle cx='116' cy='126' r='.7' opacity='.4'/></g></svg>"),
+          url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><g fill='%23241f2e'><circle cx='12' cy='18' r='.8' opacity='.5'/><circle cx='34' cy='9' r='.6' opacity='.35'/><circle cx='58' cy='24' r='1' opacity='.55'/><circle cx='80' cy='12' r='.7' opacity='.4'/><circle cx='104' cy='20' r='.9' opacity='.5'/><circle cx='126' cy='10' r='.6' opacity='.3'/><circle cx='20' cy='42' r='.7' opacity='.45'/><circle cx='46' cy='52' r='1.1' opacity='.6'/><circle cx='70' cy='40' r='.6' opacity='.3'/><circle cx='92' cy='50' r='.8' opacity='.45'/><circle cx='118' cy='44' r='.7' opacity='.4'/><circle cx='10' cy='70' r='.9' opacity='.5'/><circle cx='38' cy='78' r='.6' opacity='.3'/><circle cx='60' cy='68' r='.8' opacity='.45'/><circle cx='84' cy='80' r='1' opacity='.55'/><circle cx='110' cy='72' r='.7' opacity='.4'/><circle cx='132' cy='82' r='.6' opacity='.3'/><circle cx='24' cy='100' r='.8' opacity='.45'/><circle cx='50' cy='108' r='.6' opacity='.3'/><circle cx='74' cy='96' r='.9' opacity='.5'/><circle cx='98' cy='106' r='.7' opacity='.4'/><circle cx='122' cy='100' r='.8' opacity='.45'/><circle cx='16' cy='126' r='.7' opacity='.4'/><circle cx='44' cy='132' r='.9' opacity='.5'/><circle cx='68' cy='122' r='.6' opacity='.3'/><circle cx='92' cy='130' r='.8' opacity='.45'/><circle cx='116' cy='126' r='.7' opacity='.4'/></g></svg>");
+        background-size:
+          140px 140px,
+          90px 90px;
+        background-position:
+          0 0,
+          40px 22px;
+        background-repeat: repeat, repeat;
+        color: #241f2e;
+        /* retheme the default accent variables so no orange/red leaks through */
+        --orange: #c37c50;
+        --red: #5b2a86;
+      }
+
+      /* elegant serif for the fancy elements (the title stays Inter) */
+      body.sommelier .description,
+      body.sommelier .meta-item,
+      body.sommelier .meta-note,
+      body.sommelier .credit-role,
+      body.sommelier .credit-name,
+      body.sommelier .tool-tag,
+      body.sommelier .footer-meta,
+      body.sommelier .prev-link {
+        font-family: "Cormorant Garamond", Georgia, serif;
+        font-size: 1.08em;
+        letter-spacing: 0.01em;
+      }
+      body.sommelier .credits-title,
+      body.sommelier .next-project-title,
+      body.sommelier .meta-card-header,
+      body.sommelier .block-label {
+        font-family: "Playfair Display", Georgia, serif;
+      }
+
+      /* TITLE: keep Inter, split CU / VÉE into two colours */
+      body.sommelier .piece-title {
+        color: #5b2a86; /* CU — royal purple (the royalty nod) */
+      }
+      body.sommelier .piece-title .accent {
+        background: linear-gradient(
+          160deg,
+          #fcdba1 0%,
+          #c37c50 55%,
+          #fcdba1 100%
         );
-        animation: scanPulse 0.08s steps(1) infinite;
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: #c37c50; /* fallback */
+        text-shadow: none;
       }
 
-      @keyframes scanPulse {
-        0% {
-          opacity: 1;
-          transform: translateY(0);
-        }
-        50% {
-          opacity: 0.6;
-          transform: translateY(2px);
-        }
+      /* gold accents on rules, dividers, eyebrows */
+      body.sommelier .page-rule {
+        background: #c37c50;
+      }
+      body.sommelier .tape-eyebrow,
+      body.sommelier .meta-card-tag {
+        background: linear-gradient(160deg, #fcdba1 0%, #c37c50 100%);
+        color: #241f2e;
+        border-color: #c37c50;
+      }
+      body.sommelier .block-label,
+      body.sommelier .credit-role,
+      body.sommelier .prev-eyebrow,
+      body.sommelier .next-eyebrow {
+        color: #c37c50;
       }
 
-      body.friction-active .page-wrap {
-        animation: rgbSplit 0.1s steps(1) infinite;
+      /* refined parchment card with engraved gold corner filigree */
+      body.sommelier .meta-card {
+        background-color: #fffefb;
+        background-image:
+          url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='30' height='30'><g transform='rotate(0 15 15)'><path d='M3 27 V9 Q3 3 9 3 H27' fill='none' stroke='%23c37c50' stroke-width='1.3'/><path d='M9 27 V13 Q9 9 13 9 H27' fill='none' stroke='%23c37c50' stroke-width='.7'/><circle cx='6' cy='6' r='1.3' fill='%23c37c50'/></g></svg>"),
+          url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='30' height='30'><g transform='rotate(90 15 15)'><path d='M3 27 V9 Q3 3 9 3 H27' fill='none' stroke='%23c37c50' stroke-width='1.3'/><path d='M9 27 V13 Q9 9 13 9 H27' fill='none' stroke='%23c37c50' stroke-width='.7'/><circle cx='6' cy='6' r='1.3' fill='%23c37c50'/></g></svg>"),
+          url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='30' height='30'><g transform='rotate(180 15 15)'><path d='M3 27 V9 Q3 3 9 3 H27' fill='none' stroke='%23c37c50' stroke-width='1.3'/><path d='M9 27 V13 Q9 9 13 9 H27' fill='none' stroke='%23c37c50' stroke-width='.7'/><circle cx='6' cy='6' r='1.3' fill='%23c37c50'/></g></svg>"),
+          url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='30' height='30'><g transform='rotate(270 15 15)'><path d='M3 27 V9 Q3 3 9 3 H27' fill='none' stroke='%23c37c50' stroke-width='1.3'/><path d='M9 27 V13 Q9 9 13 9 H27' fill='none' stroke='%23c37c50' stroke-width='.7'/><circle cx='6' cy='6' r='1.3' fill='%23c37c50'/></g></svg>");
+        background-repeat: no-repeat;
+        background-position:
+          7px 7px,
+          calc(100% - 7px) 7px,
+          calc(100% - 7px) calc(100% - 7px),
+          7px calc(100% - 7px);
+        border: 1px solid rgba(195, 124, 80, 0.55);
+        box-shadow: 0 10px 34px rgba(60, 40, 10, 0.12);
+      }
+      body.sommelier .meta-card::before {
+        display: none;
+      }
+      body.sommelier .tool-tag {
+        border-color: rgba(195, 124, 80, 0.5);
+        color: #241f2e;
+      }
+      body.sommelier .nav-btn {
+        border-color: #c37c50;
+        color: #c37c50;
+        background: transparent;
+      }
+      body.sommelier nav::after {
+        background: rgba(195, 124, 80, 0.4);
       }
 
-      @keyframes rgbSplit {
-        0% {
-          text-shadow: none;
-        }
-        25% {
-          text-shadow:
-            -4px 0 rgba(246, 146, 35, 0.8),
-            4px 0 rgba(0, 69, 94, 0.8);
-        }
-        50% {
-          text-shadow:
-            4px 0 rgba(246, 146, 35, 0.8),
-            -4px 0 rgba(0, 69, 94, 0.8);
-        }
-        75% {
-          text-shadow:
-            -2px 2px rgba(247, 227, 194, 0.6),
-            2px -2px rgba(0, 69, 94, 0.5);
-        }
-        100% {
-          text-shadow: none;
-        }
+      /* ── legibility on cream: flip light text to dark ink ── */
+      body.sommelier .description,
+      body.sommelier .description p,
+      body.sommelier .description p:last-child,
+      body.sommelier .meta-note,
+      body.sommelier .meta-item p,
+      body.sommelier .credit-name,
+      body.sommelier .prev-link,
+      body.sommelier .footer-meta,
+      body.sommelier .footer-inner {
+        color: #241f2e;
       }
-
-      .friction-stamp {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%) rotate(-8deg) scale(0);
-        z-index: 9999;
-        border: 6px solid var(--orange);
-        color: var(--orange);
-        font-family: "Space Mono", monospace;
+      /* ── headings & labels → royal purple ── */
+      body.sommelier .meta-card-header,
+      body.sommelier .meta-card-header h2,
+      body.sommelier .credits-title,
+      body.sommelier .next-project-title,
+      body.sommelier .meta-item label {
+        color: #5b2a86;
+      }
+      /* footer strip blends into the cream */
+      body.sommelier .footer-meta {
+        background: transparent;
+        border-top: 1px solid rgba(195, 124, 80, 0.4);
+      }
+      /* ── drop cap: ornate purple initial on the description ── */
+      body.sommelier .description p:first-of-type::first-letter {
+        font-family: "Playfair Display", Georgia, serif;
         font-weight: 700;
-        font-size: clamp(28px, 5vw, 52px);
-        letter-spacing: 0.15em;
-        text-transform: uppercase;
-        padding: 18px 40px;
-        pointer-events: none;
-        white-space: nowrap;
-        opacity: 0;
-        mix-blend-mode: screen;
+        font-size: 3.3em;
+        line-height: 0.78;
+        float: left;
+        margin: 0.06em 0.12em 0 0;
+        color: #5b2a86;
+      }
+      /* ── flourish divider replaces the plain tear rule ── */
+      body.sommelier .tear-divider {
+        background: transparent;
+        height: 24px;
+        background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='24'><g stroke='%23c37c50' fill='%23c37c50'><line x1='10' y1='12' x2='66' y2='12' stroke-width='1'/><line x1='94' y1='12' x2='150' y2='12' stroke-width='1'/><path d='M80 5 L86 12 L80 19 L74 12 Z'/><path d='M86 12 q9 0 9 -6 q0 -4 -5 -3' fill='none' stroke-width='1'/><path d='M74 12 q-9 0 -9 -6 q0 -4 5 -3' fill='none' stroke-width='1'/><circle cx='10' cy='12' r='1.8'/><circle cx='150' cy='12' r='1.8'/></g></svg>");
+        background-repeat: no-repeat;
+        background-position: center;
       }
 
-      .friction-stamp.stamp-in {
-        animation: stampSlap 2.8s forwards;
+      /* tools: no orange on hover — clean monochrome instead */
+      body.sommelier .tool-tag:hover {
+        background: #241f2e;
+        color: #faf7ef;
+        border-color: #241f2e;
+        transform: rotate(0deg) scale(1.05);
       }
 
-      @keyframes stampSlap {
-        0% {
-          transform: translate(-50%, -50%) rotate(-8deg) scale(0);
-          opacity: 0;
-        }
-        8% {
-          transform: translate(-50%, -50%) rotate(-8deg) scale(1.15);
-          opacity: 1;
-        }
-        12% {
-          transform: translate(-50%, -50%) rotate(-8deg) scale(0.95);
-          opacity: 1;
-        }
-        15% {
-          transform: translate(-50%, -50%) rotate(-8deg) scale(1);
-          opacity: 1;
-        }
-        75% {
-          transform: translate(-50%, -50%) rotate(-8deg) scale(1);
-          opacity: 1;
-        }
-        100% {
-          transform: translate(-50%, -50%) rotate(-8deg) scale(1);
-          opacity: 0;
-        }
+      /* ── footer / next-project band, dressed for the easter look ── */
+      body.sommelier .footer-next {
+        background: #2e1340; /* deep royal-purple band */
+      }
+      body.sommelier .footer-next::before {
+        color: rgba(252, 219, 161, 0.06);
+      }
+      body.sommelier .footer-inner {
+        color: #f4e6c6;
+      }
+      body.sommelier .next-eyebrow {
+        color: #fcdba1;
+        opacity: 0.85;
+      }
+      body.sommelier .next-project-title {
+        color: #fcdba1;
+      }
+      body.sommelier .next-project-title:hover {
+        color: #ffffff;
+      }
+      body.sommelier .next-badge {
+        background: #c37c50;
+        border-color: #fcdba1;
+        color: #241f2e;
+      }
+      body.sommelier .next-badge:hover {
+        background: #fcdba1;
+      }
+      body.sommelier .footer-meta {
+        background: transparent;
+        color: #fcdba1;
+        border-top: 1px solid rgba(252, 219, 161, 0.35);
+      }
+
+      body.sommelier .badge-num {
+        background: #241f2e;
+        color: #fcdba1;
       }
 
       /* ─── SCROLL REVEAL ─── */
@@ -1099,6 +1230,13 @@
               ></iframe>
             </div>
           </div>
+
+          <!-- VIDEO COUNTER -->
+          <div class="video-counter">
+            <span class="counter-tag">02</span>
+            <div class="counter-bar"></div>
+            <span class="counter-total">/ 05</span>
+          </div>
         </div>
 
         <!-- RIGHT: info -->
@@ -1131,27 +1269,28 @@
                 <label>Duration</label>
                 <p>01:10</p>
               </div>
-            </div> 
+            </div>
             <div class="meta-note">
-              NOTE: One of the last pieces made on my old ThinkCentre PC before
-              it gave out. RIP. A full process breakdown of how this was made is
-              coming soon.
+              NOTE: One of the last pieces I made on my old ThinkCentre before
+              it took a long hiatus. Still works perfectly, I just don't lean on
+              it much these days. A full process breakdown of how this was made
+              is coming soon.
             </div>
           </div>
 
           <div class="description">
             <p>
-              I made this video to showcase a potential new visual direction for
-              the company. It was a concept piece. I took inspiration from wine
-              connoisseurs and sommeliers, who often gravitate toward black and
-              white. So I built the foundation in monochrome, then added subtle
-              gold accents with a grungy texture, like peeling the foil off a
-              champagne bottle
+              Cuvée was a visual direction I wanted to present to the company, a
+              concept for a new look. It was a concept piece.
             </p>
             <p>
-              The purple came from the historical association between wine
-              drinkers and royalty (royalty wore purple). So there's a subtle
-              nod to that throughout.
+              For the look, I leaned on something I'd noticed: sommeliers and a
+              lot of wine brands gravitate toward black and white. So I built
+              the foundation in monochrome, then put a twist on it. Gold accents
+              with a grungy texture, like peeling the foil off a champagne
+              bottle, and a deep purple underneath. The gold and purple were the
+              luxury cues, purple especially, since historically only the rich
+              and royal got to wear it.
             </p>
           </div>
 
@@ -1192,12 +1331,6 @@
           </div>
         </div>
       </div>
-
-      <!-- PREV STRIP -->
-      <div class="prev-strip reveal">
-        <a href="novus-f.html" class="prev-link">← NOVUS F.</a>
-        <span class="prev-eyebrow">Previous piece</span>
-      </div>
     </div>
 
     <!-- FOOTER -->
@@ -1205,13 +1338,18 @@
       <div class="tear-divider"></div>
       <div class="footer-next">
         <div class="footer-inner">
-          <div class="next-label-block">
-            <span class="next-eyebrow">// UP NEXT ON THE REEL</span>
-            <a href="mortica.html" class="next-project-title">MORTICA</a>
+          <div class="nav-badges">
+            <a href="novus-f.html" class="next-badge nav-badge-prev">
+              <span class="badge-arrow">⇦</span>
+              <span class="badge-num">01 / 05</span>
+              NOVUS F.
+            </a>
+            <a href="mortica.html" class="next-badge nav-badge-next">
+              MORTICA
+              <span class="badge-num">03 / 05</span>
+              <span class="badge-arrow">⇨</span>
+            </a>
           </div>
-          <a href="mortica.html" class="next-badge">
-            LOAD IT <span class="badge-arrow">→</span>
-          </a>
         </div>
       </div>
       <div class="footer-meta">
@@ -1220,8 +1358,23 @@
       </div>
     </footer>
 
-    <div class="friction-stamp" id="frictionStamp">HEURE_DORÉE</div>
-
+    <svg id="sommScribble" aria-hidden="true" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="foilStroke" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#fcdba1" />
+          <stop offset="0.45" stop-color="#c37c50" />
+          <stop offset="0.7" stop-color="#fbe6b8" />
+          <stop offset="1" stop-color="#c37c50" />
+        </linearGradient>
+      </defs>
+      <path
+        id="scribblePath"
+        fill="none"
+        stroke="url(#foilStroke)"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
     <script>
       // ── SCROLL-LOCK STROKE ──
       const rule = document.getElementById("pageRule");
@@ -1248,21 +1401,69 @@
       );
       document.querySelectorAll(".reveal").forEach((el) => obs.observe(el));
 
-      // ── EASTER EGG: FRICTION MODE on VÉE click ──
+      // ── EASTER EGG: gold-foil SCRIBBLE wipe on VÉE click (toggle) ──
       const frictionTrigger = document.getElementById("golden-trigger");
-      const frictionStamp = document.getElementById("frictionStamp");
-      let glitching = false;
+      const scribbleSvg = document.getElementById("sommScribble");
+      const scribblePath = document.getElementById("scribblePath");
+      let sommBusy = false;
+
+      // build a dense back-and-forth scribble that fills the screen
+      function buildScribble(w, h) {
+        const rowH = 20;
+        const rows = Math.ceil(h / rowH) + 2;
+        let d = "M -60 -30";
+        let right = true;
+        for (let i = 0; i < rows; i++) {
+          const y = i * rowH - 10;
+          const segs = 7;
+          for (let s = 0; s <= segs; s++) {
+            const t = s / segs;
+            const x = right ? -60 + (w + 120) * t : w + 60 - (w + 120) * t;
+            const yy = y + (Math.random() * 30 - 15);
+            d += " L " + Math.round(x) + " " + Math.round(yy);
+          }
+          right = !right;
+        }
+        return d;
+      }
 
       frictionTrigger.addEventListener("click", () => {
-        if (glitching) return;
-        glitching = true;
-        document.body.classList.add("friction-active");
-        frictionStamp.classList.add("stamp-in");
-        setTimeout(() => {
-          document.body.classList.remove("friction-active");
-          frictionStamp.classList.remove("stamp-in");
-          glitching = false;
-        }, 3000);
+        if (sommBusy) return;
+        sommBusy = true;
+
+        const w = window.innerWidth;
+        const h = window.innerHeight;
+        scribbleSvg.setAttribute("viewBox", "0 0 " + w + " " + h);
+        scribblePath.setAttribute("d", buildScribble(w, h));
+
+        const L = scribblePath.getTotalLength();
+        scribblePath.style.strokeDasharray = L;
+        scribblePath.style.strokeDashoffset = L;
+        scribbleSvg.style.display = "block";
+        scribblePath.getBoundingClientRect(); // force reflow
+
+        const ease = "cubic-bezier(.66,0,.34,1)";
+        const dur = 680;
+
+        // PHASE 1 — scribble draws on, covering the screen
+        const drawOn = scribblePath.animate(
+          [{ strokeDashoffset: L }, { strokeDashoffset: 0 }],
+          { duration: dur, easing: ease, fill: "forwards" },
+        );
+
+        drawOn.onfinish = () => {
+          document.body.classList.toggle("sommelier"); // flip under cover
+
+          // PHASE 2 — scribble un-draws from the top-left, revealing the page
+          const eraseOff = scribblePath.animate(
+            [{ strokeDashoffset: 0 }, { strokeDashoffset: -L }],
+            { duration: dur, easing: ease, fill: "forwards", delay: 90 },
+          );
+          eraseOff.onfinish = () => {
+            scribbleSvg.style.display = "none";
+            sommBusy = false;
+          };
+        };
       });
     </script>
   </body>
