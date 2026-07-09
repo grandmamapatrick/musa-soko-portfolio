@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Musa Soko | Sketchbook</title>
+    <title>Musa Soko | Scratchbook (WIP)</title>
     <link rel="icon" type="image/png" href="images/favicon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -828,7 +828,7 @@
           year: "2025",
           ar: "auto",
           kind: "img",
-          src: "images/sketchbook/Fing%20Ting.png",
+          src: "images/sketchbook/FIng%20Ting.png",
         },
         {
           title: "pink black",
@@ -845,6 +845,14 @@
           ar: "auto",
           kind: "img",
           src: "images/sketchbook/Inspired%20by%20Girlfriend.webp",
+        },
+        {
+          title: "flower boy challengers",
+          tag: "SKETCH",
+          year: "2025",
+          ar: "auto",
+          kind: "img",
+          src: "images/sketchbook/Flower%20Boy%20Challengers.webp",
         },
       ];
 
@@ -1246,12 +1254,20 @@
           btns +
           "</div>" +
           '<div class="wart"><h2>WORK IN <span class="alt">PROGRESS</span></h2></div>' +
-          '<div class="wmsg"><b>beyond the work,</b> here it is. i\'m still ' +
-          "uploading my stuff, so it's not full yet. come back, there'll be more.</div>";
+          '<div class="wmsg"><b>i\'m still ' +
+          "uploading my work,</b> so it's not full yet. come back, there'll be more.</div>";
         board.appendChild(wip);
 
         // pieces as little windows
-        works.forEach((w, i) => {
+        // mix videos + images so they don't clump: shuffled display order,
+        // while each tile still opens its real piece
+        const order = works.map((_, i) => i);
+        for (let a = order.length - 1; a > 0; a--) {
+          const b = Math.floor(Math.random() * (a + 1));
+          [order[a], order[b]] = [order[b], order[a]];
+        }
+        order.forEach((i) => {
+          const w = works[i];
           const pin = document.createElement("div");
           pin.className = "pin piecewin";
           const isVid = w.kind === "video" && w.embed;
