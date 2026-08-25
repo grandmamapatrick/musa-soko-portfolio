@@ -3,24 +3,34 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Musa Soko | Motion Designer & Video Editor</title>
+    <title>Musa Soko | Motion Designer &amp; Video Editor</title>
     <link rel="icon" type="image/png" href="images/favicon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Space+Mono:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap"
       rel="stylesheet"
     />
+    <script src="https://player.vimeo.com/api/player.js"></script>
     <style>
-      /* ===== YOUR EXACT ORIGINAL STYLES – COMPLETELY UNTOUCHED ===== */
+      /* ============================================================
+       TOKENS — black and white base, colors only on interaction
+       ============================================================ */
       :root {
-        --cream: #f7e3c2;
-        --amber: #f0d4a8;
-        --teal: #000000;
-        --red: #e24632;
-        --orange: #f69223;
-        --ink: #0d1f26;
-        --border: rgba(0, 0, 0, 0.15);
+        --paper: #f6f4ef;
+        --paper-panel: #ecebe4;
+        --ink: #0f0f0f;
+        --ink-soft: rgba(15, 15, 15, 0.55);
+        --ink-muted: rgba(15, 15, 15, 0.32);
+        --line: rgba(15, 15, 15, 0.14);
+
+        --cyan: #0092c9; /* list hover + nav + arrows */
+        --red: #e24632; /* active piece button */
+        --orange: #f69223; /* active project index + tool tag hover */
+        --purple: #6513e0; /* RESERVED for sketchbook button */
+
+        --font-display: "Space Grotesk", system-ui, sans-serif;
+        --font-mono: "Space Mono", ui-monospace, monospace;
       }
 
       * {
@@ -28,2423 +38,3087 @@
         padding: 0;
         box-sizing: border-box;
       }
-
       html {
         font-size: 16px;
-        scroll-behavior: smooth;
       }
-
       body {
-        font-family: "Inter", sans-serif;
-        background: var(--cream);
-        color: var(--teal);
+        font-family: var(--font-display);
+        background: var(--paper);
+        color: var(--ink);
         line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
         overflow-x: hidden;
       }
 
-      body::before {
-        content: "";
-        position: fixed;
-        inset: 0;
-        pointer-events: none;
-        z-index: 9999;
-        opacity: 0.028;
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-        background-size: 180px 180px;
+      .wrap {
+        max-width: 1300px;
+        margin: 0 auto;
+        padding-inline: clamp(24px, 4vw, 64px);
       }
 
-      #progress-bar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 2px;
-        width: 0%;
-        background: var(--red);
-        z-index: 10000;
-        transition: width 0.05s linear;
-      }
-
+      /* ============================================================
+       NAV
+       ============================================================ */
       nav {
-        --nav-size: 16px; /* ← FONT SIZE of the About / Contact links */
-        position: fixed;
-        top: 0;
-        width: 100%;
+        max-width: 1350px;
+        margin: 0 auto;
+        padding: 24px clamp(24px, 4vw, 64px);
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 21px 72px;
-        background: rgba(247, 227, 194);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        z-index: 999;
-        transition:
-          padding 0.3s ease,
-          box-shadow 0.3s ease;
-      }
-
-      nav.scrolled {
-        padding: 14px 72px;
-      }
-
-      nav::after {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 87%;
-        height: 2px;
-        background-color: #000;
+        border-bottom: 1px solid var(--line);
       }
       .logo {
-        font-size: 19px;
-        font-weight: 900;
-        color: #000;
-        text-decoration: none;
-        letter-spacing: -0.02em;
-      }
-
-      .nav-links {
-        display: flex;
-        align-items: center;
-        gap: 40px;
-      }
-
-      .nav-links a {
-        font-size: var(--nav-size, 16px);
-        font-weight: 700;
-        color: var(--ink);
-        text-decoration: none;
-        letter-spacing: 0.04em;
-        text-transform: none;
-        padding: 6px 12px;
-        border: 1px solid transparent;
-      }
-
-      .nav-about:hover {
-        background: #e24632;
-        border: 1px solid var(--ink);
-        color: var(--cream);
-      }
-      .nav-contact:hover {
-        background: #0092c9;
-        border: 1px solid var(--ink);
-        color: var(--ink);
-      }
-
-      .hero {
-        /* ===== HERO TRANSFORM CONTROLS (tweak like AE) ===== */
-        --text-width: 860px; /* width of the words block — raise it and the role flows onto fewer lines */
-        --text-x: 0px; /* nudge words left (-) / right (+) */
-        --text-y: 0px; /* nudge words up (-) / down (+) */
-        --num-scale: 1.2; /* SIZE of the 24 (1 = 100%, 0.85 = smaller, 1.2 = bigger) */
-        --num-x: 0px; /* nudge the 24 left (-) / right (+) */
-        --num-y: 0px; /* nudge the 24 up (-) / down (+) */
-        /* =================================================== */
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        max-width: 1680px;
-        margin: 0 auto;
-        padding: 0 72px;
-        height: 100vh;
-        min-height: 700px;
-      }
-
-      .hero-watermark {
-        position: absolute;
-        right: 72px;
-        top: 50%;
-        transform: translateY(-50%);
-        font-family: "Inter", sans-serif;
-        font-size: clamp(280px, 32vw, 520px);
-        font-weight: 900;
-        line-height: 1;
-        color: transparent;
-        -webkit-text-stroke: 1.5px rgba(0, 69, 94, 0.08);
-        pointer-events: none;
-        user-select: none;
-        z-index: 0;
-        letter-spacing: -0.04em;
-      }
-
-      .bg-shape {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 100vw;
-        height: 100vh;
-        object-fit: cover;
-        z-index: -1;
-        pointer-events: none;
-        opacity: 0.6;
-      }
-
-      .hero-text {
-        flex: 1.2;
-        max-width: var(--text-width, 860px);
-        padding-right: 40px;
-        position: relative;
-        z-index: 1;
-        transform: translate(var(--text-x, 0px), var(--text-y, 0px));
-      }
-
-      .hero-eyebrow {
         display: inline-flex;
         align-items: center;
-        gap: 10px;
-        font-size: 11px;
-        font-weight: 600;
-        letter-spacing: 0.2em;
-        text-transform: uppercase;
-        color: var(--orange);
-        margin-bottom: 20px;
-        opacity: 0;
-        animation: fadeSlideUp 0.7s 0.1s ease forwards;
-      }
-
-      .hero-eyebrow::before {
-        content: "";
-        display: block;
-        width: 28px;
-        height: 1.5px;
-        background: var(--orange);
-      }
-
-      .greeting {
-        font-size: clamp(38px, 4.5vw, 52px);
-        font-weight: 500;
-        color: #0092c9;
-        line-height: 1.1;
-        margin-bottom: 0.2rem;
-        opacity: 0;
-        animation: fadeSlideUp 0.7s 0.2s ease forwards;
-      }
-
-      .name {
-        font-size: clamp(52px, 6.2vw, 74px);
-        font-weight: 800;
-        color: #0092c9;
-        line-height: 1;
-        margin-bottom: 0.15rem;
-        letter-spacing: -0.03em;
-        opacity: 0;
-        animation: fadeSlideUp 0.7s 0.3s ease forwards;
-      }
-
-      .role {
-        font-size: clamp(52px, 6.2vw, 74px);
-        font-weight: 800;
-        color: #0092c9;
-        line-height: 1.1;
-        letter-spacing: -0.03em;
-        margin-bottom: 0;
-        opacity: 0;
-        animation: fadeSlideUp 0.7s 0.4s ease forwards;
-      }
-
-      .highlight {
-        color: var(--red);
-      }
-
-      .hero-divider {
-        width: 64px;
-        height: 2px;
-        background: #000000;
-        margin: 36px 0 28px;
-        opacity: 0;
-        animation: fadeSlideUp 0.7s 0.5s ease forwards;
-      }
-
-      .welcome {
-        --welcome-x: 0px; /* move welcome line left (-) / right (+) */
-        --welcome-y: 0px; /* move up (-) / down (+); a large + value drops it to the bottom */
-        position: relative;
-        top: var(--welcome-y);
-        left: var(--welcome-x);
-        font-size: clamp(26px, 3vw, 36px);
-        font-weight: 300;
-        color: #0092c9;
-        opacity: 0;
-        animation: fadeSlideUp 0.7s 0.55s ease forwards;
-        font-style: italic;
-        letter-spacing: 0.01em;
-      }
-
-      .hero-visual {
-        flex: 1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        z-index: 1;
-        min-height: 600px;
-        opacity: 0;
-        animation: fadeIn 1s 0.3s ease forwards;
-      }
-
-      .number-video {
-        width: 100%;
-        max-width: 860px;
-        height: auto;
-        display: block;
-        transform: translate(var(--num-x, 0px), var(--num-y, 0px))
-          scale(var(--num-scale, 1));
-        transform-origin: center;
-      }
-
-      .section {
-        padding: 100px 8%;
-      }
-
-      .section-header {
-        display: flex;
-        align-items: baseline;
-        gap: 20px;
-        margin-bottom: 56px;
-      }
-
-      .section-num {
-        font-size: 11px;
+        gap: 8px;
+        font-family: var(--font-mono);
         font-weight: 700;
-        letter-spacing: 0.18em;
-        color: var(--red);
-        opacity: 0.7;
-        font-variant-numeric: tabular-nums;
+        font-size: 13px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--ink);
+        text-decoration: none;
+      }
+      .logo-icon {
+        width: 16px;
+        height: 16px;
         flex-shrink: 0;
-        padding-top: 6px;
       }
-
-      .section-title {
-        font-size: clamp(26px, 3vw, 34px);
-        font-weight: 800;
-        letter-spacing: -0.02em;
-        color: #000;
-        line-height: 1;
-      }
-
-      .motion-pieces-section {
-        position: relative;
-        background: var(--cream);
-        background-image:
-          linear-gradient(
-            90deg,
-            rgba(255, 255, 255, 0.404) 1px,
-            transparent 1px
-          ),
-          linear-gradient(0deg, rgba(255, 255, 255, 0.404) 1px, transparent 1px);
-        background-size: 44px 44px;
-      }
-
-      .motion-carousel {
-        position: relative;
-      }
-
-      .motion-row {
+      .nav-links {
         display: flex;
-        gap: 24px;
-        overflow-x: auto;
-        padding: 8px 10px 48px;
-        scrollbar-width: none;
-        scroll-behavior: smooth;
+        gap: 28px;
       }
-      .motion-row::-webkit-scrollbar {
-        display: none;
-      }
-
-      .carousel-btn {
-        position: absolute;
-        top: 45%;
-        transform: translateY(-50%);
-        width: 50px;
-        height: 50px;
-        border-radius: 0;
-        border: 2px solid var(--ink);
-        background: var(--cream);
-        color: var(--ink);
-        font-family: "Space Mono", monospace;
-        font-size: 20px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 10;
-        box-shadow: 2px 2px 0 var(--ink);
-        transition:
-          transform 0.1s ease,
-          box-shadow 0.1s ease,
-          background 0.1s;
-      }
-      .carousel-btn:hover {
-        background: var(--orange);
-        transform: translateY(-50%) translate(-2px, -2px);
-        box-shadow: 2px 2px 0 var(--red);
-      }
-      .carousel-btn:active {
-        transform: translateY(-50%) translate(2px, 2px);
-        box-shadow: 0px 0px 0 var(--red);
-      }
-      .carousel-btn.hidden {
-        opacity: 0;
-        pointer-events: none;
-      }
-      .carousel-btn-left {
-        left: -26px;
-      }
-      .carousel-btn-right {
-        right: -26px;
-      }
-
-      .motion-piece {
-        min-width: 310px;
-        height: 420px;
-        background: var(--teal);
-        border-radius: 0;
-        overflow: hidden;
-        flex-shrink: 0;
-        position: relative;
-        cursor: pointer;
-        border: 2px solid var(--ink);
-        transition:
-          transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-          box-shadow 0.2s;
-      }
-
-      .motion-thumbnail {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-        transition:
-          transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-          filter 0.3s;
-      }
-
-      .piece-overlay {
-        position: absolute;
-        inset: 0;
-        transition: opacity 0.3s ease;
-      }
-
-      .motion-piece:hover {
-        transform: translate(-4px, -6px) rotate(-0.5deg);
-        box-shadow: 4px 5px 0 var(--orange);
-      }
-      .motion-piece:hover .motion-thumbnail {
-        transform: scale(1.05);
-        filter: contrast(1.1) saturate(1.1);
-      }
-
-      .piece-num {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        font-family: "Space Mono", monospace;
-        font-size: 12px;
-        font-weight: 700;
-        color: var(--cream);
-        background: var(--ink);
-        padding: 4px 8px;
-        border: 1px solid var(--cream);
-        z-index: 2;
-        transform: rotate(3deg);
-        box-shadow: 2px 2px 0 var(--red);
-      }
-
-      .piece-content {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        padding: 24px 22px 22px;
-        z-index: 3;
-        transform: translateY(4px);
-        transition: transform 0.3s ease;
-      }
-      .motion-piece:hover .piece-content {
-        transform: translateY(0);
-      }
-
-      .piece-year {
-        font-family: "Space Mono", monospace;
-        font-size: 10px;
-        font-weight: 700;
-        letter-spacing: 0.1em;
-        color: var(--orange);
-        margin-bottom: 8px;
-      }
-
-      .piece-title {
-        font-family: "Inter", sans-serif;
-        font-size: 26px;
-        font-weight: 900;
-        color: var(--cream);
-        line-height: 1;
-        margin-bottom: 12px;
-        letter-spacing: -0.04em;
-        text-transform: uppercase;
-      }
-
-      .piece-category {
-        font-family: "Space Mono", monospace;
-        font-size: 9px;
-        font-weight: 700;
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
-        color: var(--ink);
-        background: var(--orange);
-        padding: 4px 10px;
-        border: 1px solid var(--ink);
-        display: inline-block;
-        transform: rotate(-1.5deg);
-      }
-
-      .piece-arrow {
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        font-family: "Space Mono", monospace;
-        font-size: 10px;
-        color: var(--cream);
-        background: var(--red);
-        padding: 2px 8px;
-        border: 1px solid var(--ink);
-        opacity: 0;
-        transition:
-          opacity 0.2s,
-          transform 0.2s;
-        font-weight: 700;
-        text-transform: uppercase;
-        transform: rotate(-2deg) translateX(-10px);
-      }
-      .motion-piece:hover .piece-arrow {
-        opacity: 1;
-        transform: rotate(-2deg) translateX(0);
-      }
-
-      /* Work‑in‑progress badge */
-      .wip-badge {
-        position: absolute;
-        top: 15px;
-        left: 15px;
-        font-family: "Space Mono", monospace;
+      .nav-links a {
+        font-family: var(--font-mono);
         font-size: 11px;
-        font-weight: 700;
-        letter-spacing: 0.1em;
+        letter-spacing: 0.14em;
         text-transform: uppercase;
         color: var(--ink);
-        background: var(--orange);
-        padding: 4px 10px;
-        border: 1.5px solid var(--ink);
-        z-index: 2;
-        transform: rotate(-2deg);
-      }
-
-      /* Optional: slightly dim the thumbnail for WIP pieces */
-
-      /* SELECTED WORKS */
-      .selected-works-section {
-        background: var(--cream);
-        background-image: radial-gradient(
-          rgba(255, 255, 255, 1) 1.2px,
-          transparent 1px
-        );
-        background-size: 30px 30px;
-      }
-
-      .selected-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 18px;
-      }
-
-      .project-card {
-        background: #ffffff;
-        border: 2px solid var(--ink);
-        border-radius: 0px;
-        overflow: hidden;
-        transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        cursor: pointer;
-        box-shadow: 0 0 0 rgba(0, 0, 0, 0);
-        height: fit-content;
-        transform: translateY(0);
-      }
-
-      .project-card:hover {
-        transform: translate(0px, -4px);
-      }
-
-      .thumbnail-container {
-        position: relative;
-        width: 100%;
-        aspect-ratio: 16/9;
-        overflow: hidden;
-        border-bottom: 2px solid var(--ink);
-      }
-
-      .thumbnail-container img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-        transition: transform 0.4s ease;
-      }
-
-      .project-card:hover .thumbnail-container img {
-        transform: scale(1.03);
-      }
-
-      .thumbnail-container::after {
-        content: "▶";
-        position: absolute;
-        bottom: 12px;
-        right: 12px;
-        background: var(--ink);
-        color: var(--cream);
-        font-family: "Space Mono", monospace;
-        font-size: 9px;
-        font-weight: 700;
-        letter-spacing: 0.1em;
-        padding: 4px 10px;
-        border: 1px solid var(--cream);
-        opacity: 0;
-        transform: translateY(8px);
+        text-decoration: none;
+        padding: 6px 12px;
+        border: 1px solid transparent;
         transition:
-          opacity 0.25s,
-          transform 0.25s;
-        z-index: 2;
+          color 0.2s ease,
+          border-color 0.2s ease;
+      }
+      .nav-links a:hover {
+        color: var(--cyan);
+        border-color: currentColor;
       }
 
-      .project-card:hover .thumbnail-container::after {
-        opacity: 1;
-        transform: translateY(0);
+      /* ============================================================
+       WORK SECTION
+       ============================================================ */
+      /* Adjust to taste — set --work-min-height smaller (e.g. 90dvh,
+         80dvh) if the current full-viewport section feels too much. Only
+         applied on screens ≥ 1024px so medium and phone widths get
+         natural section height without the awkward blank stretch. */
+      :root {
+        --work-min-height: 85dvh;
       }
-
-      .project-category {
-        position: absolute;
-        top: 0;
-        left: 0;
-        background: var(--orange);
-        padding: 5px 12px;
-        font-size: 10px;
-        font-weight: 700;
-        font-family: "Space Mono", monospace;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        border-right: 2px solid var(--ink);
-        border-bottom: 2px solid var(--ink);
-        color: var(--ink);
-        z-index: 3;
+      .work {
+        padding-block: 56px 96px;
       }
-
-      .project-card .card-label {
-        padding: 12px 14px 14px;
-        background: #fff;
-      }
-      .card-label .label-title {
-        font-family: "Inter", sans-serif;
-        font-weight: 800;
-        font-size: 1rem;
-        letter-spacing: -0.01em;
-        color: var(--ink);
-        margin-bottom: 4px;
-      }
-      .card-label .label-meta {
-        font-family: "Space Mono", monospace;
-        font-size: 9px;
-        text-transform: uppercase;
-        color: var(--red);
-        opacity: 0.8;
-      }
-
-      /* Q&A */
-      /* =========================================
-         FAQ SEPARATED CARDS
-      ========================================= */
-      .questions-container {
-        max-width: 900px;
-        display: flex;
-        flex-direction: column;
-        gap: 16px; /* Separates the cards */
-        margin-top: 40px;
-      }
-
-      .qa-item {
-        border: 2px solid var(--teal); /* var(--teal) is your black */
-        background: var(--cream); /* Swapped from white to cream */
-        overflow: hidden;
-      }
-
-      .qa-question {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 14px 32px;
-        font-family: "Inter", sans-serif;
-        font-size: 17px;
-        font-weight: 700;
-        background: #fef7ed75;
-        color: var(--teal);
-        cursor: pointer;
-        letter-spacing: 0.02em;
-        user-select: none;
-        transition:
-          background 0.15s,
-          color 0.15s;
-      }
-
-      .qa-question:hover {
-        background: var(--orange);
-      }
-
-      .qa-item.open .qa-question {
-        background: var(--red);
-        color: var(--cream);
-        border-bottom: 2px solid var(--teal);
-      }
-
-      /* Clean Play/Stop toggles */
-      .qa-toggle {
-        font-size: 12px;
-        font-weight: 800;
-        letter-spacing: 0.05em;
-      }
-      .qa-toggle::after {
-        content: "+";
-      }
-      .qa-item.open .qa-toggle::after {
-        content: "■";
-      }
-
-      .qa-answer {
-        max-height: 0;
-        overflow: hidden;
-        background: var(--cream);
-        /* The Walkman Hinge: Eases out, hits the latch, snaps shut */
-        transition:
-          max-height 0.45s cubic-bezier(0.2, 0.45, 0.45, 1),
-          padding 0.3s;
-      }
-
-      .qa-item.open .qa-answer {
-        max-height: 500px;
-        /* Smooth, fast open */
-      }
-
-      .answer-inner {
-        padding: 32px;
-        font-family: "Inter", sans-serif;
-        font-size: 15px;
-        font-weight: 500;
-        line-height: 1.6;
-        color: var(--teal);
-      }
-
-      /* The bottom-left geometric spool */
-      .spool-container {
-        margin-top: 24px;
-        padding-top: 16px;
-        border-top: 1px solid rgba(0, 0, 0, 0.1);
-        display: flex;
-        justify-content: flex-start;
-      }
-
-      .tiny-spool {
-        width: 20px;
-        height: 20px;
-        border: 2px solid var(--teal);
-        background: #ffffff;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        animation: spin 3s linear infinite;
-        animation-play-state: paused;
-      }
-
-      .qa-item.open .tiny-spool {
-        animation-play-state: running;
-      }
-
-      .tiny-spool::after {
-        content: "";
-        width: 6px;
-        height: 6px;
-        background: var(--teal);
-      }
-
-      @keyframes spin {
-        100% {
-          transform: rotate(360deg);
+      @media (min-width: 1024px) {
+        .work {
+          min-height: var(--work-min-height);
         }
       }
 
-      /* FOOTER */
-      /* =========================================
-         FOOTER REVERSION & VERSION COUNT
-      ========================================= */
-      footer {
-        padding: 48px 8%;
-        border-top: 2px solid var(--teal);
-        background: #ffffff;
+      .section-eyebrow {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+      /* Icon inside the eyebrow (Selected Works, FAQs). Inherits color from
+         the eyebrow so it reads as one unit. */
+      .eyebrow-icon {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+      }
+      .section-title {
+        font-family: var(--font-display);
+        font-size: clamp(28px, 3.2vw, 42px);
+        font-weight: 500;
+        letter-spacing: -0.02em;
+        line-height: 1.05;
+        margin-bottom: 48px;
+        max-width: 720px;
+      }
+      /* When there's no eyebrow above it, preserve the vertical space the
+         eyebrow used to occupy so the section doesn't jump upward. If an
+         eyebrow is added back, the title is no longer :first-child and this
+         rule doesn't apply. */
+      .section-title:first-child {
+        margin-top: 30px;
+      }
+
+      .work-grid {
+        display: grid;
+        grid-template-columns: 220px minmax(0, 1fr) 240px;
+        column-gap: 48px;
+        row-gap: 32px;
+        align-items: start;
+      }
+
+      /* ============================================================
+       LEFT — works list (NieR inventory style, no dividers)
+       ============================================================ */
+      .works {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+      }
+      .works-head {
+        font-family: var(--font-mono);
+        font-size: 10px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--ink-muted);
+        padding: 0 14px 8px;
+      }
+      /* scroll container + custom scroll indicator on the LEFT */
+      .works-scroll-container {
+        position: relative;
+        padding-left: 14px; /* room for the left-side scroll indicator */
+      }
+      .works-scroll {
+        max-height: calc(
+          var(--works-max-visible, 5) * var(--works-item-height, 47px)
+        );
+        overflow-y: auto;
+        overflow-x: hidden;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+      .works-scroll::-webkit-scrollbar {
+        display: none;
+      }
+      .works-scrollbar {
+        position: absolute;
+        left: 4px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: var(--paper-panel);
+        z-index: 4;
+        cursor: pointer;
+      }
+      .works-scrollbar.hidden {
+        display: none;
+      }
+      .works-scrollbar-thumb {
+        position: absolute;
+        left: -2px;
+        width: 6px;
+        background: #c8c8c5;
+        cursor: grab;
+        transition: background 0.15s ease;
+      }
+      .works-scrollbar-thumb:active {
+        cursor: grabbing;
+        background: #b8b8b5;
+      }
+      .work-item {
+        display: grid;
+        grid-template-columns: 26px 1fr auto;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 14px;
+        background: var(--paper-panel);
+        cursor: pointer;
+        transition:
+          background 0.15s ease,
+          color 0.15s ease;
+        font-size: 14px;
+        flex-shrink: 0;
+      }
+      .work-item:hover {
+        background: color-mix(in srgb, var(--ink) 10%, var(--paper-panel));
+      }
+      .work-item:hover .work-item-num {
+        color: var(--cyan);
+      }
+      .work-item.active {
+        background: var(--ink);
+        color: var(--paper);
+        font-weight: 500;
+      }
+      .work-item.active .work-item-num {
+        color: var(--orange);
+        font-weight: 700;
+      }
+      .work-item-num {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        color: var(--ink-muted);
+        transition: color 0.2s ease;
+      }
+      .work-item-title {
+        font-family: var(--font-display);
+      }
+      .work-item-count {
+        font-family: var(--font-mono);
+        font-size: 10px;
+        color: var(--ink-muted);
+        letter-spacing: 0.04em;
+      }
+      .work-item.active .work-item-count {
+        color: rgba(246, 244, 239, 0.55);
+      }
+
+      /* ============================================================
+       MIDDLE — video with piece buttons below
+       (aspect ratio + max-width set from JS)
+       ============================================================ */
+      .work-video {
+        min-width: 0;
+      }
+
+      .video-frame {
+        position: relative;
+        background: var(--ink);
+        aspect-ratio: 16 / 9;
+        max-width: 100%;
+        margin: 0 auto;
+        transition:
+          aspect-ratio 0.35s ease,
+          max-width 0.35s ease;
+      }
+
+      .video-content {
+        position: absolute;
+        inset: 0;
+        background: var(--ink);
+        overflow: hidden;
+      }
+      .video-content iframe {
+        position: absolute;
+        top: var(--iframe-top, 0%);
+        left: 0;
+        width: 100%;
+        height: var(--iframe-height, 100%);
+        border: 0;
+        /* let clicks pass through to the overlay on top */
+        pointer-events: none;
+      }
+      /* Native MP4 player — fills the frame the same way the iframe does.
+         object-fit: cover matches how the Vimeo background player fills. */
+      .video-content video.mp4-player {
+        position: absolute;
+        top: var(--iframe-top, 0%);
+        left: 0;
+        width: 100%;
+        height: var(--iframe-height, 100%);
+        object-fit: cover;
+        border: 0;
+        background: #000;
+        pointer-events: none;
+      }
+      /* invisible overlay on top of the iframe that captures clicks for play/pause */
+      .video-click {
+        position: absolute;
+        inset: 0;
+        cursor: pointer;
+        z-index: 10;
+        pointer-events: auto;
+        background: transparent;
+        touch-action: pan-y;
+      }
+
+      /* SCREENSAVER — animated pixel noise overlay.
+       Shown as loading screen and as idle screensaver. */
+      .video-screensaver {
+        position: absolute;
+        inset: 0;
+        z-index: 5;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+        pointer-events: none;
+        background: #000;
+        overflow: hidden;
+      }
+      .video-screensaver.active {
+        opacity: 1;
+      }
+      .video-screensaver canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+      /* noise-alpha grain layer sitting over the pixel field */
+      .video-screensaver::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='2' seed='7'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>");
+        opacity: var(--noise-alpha-opacity, 0.26);
+        mix-blend-mode: screen;
+        pointer-events: none;
+      }
+      /* Piece-switch pulse — red multiplied through the pixels so each cell
+       shifts to its own shade of red (bright → red, mid → dark red, black stays) */
+      .video-screensaver-pulse {
+        position: absolute;
+        inset: 0;
+        background: var(--pulse-color, #e24632);
+        mix-blend-mode: multiply;
+        pointer-events: none;
+        z-index: 4;
+        opacity: 0;
+      }
+      .video-screensaver-pulse.pulsing {
+        animation: screensaver-pulse var(--pulse-duration, 550ms) ease-out;
+      }
+      @keyframes screensaver-pulse {
+        0% {
+          opacity: 0;
+        }
+        25% {
+          opacity: var(--pulse-max-opacity, 0.55);
+        }
+        100% {
+          opacity: 0;
+        }
+      }
+      /* Project-switch glow — brief exposure lift across the screensaver.
+       Subtle, screen blend so bright pixels bloom slightly instead of tinting. */
+      .video-screensaver-glow {
+        position: absolute;
+        inset: 0;
+        background: var(--glow-color, #ffffff);
+        mix-blend-mode: screen;
+        pointer-events: none;
+        z-index: 4;
+        opacity: 0;
+      }
+      .video-screensaver-glow.pulsing {
+        animation: screensaver-glow var(--glow-duration, 420ms) ease-out;
+      }
+      @keyframes screensaver-glow {
+        0% {
+          opacity: 0;
+        }
+        20% {
+          opacity: var(--glow-max-opacity, 0.14);
+        }
+        100% {
+          opacity: 0;
+        }
+      }
+      /* Blur-focus reveal, used when the description updates on piece / project switch */
+      @keyframes text-reveal-in {
+        0% {
+          filter: blur(10px);
+          opacity: 0;
+          transform: translateY(14px);
+        }
+        100% {
+          filter: blur(0);
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .text-reveal {
+        animation: text-reveal-in 620ms cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      .placeholder {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        color: rgba(255, 255, 255, 0.6);
+        font-family: var(--font-mono);
+        font-size: 11px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+      }
+      .placeholder .ar-badge {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        padding: 6px 12px;
+        letter-spacing: 0.1em;
+      }
+      .placeholder .ar-note {
+        font-size: 10px;
+        color: rgba(255, 255, 255, 0.35);
+      }
+
+      /* LOWER THIRD — pixelated red bar that appears in the description
+       column whenever the current project has more than one piece.
+       Renders via canvas so we can pixel-dissolve in from the left and
+       keep the right edge evolving continuously. */
+      .video-lower-third {
+        position: relative;
+        width: fit-content;
+        max-width: 100%;
+        height: 40px;
+        margin-top: 4px;
+        margin-bottom: 24px;
+        overflow: hidden;
+        display: none;
+      }
+      .video-lower-third.active {
+        display: block;
+      }
+      .lower-third-canvas {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+      .lower-third-content {
+        position: relative;
+        z-index: 2;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 0 68px 0 14px; /* right padding clears the pixel edge zone (~60px) */
+        color: #fff;
+        opacity: 0;
+        transition: opacity 0.28s ease;
+      }
+      .video-lower-third.revealed .lower-third-content {
+        opacity: 1;
+      }
+      .lower-third-icon {
+        width: 20px;
+        height: 20px;
+        color: #fff;
+        flex-shrink: 0;
+      }
+      .lower-third-pieces {
+        display: flex;
+        gap: 6px;
+        pointer-events: auto;
+        align-items: center;
+      }
+      .lower-third-btn {
+        background: transparent;
+        border: none;
+        color: rgba(255, 255, 255, 0.6);
+        font-family: var(--font-mono);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        padding: 3px 4px;
+        cursor: pointer;
+        transition: color 0.15s ease;
+        text-decoration: none;
+        text-underline-offset: 3px;
+        text-decoration-thickness: 1px;
+      }
+      .lower-third-btn:hover {
+        color: rgba(255, 255, 255, 0.9);
+        text-decoration: underline;
+      }
+      .lower-third-btn.active {
+        color: #fff;
+        text-decoration: underline;
+      }
+
+      /* ============================================================
+       RIGHT — description
+       ============================================================ */
+      .work-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+      .info-title {
+        font-family: var(--font-display);
+        font-size: 22px;
+        font-weight: 500;
+        letter-spacing: -0.02em;
+        line-height: 1.15;
+        margin-bottom: 6px;
+      }
+      .info-meta {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+        padding-bottom: 16px;
+        margin-bottom: 16px;
+        border-bottom: 1px solid var(--line);
+      }
+      .info-desc {
+        font-family: var(--font-display);
+        font-size: 14px;
+        line-height: 1.65;
+        color: var(--ink);
+        margin-bottom: 20px;
+        /* Preserves paragraph breaks from descriptions that use \n\n
+           (e.g. the Cuvée piece description). Without this, all newlines
+           collapse and multi-paragraph copy runs together. */
+        white-space: pre-line;
+      }
+      .info-tools-label {
+        font-family: var(--font-mono);
+        font-size: 10px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--ink-muted);
+        margin-bottom: 6px;
+      }
+      .info-tools {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        margin-bottom: 32px;
+      }
+      .info-tools span {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        letter-spacing: 0.06em;
+        color: var(--ink-soft);
+        cursor: default;
+        transition: color 0.2s ease;
+      }
+      .info-tools span:hover {
+        color: var(--orange);
+      }
+
+      .info-footer {
+        padding-top: 16px;
+        border-top: 1px solid var(--line);
         display: flex;
         justify-content: space-between;
         align-items: center;
-        position: relative; /* For absolute positioning of the version count */
+        gap: 12px;
+      }
+      .counter {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+      }
+      .counter-current {
+        color: var(--ink);
+        font-weight: 700;
+      }
+      .nav-arrows {
+        display: flex;
+        gap: 4px;
+      }
+      .arrow-btn {
+        background: transparent;
+        border: 1px solid var(--line);
+        color: var(--ink);
+        font-family: var(--font-mono);
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        padding: 6px 10px;
+        cursor: pointer;
+        transition:
+          color 0.2s ease,
+          border-color 0.2s ease;
+      }
+      .arrow-btn:hover:not(:disabled) {
+        border-color: var(--cyan);
+        color: var(--cyan);
+      }
+      .arrow-btn:disabled {
+        opacity: 0.28;
+        cursor: not-allowed;
+      }
+
+      /* Hidden on desktop — mobile-only chrome */
+      .work-info-close {
+        display: none;
+      }
+
+      /* ============================================================
+       MEDIUM + MOBILE — 2-column works grid, letterbox modal on tap.
+       Below 600px this switches to a single-column list (see next block).
+       ============================================================ */
+      @media (max-width: 1023px) {
+        /* nav + heading tighter */
+        nav {
+          padding: 14px 20px;
+        }
+        .logo {
+          font-size: 12px;
+        }
+        .nav-links {
+          gap: 14px;
+        }
+        .nav-links a {
+          font-size: 10px;
+          letter-spacing: 0.12em;
+        }
+        .wrap {
+          padding-inline: 20px;
+        }
+        .work {
+          padding-block: 32px 48px;
+        }
+        .section-eyebrow {
+          margin-bottom: 10px;
+        }
+        .section-title {
+          font-size: 22px;
+          margin-bottom: 28px;
+        }
+
+        /* Grid becomes a single column, hide video and info by default —
+         they only appear when a work has been tapped (modal state) */
+        .work-grid {
+          display: block;
+          row-gap: 0;
+          height: auto;
+        }
+        .work-video,
+        .work-info {
+          display: none;
+        }
+
+        /* Works list becomes the main mobile content */
+        .works {
+          display: block;
+          padding: 0;
+          max-height: none;
+        }
+        .works-head {
+          padding: 0 0 12px;
+        }
+        .works-scroll-container {
+          padding-left: 0;
+        }
+        .works-scroll {
+          max-height: none;
+          height: auto;
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 10px;
+        }
+        .works-scrollbar {
+          display: none;
+        }
+
+        /* Work item — slim horizontal row inside the 2-column grid */
+        .work-item {
+          display: grid;
+          grid-template-columns: 22px 1fr auto;
+          align-items: center;
+          gap: 6px;
+          padding: 6px 10px;
+          min-height: 0;
+          flex-direction: initial;
+        }
+        .work-item-num {
+          font-size: 9px;
+        }
+        .work-item-title {
+          font-size: 12px;
+          line-height: 1.3;
+        }
+        .work-item-count {
+          font-size: 9px;
+          color: var(--ink-muted);
+          align-self: center;
+        }
+        .work-item.active .work-item-count {
+          color: rgba(246, 244, 239, 0.55);
+        }
+
+        /* Modal state — user tapped a work, letterbox opens.
+         .work-grid becomes the fullscreen scroll container so the video
+         and description flow together vertically. This works for any
+         aspect ratio: landscape reads short-then-info, portrait/square
+         get full space for the video first, description scrolls in below. */
+        .work.mobile-modal-open .work-grid {
+          display: block;
+          position: fixed;
+          inset: 0;
+          background: var(--paper);
+          z-index: 200;
+          overflow-y: auto;
+          padding: 56px 16px 40px;
+          height: auto;
+        }
+        .work.mobile-modal-open .works,
+        .work.mobile-modal-open .section-eyebrow,
+        .work.mobile-modal-open .section-title {
+          display: none;
+        }
+        .work.mobile-modal-open .work-video {
+          display: block;
+          position: static;
+          padding: 0;
+        }
+        .work.mobile-modal-open .work-video .video-frame {
+          margin: 0 auto;
+          max-width: 100%;
+          max-height: 75vh;
+          max-height: 75dvh;
+        }
+        .work.mobile-modal-open .work-info {
+          display: block;
+          position: static;
+          background: transparent;
+          backdrop-filter: none;
+          -webkit-backdrop-filter: none;
+          padding: 28px 4px 0;
+          border-top: 0.5px solid var(--line);
+          margin-top: 24px;
+          max-height: none;
+          overflow: visible;
+          z-index: auto;
+          gap: 0;
+        }
+
+        /* Close button — visible only when modal is open, fixed top-right */
+        .work-info-close {
+          display: none;
+        }
+        .work.mobile-modal-open .work-info-close {
+          display: grid;
+          place-items: center;
+          position: fixed;
+          top: 12px;
+          right: 12px;
+          width: 34px;
+          height: 34px;
+          border: 0.5px solid var(--line);
+          border-radius: 50%;
+          background: var(--paper);
+          color: var(--ink);
+          cursor: pointer;
+          z-index: 220;
+          font-size: 14px;
+        }
+      }
+
+      /* ============================================================
+       PHONE — narrower than 600px: single-column list, letterbox
+       modal still opens on tap (inherits from 1023 block above)
+       ============================================================ */
+      @media (max-width: 600px) {
+        .works-scroll {
+          grid-template-columns: 1fr;
+          gap: 4px;
+        }
+        /* item goes back to horizontal row: num | title | count */
+        .work-item {
+          display: grid;
+          grid-template-columns: 26px 1fr auto;
+          flex-direction: row;
+          align-items: center;
+          gap: 10px;
+          padding: 12px 14px;
+          min-height: 0;
+        }
+        .work-item-num {
+          font-size: 11px;
+        }
+        .work-item-title {
+          font-size: 14px;
+          line-height: 1.35;
+        }
+        .work-item-count {
+          align-self: center;
+        }
+      }
+
+      /* ============================================================
+       NAV — FIXED with two states.
+       Over the hero it's transparent with white text. Once scrolled
+       past the hero it becomes solid paper with dark text. Toggled
+       by an IntersectionObserver on the hero section.
+       ============================================================ */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        background: transparent;
+        border-bottom-color: transparent;
+        transition:
+          background-color 0.3s ease,
+          border-color 0.3s ease;
+      }
+      nav .logo,
+      nav .nav-links a {
+        transition: color 0.3s ease;
+      }
+      /* Over-hero state — the default until IntersectionObserver flips it */
+      nav.over-hero .logo,
+      nav.over-hero .nav-links a {
+        color: var(--paper);
+      }
+      nav.over-hero .nav-links a:hover {
+        color: var(--cyan);
+      }
+      /* Past-hero state — everything disappears. Background, border, logo,
+         and links all go transparent. Since the logo icon is an SVG using
+         currentColor, it fades with the logo text. pointer-events off so
+         the invisible links can't accept accidental clicks. The nav returns
+         when the user scrolls back up into the hero. */
+      nav.past-hero {
+        background: transparent;
+        border-bottom-color: transparent;
+      }
+      nav.past-hero .logo,
+      nav.past-hero .nav-links a {
+        color: transparent;
+        pointer-events: none;
+      }
+
+      /* Anchor jumps land below the fixed nav rather than under it */
+      section {
+        scroll-margin-top: 72px;
+      }
+
+      /* ============================================================
+       HERO SECTION
+       Full viewport. Layer order from back to front:
+         (1) hero-bg           background photo + dark overlay
+         (2) hero-illustrations  colored character figures
+         (3) hero-content        big centered white text
+         (3) hero-caption        small bottom caption
+        (10) hero-noise         top-layer film grain — unifies it all
+       The noise is what makes the photo, text, and characters feel
+       like one continuous surface, per the Caddis reference.
+       ============================================================ */
+      :root {
+        /* Tune these to taste. Opacity is the whole grain overlay strength. */
+        --hero-noise-opacity: 0.35;
+        --hero-noise-tile: none; /* populated at runtime — see JS below */
+      }
+
+      .hero {
+        position: relative;
+        width: 100%;
+        min-height: 100vh;
+        min-height: 100dvh;
+        overflow: hidden;
+        background: #2a2520; /* fallback while bg image loads */
+        isolation: isolate;
+      }
+
+      /* Background image + optional darkening overlay */
+      .hero-bg {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+      }
+      .hero-bg-image {
+        position: absolute;
+        inset: 0;
+        background-size: cover;
+        background-position: center;
+      }
+      .hero-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          180deg,
+          rgba(0, 0, 0, 0.15) 0%,
+          rgba(0, 0, 0, 0.2) 75%,
+          rgba(0, 0, 0, 0.4) 100%
+        );
+      }
+
+      /* Illustration layer — position each figure with --x / --y % */
+      .hero-illustrations {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        pointer-events: none;
+      }
+      .illo {
+        position: absolute;
+        left: var(--x, 50%);
+        top: var(--y, 50%);
+        width: var(--size, 140px);
+        height: auto; /* let SVGs keep their own aspect ratio */
+        transform: translate(-50%, -50%);
+        display: block;
+      }
+
+      /* Centered text block */
+      .hero-content {
+        position: absolute;
+        inset: 0;
+        z-index: 3;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 0 clamp(20px, 4vw, 48px);
+        color: var(--paper);
+        text-align: center;
+        pointer-events: none; /* let clicks pass to illustrations behind if needed */
+      }
+      .hero-greeting {
+        font-family: var(--font-display);
+        font-size: clamp(18px, 1.8vw, 26px);
+        font-weight: 500;
+        letter-spacing: -0.005em;
+        margin-bottom: clamp(8px, 1.2vw, 16px);
+        opacity: 0.95;
+      }
+      .hero-title {
+        font-family: var(--font-display);
+        font-size: clamp(40px, 6.8vw, 96px);
+        font-weight: 700;
+        line-height: 1.02;
+        letter-spacing: -0.025em;
+        max-width: 20ch;
+      }
+
+      /* Bottom caption */
+      .hero-caption {
+        position: absolute;
+        bottom: clamp(20px, 3vh, 40px);
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 3;
+        font-family: var(--font-display);
+        font-size: 14px;
+        color: var(--paper);
+        opacity: 0.7;
+        letter-spacing: 0.01em;
+        white-space: nowrap;
+      }
+
+      /* Top-layer noise — the unifier */
+      .hero-noise {
+        position: absolute;
+        inset: 0;
+        z-index: 10;
+        pointer-events: none;
+        background-image: var(--hero-noise-tile);
+        background-repeat: repeat;
+        opacity: var(--hero-noise-opacity);
+      }
+
+      /* Phone tuning — smaller figures, tighter text */
+      @media (max-width: 720px) {
+        .illo {
+          width: calc(var(--size, 140px) * 0.65);
+        }
+        .hero-title {
+          font-size: clamp(32px, 9vw, 56px);
+        }
+        .hero-caption {
+          font-size: 12px;
+        }
+      }
+
+      /* ============================================================
+       FAQ SECTION
+       Paper-panel base with a hint of grain on top. Noise overlays
+       text + icon (via ::after, pointer-events: none), border always
+       present, icon swaps between outline and filled variants.
+       ============================================================ */
+      :root {
+        --faq-noise-opacity: 0.2;
+        --faq-noise-tile: none; /* populated at runtime */
+      }
+
+      .faq {
+        padding-block: 56px 96px;
+      }
+      /* Two-column layout on desktop, single column below the phone breakpoint.
+         Each .faq-column is its OWN flex stack, which is the key fix: opening
+         an item makes only that column grow. In CSS Grid, side-by-side items
+         share a row height, so an opened item would stretch its neighbor. Two
+         flex columns keep each side independent, like Caddis. */
+      .faq-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        align-items: start;
+      }
+      .faq-column {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      @media (max-width: 720px) {
+        .faq-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .faq-item {
+        position: relative;
+        background: #f6f4ef;
+        border: 1px solid var(--line);
+        overflow: hidden;
+        transition: border-color 0.2s ease;
+      }
+      .faq-item::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: var(--faq-noise-tile);
+        background-repeat: repeat;
+        opacity: var(--faq-noise-opacity);
+        pointer-events: none;
+        z-index: 3;
+      }
+      .faq-item:hover {
+        border-color: rgba(15, 15, 15, 0.28);
+      }
+
+      .faq-summary {
+        position: relative;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        gap: 16px;
+        padding: 18px 18px 18px 20px;
+        cursor: pointer;
+        list-style: none;
+        user-select: none;
+        z-index: 1;
+      }
+      .faq-summary::-webkit-details-marker {
+        display: none;
+      }
+      .faq-summary::marker {
+        display: none;
+      }
+      .faq-question {
+        font-family: var(--font-display);
+        font-size: 15px;
+        font-weight: 500;
+        letter-spacing: -0.005em;
+        line-height: 1.35;
+        color: var(--ink);
+      }
+
+      .faq-icon-wrap {
+        position: relative;
+        width: 22px;
+        height: 22px;
+        flex-shrink: 0;
+      }
+      .faq-icon {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        color: var(--ink);
+        transition: opacity 0.25s ease;
+      }
+      .faq-icon-open {
+        opacity: 0;
+      }
+      .faq-item.is-open .faq-icon-closed {
+        opacity: 0;
+      }
+      .faq-item.is-open .faq-icon-open {
+        opacity: 1;
+      }
+      .faq-icon-open .inner {
+        transform-origin: 11px 11px;
+        transform: rotate(0deg);
+        transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      .faq-item.is-open .faq-icon-open .inner {
+        transform: rotate(45deg);
+      }
+
+      .faq-answer {
+        position: relative;
+        max-height: 0;
+        overflow: hidden;
+        transition:
+          max-height 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+          opacity 0.3s ease;
+        opacity: 0;
+        z-index: 1;
+      }
+      .faq-item.is-open .faq-answer {
+        opacity: 1;
+      }
+      .faq-answer-inner {
+        padding: 4px 20px 22px;
+        font-family: var(--font-display);
+        font-size: 14px;
+        line-height: 1.65;
+        color: var(--ink);
+      }
+      html:not(.js-ready) .faq-answer {
+        max-height: none;
+        opacity: 1;
+      }
+
+      /* ============================================================
+       SCROLL REVEAL
+       Elements marked .reveal start hidden and fade + slide up when
+       they enter the viewport. One-shot (no re-hiding on scroll back).
+       Optional data-delay cascades multiple reveals within a group so
+       eyebrow → title → content feel deliberate rather than everything
+       popping at once. Motion-safe: users with prefers-reduced-motion
+       get instant visibility.
+       ============================================================ */
+      .reveal {
+        opacity: 0;
+        transform: translateY(24px);
+        transition:
+          opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+          transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+        will-change: opacity, transform;
+      }
+      .reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .reveal[data-delay="1"] {
+        transition-delay: 80ms;
+      }
+      .reveal[data-delay="2"] {
+        transition-delay: 160ms;
+      }
+      .reveal[data-delay="3"] {
+        transition-delay: 240ms;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .reveal,
+        .reveal[data-delay] {
+          opacity: 1;
+          transform: none;
+          transition: none;
+          transition-delay: 0s;
+        }
+      }
+
+      /* ============================================================
+       FOOTER
+       Primarily black surface. Same noise tile as the hero, but with
+       its own opacity variable so you can tune the grain independently.
+       Two new palette tokens are introduced here (--lime, --lavender)
+       pulled from the reference image, and applied as small signature
+       moments: lime on the version tag, lavender on the vimeo hover.
+       Everything else stays quiet so the palette expands without
+       fighting what's already working.
+       ============================================================ */
+      :root {
+        --footer-noise-opacity: 0.35;
+        /* New palette tokens from the reference. Available site-wide
+           for future accents — nothing else uses them yet. */
+        --lime: #d1e82d;
+        --lavender: #8378d8;
+      }
+
+      .site-footer {
+        position: relative;
+        background: #0a0a0a;
+        color: var(--paper);
+        padding: 56px clamp(24px, 4vw, 64px) 44px;
+        overflow: hidden;
+        isolation: isolate;
+      }
+
+      .footer-inner {
+        position: relative;
+        z-index: 2;
+        max-width: 1300px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 32px;
+        flex-wrap: wrap;
       }
 
       .footer-left {
         display: flex;
         flex-direction: column;
-        gap: 4px;
+        gap: 8px;
       }
-
       .footer-name {
-        font-family: "Inter", sans-serif;
+        font-family: var(--font-display);
         font-size: 24px;
-        font-weight: 900;
-        letter-spacing: -0.04em;
-        color: var(--teal);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        color: var(--paper);
       }
-
       .footer-sub {
-        font-family: "Inter", sans-serif;
-        font-size: 13px;
-        font-weight: 500;
-        color: var(--teal);
-        opacity: 0.7;
+        font-family: var(--font-mono);
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        color: rgba(246, 244, 239, 0.55);
+        text-transform: uppercase;
       }
 
       .footer-right {
         display: flex;
-        gap: 16px;
+        gap: 4px;
+        flex-wrap: wrap;
       }
-
-      .footer-right a {
-        font-family: "Inter", sans-serif;
-        font-size: 12px;
-        font-weight: 700;
-        letter-spacing: 0.05em;
+      .footer-link {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        letter-spacing: 0.14em;
         text-transform: uppercase;
-        color: var(--teal);
+        color: var(--paper);
         text-decoration: none;
-        padding: 8px 16px;
-        border: 2px solid transparent;
-        transition: all 0.2s;
+        padding: 8px 14px;
+        border: 1px solid transparent;
+        transition:
+          color 0.2s ease,
+          border-color 0.2s ease;
+      }
+      .footer-link:hover {
+        color: var(--cyan);
+        border-color: currentColor;
+      }
+      /* Second signature moment — sketchbook link picks up --purple on hover.
+         (You'd reserved --purple for the sketchbook in your original tokens,
+         so this is honoring that. --lavender is still defined for future use.) */
+      .footer-link:last-child:hover {
+        color: var(--purple);
       }
 
-      .footer-right a.about:hover {
-        background: var(--red);
-        border-color: var(--teal);
-        color: var(--cream);
-      }
-      .footer-right a.contact:hover {
-        background: #0092c9;
-        border-color: var(--teal);
-        color: var(--cream);
-      }
-      /* Sketchbook button: simple purple hover (matches the scratchbook page) */
-      .footer-right a.sketchbook:hover {
-        background: #6513e0;
-        border-color: var(--cream);
-        color: var(--cream);
-      }
-
-      .version-count {
+      .footer-version {
         position: absolute;
-        bottom: 16px;
-        right: 2%;
-        font-family: "Inter", sans-serif;
-        font-size: 11px;
-        font-weight: 700;
-        color: var(--teal);
-        opacity: 0.4;
-        border: 2px solid;
-        border-style: dotted;
-        padding: 2px 4px;
-      }
-
-      @media (max-width: 800px) {
-        .qa-question {
-          padding: 20px;
-          font-size: 12px;
-        }
-        .answer-inner {
-          padding: 20px;
-        }
-        footer {
-          flex-direction: column;
-          align-items: flex-start;
-          gap: 32px;
-        }
-        .version-count {
-          position: relative;
-          right: 0;
-          bottom: 0;
-          margin-top: -16px;
-        }
-      }
-      /* ─────────── MODAL (ORIGINAL, UNTOUCHED) ─────────── */
-      .modal-overlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.6); /* your original opacity */
-        z-index: 2000;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        opacity: 0;
-        visibility: hidden;
-        pointer-events: none;
-        transition:
-          opacity 0.25s ease,
-          visibility 0.25s ease;
-      }
-
-      .modal-overlay.active {
-        opacity: 1;
-        visibility: visible;
-        pointer-events: auto;
-      }
-
-      .modal-panel {
-        display: flex;
-        width: fit-content;
-        max-width: min(94vw, 1360px);
-        max-height: 88vh;
-        background: #0a0a0a;
-        border: 1px solid rgba(247, 227, 194, 0.15);
-        border-radius: 0;
-        opacity: 0;
-        transform: translateY(20px);
-        transition:
-          opacity 0.3s ease,
-          transform 0.3s ease;
-        box-shadow: none;
-      }
-
-      .modal-overlay.active .modal-panel {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-      .modal-video {
-        flex: 0 0 auto;
-        background: #000;
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: min(
-          calc(84vh * var(--video-aspect, 1.778)),
-          calc(min(94vw, 1360px) - 320px)
-        );
-        aspect-ratio: var(--video-aspect, 1.778);
-        border-right: 1px solid rgba(247, 227, 194, 0.1);
-        overflow: hidden; /* keep overlay contained */
-        transition: none; /* snappy by default */
-      }
-
-      .modal-video.bts-transition {
-        transition:
-          width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-          aspect-ratio 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      }
-
-      .modal-video iframe {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        border: none;
-        display: block;
-        opacity: 0;
-        transition: opacity 0.4s ease;
+        bottom: 18px;
+        right: clamp(24px, 4vw, 64px);
         z-index: 2;
-      }
-
-      .modal-video iframe.ready {
-        opacity: 1;
-      }
-
-      .modal-spinner {
-        width: 28px;
-        height: 28px;
-        border: 2px solid rgba(246, 146, 35, 0.15);
-        border-top-color: var(--orange);
-        border-radius: 50%;
-        animation: spin 0.75s linear infinite;
-      }
-
-      @keyframes spin {
-        to {
-          transform: rotate(360deg);
-        }
-      }
-
-      .modal-info {
-        width: 320px;
-        flex-shrink: 0;
-        background: #0a0a0a;
-
-        background-size: 24px 24px;
-        color: var(--cream);
-        padding: 32px 28px;
-        overflow-y: auto;
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
-        font-family: "Inter", sans-serif;
-        border-left: 1px solid rgba(247, 227, 194, 0.1);
-        position: relative;
-      }
-
-      /* NO vertical blue line – removed ::before */
-
-      .modal-info-counter {
-        font-family: "Space Mono", monospace;
-        font-size: 11px;
-        font-weight: 700;
-        color: var(--cream);
-        margin-bottom: 32px;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-      }
-
-      .modal-info-counter .current-num {
-        color: var(
-          --electric-blue
-        ); /* keep original color if you want, but I'm leaving it as you had */
-        font-weight: 900;
-        font-size: 14px;
-      }
-
-      .modal-info-counter-bar {
-        flex: 1;
-        height: 2px;
-        background: rgba(247, 227, 194, 0.1);
-        position: relative;
-      }
-
-      .modal-info-counter-fill {
-        position: absolute;
-        left: 0;
-        top: 0;
-        height: 100%;
-        background: var(--electric-blue);
-        transition: width 0.3s ease;
-      }
-
-      .modal-eyebrow {
-        font-family: "Space Mono", monospace;
+        font-family: var(--font-mono);
         font-size: 10px;
-        font-weight: 700;
         letter-spacing: 0.2em;
-        text-transform: uppercase;
-        color: var(--orange);
-        margin-bottom: 8px;
-        background: rgba(246, 146, 35, 0.1);
-        display: inline-block;
-        padding: 4px 10px;
-        border: 1px dashed var(--orange);
-        transform: rotate(-1deg);
-        align-self: flex-start;
+        /* First signature moment — version tag in --lime */
+        color: var(--lime);
+        opacity: 0.75;
       }
 
-      .modal-info h2 {
-        font-family: "Inter", sans-serif;
-        font-size: 36px;
-        font-weight: 900;
-        letter-spacing: -0.04em;
-        line-height: 1;
-        text-transform: uppercase;
-        color: var(--cream);
-        margin-bottom: 20px;
-        word-break: break-word;
-        text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
-      }
-
-      .modal-client {
-        font-family: "Space Mono", monospace;
-        font-size: 11px;
-        color: var(--orange);
-        margin-bottom: 24px;
-        padding-bottom: 16px;
-        border-bottom: 1px solid rgba(246, 146, 35, 0.2);
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-      }
-
-      .modal-desc {
-        font-size: 13px;
-        font-weight: 300;
-        line-height: 1.7;
-        color: rgba(247, 227, 194, 0.75);
-        margin-bottom: 24px;
-        flex: 1;
-      }
-
-      /* Original tags (will be conditionally rendered) */
-      .modal-tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        margin-bottom: 28px;
-      }
-
-      .modal-tags span {
-        font-family: "Space Mono", monospace;
-        font-size: 9px;
-        font-weight: 700;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: var(--ink);
-        background: var(--orange);
-        padding: 5px 10px;
-        border: 1.5px solid var(--ink);
-        box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
-      }
-
-      /* Action buttons (replaces tags for BTS projects) */
-      .action-buttons {
-        display: flex;
-        gap: 8px;
-        margin-bottom: 24px;
-        flex-wrap: wrap;
-      }
-
-      .action-btn {
-        font-family: "Space Mono", monospace;
-        font-size: 9px;
-        font-weight: 700;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        background: var(--orange);
-        border: 1.5px solid #000;
-        color: #000;
-        padding: 6px 12px;
-        cursor: pointer;
-        transition: all 0.2s;
-        box-shadow: none;
-        line-height: 1;
-      }
-
-      .action-btn:hover {
-        background: #00adef;
-        border-color: #00adef;
-        color: #000000;
-        transform: none;
-        box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
-      }
-
-      .action-btn.active {
-        background: #00adef;
-        border-color: #00adef;
-        color: #000000;
-      }
-
-      /* BTS Overlay (hidden by default) */
-      .bts-overlay {
+      .footer-noise {
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: #0092c9; /* electric blue */
-        background-image: radial-gradient(
-          circle at 30% 40%,
-          rgba(247, 227, 194, 0.12) 0%,
-          transparent 60%
-        );
-        color: var(--cream);
-        display: flex;
-        flex-direction: column;
-        padding: 20px 30px 30px 30px;
-        transform: translateX(100%);
-        transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        z-index: 5;
-        box-sizing: border-box;
-        border-left: 2px solid var(--orange);
+        inset: 0;
+        z-index: 3;
+        pointer-events: none;
+        background-image: var(--hero-noise-tile);
+        background-repeat: repeat;
+        opacity: var(--footer-noise-opacity);
       }
 
-      .bts-overlay.active {
-        transform: translateX(0);
-      }
+      /* ============================================================
+       FOOTER CHARACTERS
+       Two little figures sitting on the footer's top edge, top-left.
+       The .footer-zone wrapper is position:relative and NOT clipped,
+       so characters can poke up above the footer while the footer
+       itself keeps overflow:hidden for its noise layer.
 
-      .bts-tabs {
-        display: flex;
-        gap: 8px;
-        align-self: flex-end;
-        margin-bottom: 20px;
-      }
+       Each .footer-char is tunable inline:
+         --x     distance from the left edge
+         --y     vertical offset — NEGATIVE lifts it above the footer
+                 edge so it looks like it's sitting on top
+         --size  width of the character
+       Swap the .char-art placeholder blob for your real SVG art.
 
-      .bts-tab {
-        font-family: "Space Mono", monospace;
-        font-size: 10px;
-        font-weight: 700;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        background: transparent;
-        border: 1.5px solid var(--cream);
-        color: var(--cream);
-        padding: 5px 12px;
-        cursor: pointer;
-        transition: all 0.2s;
-        border-radius: 0;
-        box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
-      }
-
-      .bts-tab:hover {
-        background: var(--orange);
-        border-color: var(--orange);
-        color: #000;
-      }
-
-      .bts-tab.active {
-        background: var(--cream);
-        border-color: var(--cream);
-        color: #0092c9;
-      }
-
-      /* BTS content – flex centering by default; you can change to absolute positioning */
-      .bts-content {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        max-width: 600px;
-        margin: 0 auto;
+       Hidden below 1024px (medium + phone) per the design.
+       ============================================================ */
+      .footer-zone {
         position: relative;
       }
-
-      .bts-content img,
-      .bts-content video {
-        max-width: 100%;
-        max-height: 100%;
-        object-fit: contain;
-        box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.3);
+      .footer-char {
+        position: absolute;
+        right: var(--x, 40px);
+        top: var(--y, -60px);
+        width: var(--size, 120px);
+        height: auto; /* follows the video's aspect ratio via --size width */
+        z-index: 5; /* above the footer + its noise */
+        line-height: 0; /* kill inline-video baseline gap */
+        pointer-events: none; /* purely decorative — no hover, no tap */
       }
-
-      .bts-content h3 {
-        font-family: "Inter", sans-serif;
-        font-size: 32px;
-        font-weight: 900;
-        text-transform: uppercase;
-        color: var(--cream);
-        margin-bottom: 16px;
-        text-shadow: 2px 2px 0 #000;
-      }
-
-      .bts-content p {
-        font-family: "Space Mono", monospace;
-        font-size: 14px;
-        line-height: 1.6;
-        margin-bottom: 24px;
-        color: rgba(247, 227, 194, 0.95);
-      }
-
-      .bts-content .bts-note {
-        display: inline-block;
-        background: var(--orange);
-        color: #000;
-        padding: 8px 16px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        border: 2px solid #000;
-        box-shadow: 3px 3px 0 #000;
-      }
-
-      /* work-in-progress placeholder card */
-      .bts-content .bts-wip-img {
-        width: 70%;
-        max-width: 220px;
-        transform: rotate(-3deg);
-        border: 4px solid #000;
-        background: #fff;
-        box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.35);
-        margin-bottom: 22px;
-      }
-      .bts-content .bts-credit {
+      /* Character art — a transparent WebM video. object-fit: contain
+         keeps the figure's proportions if the file isn't square, and
+         height:auto lets a non-square video keep its aspect ratio while
+         --size controls the width. */
+      .char-art {
         display: block;
-        margin-top: 16px;
-        font-family: "Space Mono", monospace;
-        font-size: 10px;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        color: rgba(247, 227, 194, 0.4);
+        width: 100%;
+        height: auto;
+        object-fit: contain;
       }
 
-      .modal-details {
-        border-top: 1px solid rgba(247, 227, 194, 0.1);
-        padding-top: 22px;
-      }
-
-      .modal-detail-item {
-        margin-bottom: 20px;
-        display: flex;
-        align-items: baseline;
-        gap: 12px;
-      }
-
-      .modal-detail-item strong {
-        font-family: "Space Mono", monospace;
-        font-size: 9px;
-        letter-spacing: 0.15em;
-        text-transform: uppercase;
-        color: var(--red);
-        min-width: 50px;
-      }
-
-      .modal-detail-item p {
-        font-size: 13px;
-        color: var(--cream);
-        font-weight: 300;
-        margin: 0;
-      }
-
-      .modal-arrow {
-        position: fixed;
-        top: 50%;
-        transform: translateY(-50%);
-        background: transparent;
-        border: 1.5px solid rgba(247, 227, 194, 0.3);
-        color: var(--cream);
-        font-size: 1.5rem;
-        cursor: pointer;
-        z-index: 2010;
-        width: 48px;
-        height: 48px;
-        border-radius: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s;
-        font-weight: 200;
-        backdrop-filter: blur(4px);
-      }
-
-      .modal-arrow:hover {
-        background: #00adef;
-        border-color: var(--electric-blue);
-        color: #000;
-      }
-
-      .modal-arrow-prev {
-        left: 20px;
-      }
-      .modal-arrow-next {
-        right: 20px;
-      }
-      .modal-arrow:disabled {
-        opacity: 0;
-        pointer-events: none;
-      }
-
-      .modal-close {
-        position: fixed;
-        top: 24px;
-        right: 24px;
-        background: transparent;
-        border: 1.5px solid rgba(247, 227, 194, 0.3);
-        color: var(--cream);
-        font-size: 1.8rem;
-        line-height: 1;
-        cursor: pointer;
-        z-index: 2010;
-        width: 48px;
-        height: 48px;
-        border-radius: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s;
-        backdrop-filter: blur(4px);
-      }
-
-      .modal-close:hover {
-        background: var(--red);
-        border-color: #000;
-        color: #000;
-      }
-
-      /* animations */
-      @keyframes fadeSlideUp {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
+      /* Hide the character below 1024px (medium + phone) */
+      @media (max-width: 1023px) {
+        .footer-char {
+          display: none;
         }
       }
 
-      .reveal {
-        opacity: 0;
-        transform: translateY(28px);
-        transition:
-          opacity 0.7s ease,
-          transform 0.7s ease;
-      }
-      .reveal.visible {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-      /* Responsive */
-      @media (max-width: 800px) {
-        /* full-screen, social-style video takeover */
-        .modal-overlay {
-          align-items: stretch;
+      @media (max-width: 720px) {
+        .site-footer {
+          padding: 40px clamp(20px, 4vw, 32px) 60px;
         }
-        .modal-panel {
+        .footer-inner {
+          gap: 24px;
           flex-direction: column;
-          width: 100vw;
-          max-width: 100vw;
-          height: 100vh;
-          height: 100dvh;
-          max-height: none;
-          border: none;
-          overflow: hidden; /* panel stays put; the info sheet scrolls */
         }
-        .modal-video {
-          width: 100%;
-          flex: 0 0 auto;
-          max-height: 56vh; /* video pinned up top, never runs off-screen */
-          border-right: none;
-          border-bottom: 1px solid rgba(247, 227, 194, 0.1);
-          background: #000;
-        }
-        .modal-info {
-          width: 100%;
-          flex: 1 1 auto;
-          overflow-y: auto; /* the info sheet scrolls under the video */
-          -webkit-overflow-scrolling: touch;
-          border-left: none;
-        }
-        .modal-arrow {
-          display: none;
-        }
-        .modal-close {
-          position: fixed;
-          top: 12px;
-          right: 12px;
-          z-index: 2200;
-          width: 42px;
-          height: 42px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: rgba(0, 0, 0, 0.55);
-          border-radius: 50%;
-          backdrop-filter: blur(4px);
-        }
-        /* the Process panel doesn't work on phones — remove it entirely here */
-        .action-btn[data-action="behind"] {
-          display: none;
-        }
-        .bts-overlay {
-          display: none;
-        }
-        /* touch devices can't hover — show the play badge by default */
-        .thumbnail-container::after {
-          opacity: 1;
-          transform: none;
-        }
-        /* the big "24" hero video bleeds into the next section on mobile — drop it */
-        .hero-visual {
-          display: none;
-        }
-      }
-
-      @media (max-width: 1000px) {
-        .selected-grid {
-          grid-template-columns: repeat(2, 1fr);
-        }
-        nav {
-          padding: 18px 40px;
-        }
-        nav.scrolled {
-          padding: 12px 40px;
-        }
-        .hero {
-          padding: 0 40px;
-        }
-      }
-
-      @media (max-width: 700px) {
-        .selected-grid {
-          grid-template-columns: 1fr;
-        }
-        .section {
-          padding: 72px 5%;
-        }
-        nav {
-          padding: 16px 24px;
-        }
-        .hero {
-          flex-direction: column;
-          padding: 0 24px;
-          text-align: center;
-        }
-        .hero-text {
-          padding-right: 0;
-          margin-bottom: 2.5rem;
-        }
-        .hero-eyebrow {
-          justify-content: center;
-        }
-        .hero-divider {
-          margin: 28px auto 20px;
-        }
-        .motion-piece {
-          min-width: 270px;
-          height: 370px;
-        }
-        footer {
-          gap: 28px;
-        }
-        .footer-center {
-          display: none;
+        .footer-name {
+          font-size: 20px;
         }
         .footer-right {
-          flex-wrap: wrap;
-          gap: 10px;
+          margin-left: -14px;
         }
       }
     </style>
   </head>
   <body>
-    <!-- YOUR HTML BODY EXACTLY AS YOU HAD IT (no changes) -->
-    <div id="progress-bar"></div>
-
-    <nav id="mainNav">
-      <div class="logo">Musa Soko</div>
+    <nav id="site-nav" class="over-hero">
+      <a href="#" class="logo">
+        <svg
+          class="logo-icon"
+          viewBox="0 0 22 22"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            d="M4 2H18V3H19V4H20V18H19V19H18V20H4V19H3V18H2V4H3V3H4V2M4 16H5V15H7V14H15V15H17V16H18V5H17V4H5V5H4V16M16 18V17H14V16H8V17H6V18H16M9 5H13V6H14V7H15V11H14V12H13V13H9V12H8V11H7V7H8V6H9V5M12 8V7H10V8H9V10H10V11H12V10H13V8H12Z"
+          />
+        </svg>
+        <span>Musa Soko</span>
+      </a>
       <div class="nav-links">
-        <a href="about.html" class="nav-about">About</a>
-        <a href="contact.html" class="nav-contact">Contact</a>
+        <a href="#work">Work</a>
+        <a href="about.html">About</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact">Contact</a>
       </div>
     </nav>
 
-    <section class="hero">
-      <img
-        src="images/background-shape.webp"
-        alt=""
-        class="bg-shape"
-        aria-hidden="true"
-      />
-      <div class="hero-text">
-        <p class="greeting">Hi There</p>
-        <h1 class="name">I'm Musa Soko</h1>
-        <p class="role">
-          A <span class="highlight">Video Editor</span> &amp;
-          <span class="highlight">Motion Designer</span>
-        </p>
-        <div class="hero-divider"></div>
-        <p class="welcome">its nice to have you here</p>
-      </div>
-      <div class="hero-visual">
-        <video class="number-video" autoplay loop muted playsinline>
-          <source src="images/24-boil-effect.webm" type="video/webm" />
-          <img src="images/24-fallback.png" alt="24 illustration" />
-        </video>
-      </div>
-    </section>
-
-    <section class="section motion-pieces-section">
-      <div class="section-header reveal">
-        <span class="section-num">01</span>
-        <h2 class="section-title">Motion Pieces</h2>
-      </div>
-      <div class="motion-carousel reveal">
-        <button class="carousel-btn carousel-btn-left hidden" id="carouselLeft">
-          ←
-        </button>
-        <button class="carousel-btn carousel-btn-right" id="carouselRight">
-          →
-        </button>
-        <div class="motion-row" id="horizontalScroll">
-          <!-- NOVUS F. (existing) -->
-          <a href="novus-f.html" style="text-decoration: none"
-            ><div class="motion-piece">
-              <img
-                src="images/motion-NV.F.jpg"
-                alt="NOVUS F."
-                class="motion-thumbnail"
-                loading="lazy"
-              /><span class="piece-num">01</span
-              ><span class="piece-arrow">View Piece ↗</span>
-              <div class="piece-content">
-                <div class="piece-year">2026</div>
-                <div class="piece-title">NOVUS F.</div>
-                <div class="piece-category">Personal Project</div>
-              </div>
-            </div></a
-          >
-          <!-- CUVÉE (existing) -->
-          <a href="cuvee.html" style="text-decoration: none"
-            ><div class="motion-piece">
-              <img
-                src="images/motion-cuvee.jpg"
-                alt="CUVÉE"
-                class="motion-thumbnail"
-                loading="lazy"
-              /><span class="piece-num">02</span
-              ><span class="piece-arrow">View Piece ↗</span>
-              <div class="piece-content">
-                <div class="piece-year">2024</div>
-                <div class="piece-title">CUVÉE</div>
-                <div class="piece-category">commercial</div>
-              </div>
-            </div></a
-          >
-          <!-- MORTICA (existing) -->
-          <a href="mortica.html" style="text-decoration: none"
-            ><div class="motion-piece">
-              <img
-                src="images/motion-mortica.jpg"
-                alt="ECHOES"
-                class="motion-thumbnail"
-                loading="lazy"
-              /><span class="piece-num">03</span
-              ><span class="piece-arrow">View Piece ↗</span>
-              <div class="piece-content">
-                <div class="piece-year">2023</div>
-                <div class="piece-title">MORTICA</div>
-                <div class="piece-category">Personal Project</div>
-              </div>
-            </div></a
-          >
-          <!-- WIP 01 – replaces CITY LIGHTS -->
-          <a href="#" style="text-decoration: none; pointer-events: none">
-            <div class="motion-piece wip-piece">
-              <video class="motion-thumbnail" autoplay loop muted playsinline>
-                <source src="images/wip-loop.webm" type="video/webm" />
-                <img
-                  src="images/motion-wip-fallback.jpg"
-                  alt="Work in progress"
-                />
-              </video>
-              <span class="piece-num">04</span>
-              <span class="wip-badge">WIP</span>
-              <div class="piece-content">
-                <div class="piece-year">—</div>
-                <div class="piece-title">UNTITLED_01</div>
-                <div class="piece-category">in progress</div>
-              </div>
-            </div>
-          </a>
-          <!-- WIP 02 – replaces MOMENTS -->
-          <a href="#" style="text-decoration: none; pointer-events: none">
-            <div class="motion-piece wip-piece">
-              <video class="motion-thumbnail" autoplay loop muted playsinline>
-                <source src="images/wip-loop.webm" type="video/webm" />
-                <img
-                  src="images/motion-wip-fallback.jpg"
-                  alt="Work in progress"
-                />
-              </video>
-              <span class="piece-num">05</span>
-              <span class="wip-badge">WIP</span>
-              <div class="piece-content">
-                <div class="piece-year">—</div>
-                <div class="piece-title">UNTITLED_02</div>
-                <div class="piece-category">in progress</div>
-              </div>
-            </div>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <section class="section selected-works-section">
-      <div class="section-header reveal">
-        <span class="section-num">02</span>
-        <h2 class="section-title">Selected Works</h2>
-      </div>
-      <div class="selected-grid reveal" id="selectedWorks">
-        <div class="project-card" data-project="realistic">
-          <div class="thumbnail-container">
-            <span class="project-category">commercial</span
-            ><img
-              src="images/thumbnail-spacegoods.jpg"
-              alt="Video thumbnail"
-              loading="lazy"
-            />
-          </div>
-          <div class="card-label">
-            <div class="label-title">Spacegoods · Coffee Ad</div>
-            <div class="label-meta">2025</div>
-          </div>
-        </div>
-        <div class="project-card" data-project="winedrops1">
-          <div class="thumbnail-container">
-            <span class="project-category">Showreel</span
-            ><img
-              src="images/thumbnail-showreel 2025.jpg"
-              alt="Video thumbnail"
-              loading="lazy"
-            />
-          </div>
-          <div class="card-label">
-            <div class="label-title">Showreel 2025</div>
-            <div class="label-meta">2025</div>
-          </div>
-        </div>
-        <div class="project-card" data-project="strivetech1">
-          <div class="thumbnail-container">
-            <span class="project-category">social</span
-            ><img
-              src="images/thumbnail-strive content.jpg"
-              alt="Video thumbnail"
-              loading="lazy"
-            />
-          </div>
-          <div class="card-label">
-            <div class="label-title">StriveTech · Social</div>
-            <div class="label-meta">2025</div>
-          </div>
-        </div>
-        <div class="project-card" data-project="collab">
-          <div class="thumbnail-container">
-            <span class="project-category">motion</span
-            ><img
-              src="images/thumbnail-strivetech.jpg"
-              alt="Video thumbnail"
-              loading="lazy"
-            />
-          </div>
-          <div class="card-label">
-            <div class="label-title">Brand Motion</div>
-            <div class="label-meta">2025</div>
-          </div>
-        </div>
-        <div class="project-card" data-project="sales">
-          <div class="thumbnail-container">
-            <span class="project-category">Showreel</span
-            ><img
-              src="images/thumbnail-highlight reel.jpg"
-              alt="Video thumbnail"
-              loading="lazy"
-            />
-          </div>
-          <div class="card-label">
-            <div class="label-title">Winedrops Highlight</div>
-            <div class="label-meta">2025</div>
-          </div>
-        </div>
-        <div class="project-card" data-project="winedrops2">
-          <div class="thumbnail-container">
-            <span class="project-category">social</span
-            ><img
-              src="images/thumbnail-sales source.jpg"
-              alt="Video thumbnail"
-              loading="lazy"
-            />
-          </div>
-          <div class="card-label">
-            <div class="label-title">Sales Source Ad</div>
-            <div class="label-meta">2024</div>
-          </div>
-        </div>
-        <div class="project-card" data-project="strivetech2">
-          <div class="thumbnail-container">
-            <span class="project-category">motion</span
-            ><img
-              src="images/thumbnail-realistic.jpg"
-              alt="Video thumbnail"
-              loading="lazy"
-            />
-          </div>
-          <div class="card-label">
-            <div class="label-title">Realistic Strategist</div>
-            <div class="label-meta">2023</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section
-      class="section faq-section"
-      style="position: relative; overflow: hidden"
-    >
-      <img
-        src="images/FAQ(Right side).webp"
-        alt=""
-        class="faq-bg-shape"
-        aria-hidden="true"
-        style="
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          z-index: 0;
-          pointer-events: none;
-          opacity: 0.6;
-        "
-      />
-
-      <div class="section-header reveal">
-        <span class="section-num">03</span>
-        <h2 class="section-title">FAQ</h2>
-      </div>
-
-      <div
-        class="questions-container reveal"
-        style="position: relative; z-index: 1"
-      >
-        <div class="qa-item">
-          <div class="qa-question">
-            <span>How long will it take?</span>
-            <span class="qa-toggle"></span>
-          </div>
-          <div class="qa-answer">
-            <div class="answer-inner">
-              Depends on the project. Short form stuff usually takes about a
-              days. Long form about a week. If you need graphics packages like
-              lower thirds, transitions, intros well that has its own timeline.
-              But honestly? We'll know more once we talk through what you
-              actually need. That's when I can give you an actual answer.
-              <div class="spool-container"><div class="tiny-spool"></div></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="qa-item">
-          <div class="qa-question">
-            <span>What kind of projects do you love most?</span>
-            <span class="qa-toggle"></span>
-          </div>
-          <div class="qa-answer">
-            <div class="answer-inner">
-              I like making things move. Motion graphics, animation just
-              anything where I get to bring stuff to life. Video editing is cool
-              too, don't get me wrong. But I wanna edit at that psychiatrist
-              level, the kind where you're invoking something in people, you
-              know? like Oppenheimer, Severance, or Kinds of Kindness type of
-              stuff.
-              <div class="spool-container"><div class="tiny-spool"></div></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="qa-item">
-          <div class="qa-question">
-            <span
-              >I have an idea but I'm not sure it's fully formed. Can I still
-              reach out?</span
-            >
-            <span class="qa-toggle"></span>
-          </div>
-          <div class="qa-answer">
-            <div class="answer-inner">
-              Yeah, absolutely. Everything starts somewhere. We'll talk it
-              through, see what's there, and figure it out together.
-              <div class="spool-container"><div class="tiny-spool"></div></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="qa-item">
-          <div class="qa-question">
-            <span>How do you handle feedback?</span>
-            <span class="qa-toggle"></span>
-          </div>
-          <div class="qa-answer">
-            <div class="answer-inner">
-              Fine. If something's not working, just tell me and I'll fix it. I
-              don't take it personally. Tell me what you want different and
-              we'll move forward.
-              <div class="spool-container"><div class="tiny-spool"></div></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="qa-item">
-          <div class="qa-question">
-            <span>How often will you update me?</span>
-            <span class="qa-toggle"></span>
-          </div>
-          <div class="qa-answer">
-            <div class="answer-inner">
-              Regular check-ins. Not too much, just consistent enough so you're
-              never guessing where things are at. Use whatever works for you:
-              Zulip, Slack, email, etc. I'll be there.
-              <div class="spool-container"><div class="tiny-spool"></div></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="qa-item">
-          <div class="qa-question">
-            <span>What's your process like?</span>
-            <span class="qa-toggle"></span>
-          </div>
-          <div class="qa-answer">
-            <div class="answer-inner">
-              We talk first. You tell me what you need, even if it's vague it's
-              fine. I'll put together some references, we'll hop on a call, and
-              you tell me what's working. Then I get to work. Rough draft,
-              feedback, revisions if needed, final. Simple.
-              <div class="spool-container"><div class="tiny-spool"></div></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="qa-item">
-          <div class="qa-question">
-            <span
-              >Is it true that you accept Twinkies as a form of payment?</span
-            >
-            <span class="qa-toggle"></span>
-          </div>
-          <div class="qa-answer">
-            <div class="answer-inner">
-              Uh, what!? No! It was just the one time!
-              <div class="spool-container"><div class="tiny-spool"></div></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <footer>
-      <div class="footer-left">
-        <div class="footer-name">Musa Soko</div>
-        <div class="footer-sub">
-          Video Editor & Motion Designer · Johannesburg
-        </div>
-      </div>
-
-      <div class="footer-right">
-        <a href="about.html" class="about">About</a>
-        <a href="contact.html" class="contact">Contact</a>
-        <a href="sketchbook.html" class="sketchbook">Sketchbook</a>
-      </div>
-
-      <div class="version-count">v2.2.1</div>
-    </footer>
-
-    <!-- MODAL (BTS overlay added inside modal-video) -->
-    <div class="modal-overlay" id="videoModal">
-      <button class="modal-close" id="modalClose">✕</button>
-      <button class="modal-arrow modal-arrow-prev" id="modalPrev">←</button>
-      <button class="modal-arrow modal-arrow-next" id="modalNext">→</button>
-      <div class="modal-panel" id="modalPanel">
+    <section class="hero" id="hero">
+      <!-- Background layer.
+         The URL image loads on top; if it fails (slow connection, wrong path,
+         404) the linear-gradient below shows through as a safety net. Update
+         'images/hero.webp' to your actual filename. -->
+      <div class="hero-bg">
         <div
-          class="modal-video"
-          id="modalVideoEl"
-          style="--video-aspect: 1.778"
+          class="hero-bg-image"
+          style="
+            background-image:
+              url(&quot;images/hero.webp&quot;),
+              linear-gradient(135deg, #3a3128 0%, #6b5a48 40%, #8b7a5f 100%);
+          "
+        ></div>
+        <!-- Subtle dark gradient over the photo so white text stays readable.
+             Tune or remove if your bg photo already has enough contrast. -->
+        <div class="hero-overlay"></div>
+      </div>
+
+      <!-- Illustration layer.
+         The placeholder blobs are commented out below so your hero photo
+         reads clean. When you have your hand-drawn character SVGs ready,
+         uncomment and edit each block — replace the <div> with an <img>
+         pointing at your asset, and tune --x / --y / --size to taste.
+         All positions are % of the hero. -->
+      <div class="hero-illustrations">
+        <!--
+        <img class="illo" src="images/illos/yellow-badminton.svg"    style="--x: 25%; --y: 28%; --size: 140px" alt="" />
+        <img class="illo" src="images/illos/blue-badminton.svg"      style="--x: 65%; --y: 32%; --size: 130px" alt="" />
+        <img class="illo" src="images/illos/turquoise-figure.svg"    style="--x: 40%; --y: 58%; --size: 150px" alt="" />
+        <img class="illo" src="images/illos/red-figure.svg"          style="--x: 65%; --y: 62%; --size: 150px" alt="" />
+        <img class="illo" src="images/illos/purple-photographer.svg" style="--x: 18%; --y: 78%; --size: 180px" alt="" />
+        <img class="illo" src="images/illos/green-figure.svg"        style="--x: 82%; --y: 82%; --size: 170px" alt="" />
+        -->
+      </div>
+
+      <!-- Text content — sits above the illustrations, below the noise -->
+      <div class="hero-content">
+        <p class="hero-greeting">Hi There</p>
+        <h1 class="hero-title">
+          I'm Musa Soko<br />
+          A Video Editor &amp; Motion Designer
+        </h1>
+      </div>
+
+      <p class="hero-caption" id="hero-caption">I wish i had a dog</p>
+
+      <!-- Top-layer noise. Sits over EVERYTHING (photo, text, illos) so the
+         whole hero reads as one unified grainy surface, like Caddis. -->
+      <div class="hero-noise"></div>
+    </section>
+
+    <section class="work wrap" id="work">
+      <div class="section-eyebrow reveal">
+        <svg
+          class="eyebrow-icon"
+          viewBox="0 0 22 22"
+          fill="currentColor"
+          aria-hidden="true"
         >
-          <div class="bts-overlay" id="btsOverlay">
-            <div class="bts-tabs" id="btsTabs"></div>
-            <div class="bts-content" id="btsContent"></div>
+          <path
+            d="M2 2H20V8H19V20H3V8H2V2M17 18V8H5V18H17M4 4V6H18V4H4M7 10H15V12H7V10Z"
+          />
+        </svg>
+        <span>Selected work</span>
+      </div>
+      <h1 class="section-title reveal" data-delay="1">
+        Motion, edits, and more
+      </h1>
+
+      <div class="work-grid reveal" data-delay="2">
+        <aside class="works" id="works">
+          <div class="works-head" id="works-head">Works · —</div>
+          <div class="works-scroll-container">
+            <div class="works-scrollbar" id="works-scrollbar">
+              <div
+                class="works-scrollbar-thumb"
+                id="works-scrollbar-thumb"
+              ></div>
+            </div>
+            <div class="works-scroll" id="works-scroll"></div>
+          </div>
+        </aside>
+
+        <div class="work-video">
+          <div class="video-frame" id="video-frame">
+            <div class="video-content" id="video-content"></div>
+            <div class="video-screensaver" id="video-screensaver">
+              <canvas id="screensaver-canvas"></canvas>
+              <div class="video-screensaver-pulse" id="screensaver-pulse"></div>
+              <div class="video-screensaver-glow" id="screensaver-glow"></div>
+            </div>
           </div>
         </div>
-        <div class="modal-info" id="modalInfoEl"></div>
+
+        <aside class="work-info">
+          <button
+            class="work-info-close"
+            id="work-info-close"
+            aria-label="Close details"
+          >
+            ✕
+          </button>
+          <h2 class="info-title" id="info-title">—</h2>
+          <div class="info-meta" id="info-meta">—</div>
+          <p class="info-desc" id="info-desc">—</p>
+          <div class="info-tools-label">Tools</div>
+          <div class="info-tools" id="info-tools"></div>
+          <div class="video-lower-third" id="video-lower-third">
+            <canvas class="lower-third-canvas" id="lower-third-canvas"></canvas>
+            <div class="lower-third-content">
+              <svg
+                class="lower-third-icon"
+                viewBox="0 0 22 22"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path d="M2 3H20V4H21V18H20V19H2V18H1V4H2V3M3 5V17H19V5H3Z" />
+              </svg>
+              <div class="lower-third-pieces" id="lower-third-pieces"></div>
+            </div>
+          </div>
+          <div class="info-footer">
+            <div class="counter">
+              <span class="counter-current" id="counter-current">01</span> /
+              <span id="counter-total">05</span>
+            </div>
+          </div>
+        </aside>
       </div>
+    </section>
+
+    <section class="faq wrap" id="faq">
+      <div class="section-eyebrow reveal">
+        <svg
+          class="eyebrow-icon"
+          viewBox="0 0 22 22"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            d="M17 8V10H5V8H17M5 12H15V14H5V12M2 3H20V4H21V18H20V19H2V18H1V4H2V3M3 5V17H19V5H3Z"
+          />
+        </svg>
+        <span>Questions</span>
+      </div>
+      <h1 class="section-title reveal" data-delay="1">Frequently asked</h1>
+      <div class="faq-grid reveal" data-delay="2" id="faq-grid">
+        <!-- Two independent columns — items rendered into each by JS below -->
+        <div class="faq-column" id="faq-col-1"></div>
+        <div class="faq-column" id="faq-col-2"></div>
+      </div>
+    </section>
+
+    <div class="footer-zone">
+      <!-- Footer characters — anchored to the top-left, sitting on the
+           footer's top edge. Each is tunable via --x (from left), --y
+           (vertical, negative lifts it above the edge), and --size.
+           Tap to pop a speech bubble. Hidden below 1024px (see CSS).
+
+           Art is a transparent WebM (VP8/VP9 alpha). Video autoplays
+           muted + looped. Swap the src for each character's file. -->
+      <div
+        class="footer-char"
+        style="--x: 40px; --y: -128px; --size: 140px"
+        aria-hidden="true"
+      >
+        <video
+          class="char-art"
+          src="images/twinkie.webm"
+          autoplay
+          loop
+          muted
+          playsinline
+        ></video>
+      </div>
+
+      <footer class="site-footer" id="footer">
+        <div class="footer-inner">
+          <div class="footer-left">
+            <div class="footer-name">Musa Soko</div>
+            <div class="footer-sub">
+              Video Editor &amp; Motion Designer · Johannesburg
+            </div>
+          </div>
+          <div class="footer-right">
+            <a href="about.html" class="footer-link">About</a>
+            <a href="contact.html" class="footer-link">Contact</a>
+            <a href="sketchbook.html" class="footer-link">Sketchbook</a>
+          </div>
+        </div>
+        <div class="footer-version">v2.2.1</div>
+        <!-- Top-layer noise. Same tile the hero uses, own opacity variable
+             so you can tune it independently via --footer-noise-opacity. -->
+        <div class="footer-noise"></div>
+      </footer>
     </div>
 
-    <script src="https://player.vimeo.com/api/player.js"></script>
     <script>
-      (function () {
-        // ===== EXISTING SCROLL / REVEAL / CAROUSEL / QA LOGIC (UNTOUCHED) =====
-        const progressBar = document.getElementById("progress-bar");
-        const mainNav = document.getElementById("mainNav");
-        window.addEventListener(
-          "scroll",
-          () => {
-            const scrollTop = window.scrollY;
-            const docHeight =
-              document.documentElement.scrollHeight - window.innerHeight;
-            progressBar.style.width = (scrollTop / docHeight) * 100 + "%";
-            mainNav.classList.toggle("scrolled", scrollTop > 40);
-          },
-          { passive: true },
-        );
+      // ============================================================
+      // PROJECT DATA
+      // ============================================================
+      const projects = [
+        {
+          id: "sales-source",
+          title: "Social media ad",
+          client: "SalesSource",
+          year: 2024,
+          description:
+            "Social media ad for SalesSource. Quick-cut motion with a punchy visual identity.",
+          tools: ["Premiere Pro", "After Effects"],
+          pieces: [{ type: "vimeo", id: "1114326897", label: "01" }],
+        },
+        {
+          id: "novus-f",
+          title: "Novus F.",
+          client: "Personal",
+          year: 2026,
+          description:
+            "A personal project. I wanted a mixed media kind of video, something with both 3D and 2D elements in it. It was an experiment with mixing the two, and it turned out great.",
+          tools: ["After Effects", "Cinema 4D", "Illustrator"],
+          pieces: [{ type: "vimeo", id: "1195165495", label: "01" }],
+        },
+        {
+          id: "feed-cpt",
+          title: "Call to Action",
+          client: "The Feed CPT",
+          year: 2025,
+          description:
+            "The Feed CPT is a Cape Town based news channel, going for that new-media broadcast feel, somewhere in the Daily Dose of Internet and Philip DeFranco space. I came on as their video editor and motion graphics designer, cutting call to actions and building graphics suites for the channel. This is the final approved cut of the call to action they signed off on. Pieces two and three are the earlier drafts we worked through to get there.",
+          tools: ["Premiere Pro", "After Effects"],
+          // Self-hosted MP4s on Cloudflare R2. First piece is the final
+          // approved cut; 02 and 03 are the drafts that led to it.
+          pieces: [
+            {
+              type: "mp4",
+              label: "01",
+              src: "https://pub-17f47521370245af90110b842a9cd4d7.r2.dev/Carousel(Grey).mp4",
+              description:
+                "The final approved cut of the call to action. This is the version The Feed CPT were happy with.",
+            },
+            {
+              type: "mp4",
+              label: "02",
+              src: "https://pub-17f47521370245af90110b842a9cd4d7.r2.dev/(Sample%2001)Main%20Comp.mp4",
+              description:
+                "An earlier draft, one of the versions we went through on the way to the final.",
+            },
+            {
+              type: "mp4",
+              label: "03",
+              src: "https://pub-17f47521370245af90110b842a9cd4d7.r2.dev/Sample%2002(Main%20Comp).mp4",
+              description:
+                "Another draft from the process, part of the back and forth before landing on the approved cut.",
+            },
+          ],
+        },
+        {
+          id: "showreel",
+          title: "Showreel 2025",
+          client: "Personal",
+          year: 2025,
+          description:
+            "A collection of work I'm most proud of from the past year. Motion graphics, edits, commercial and personal stuff.",
+          tools: ["Premiere Pro", "After Effects"],
+          pieces: [{ type: "vimeo", id: "1108056464", label: "01" }],
+        },
+        {
+          id: "coffee",
+          title: "Coffee ad",
+          client: "Spacegoods",
+          year: 2025,
+          description:
+            "A social media ad for one of Spacegoods' coffee products. I handled the edit and motion graphics, using their brand colors throughout.",
+          tools: ["Premiere Pro", "After Effects"],
+          pieces: [{ type: "vimeo", id: "1170635799", label: "01" }],
+        },
+        {
+          id: "strivetech-motion",
+          title: "Brand motion exploration",
+          client: "StriveTech",
+          year: 2025,
+          description:
+            "Motion piece to show StriveTech what their brand could look like in motion. Colors, shapes, how things move.",
+          tools: ["After Effects", "Premiere Pro", "Illustrator"],
+          pieces: [
+            { type: "vimeo", id: "1121503730", label: "01" },
+            { type: "vimeo", id: "1121611979", label: "02" },
+          ],
+        },
+        {
+          id: "winedrops",
+          title: "Winedrops highlight",
+          client: "Personal",
+          year: 2025,
+          description:
+            "A highlight reel of everything I've done for Winedrops. Edits, motion graphics, templates, and all.",
+          tools: ["Premiere Pro", "After Effects", "Blender", "Touch Designer"],
+          pieces: [
+            { type: "vimeo", id: "1109940880", label: "01" },
+            {
+              type: "vimeo",
+              id: "1172141046",
+              label: "02",
+              // Multi-paragraph description — .info-desc has white-space:
+              // pre-line so the blank line between paragraphs renders as
+              // a real paragraph break.
+              description: `Cuvée was a visual direction I wanted to present to the company, a concept for a new look. It was a concept piece.
 
-        const reveals = document.querySelectorAll(".reveal");
+For the look, I leaned on something I'd noticed: sommeliers and a lot of wine brands gravitate toward black and white. So I built the foundation in monochrome, then put a twist on it. Gold accents with a grungy texture, like peeling the foil off a champagne bottle, and a deep purple underneath. The gold and purple were the luxury cues, purple especially, since historically only the rich and royal got to wear it.`,
+            },
+            {
+              type: "vimeo",
+              id: "1114454162",
+              label: "03",
+              description:
+                "Long-form piece for Winedrops. I handled the edit and motion graphics. It's a sommelier tasting different wines side by side, Sassicaia included, which is up there with the most expensive bottles. The point is to see whether they can actually tell the difference, whether the pricey stuff really tastes better.",
+            },
+          ],
+        },
+        {
+          id: "realistic",
+          title: "Website video",
+          client: "Realistic Strategist",
+          year: 2023,
+          description:
+            "Realistic Strategist is a digital marketing company. They needed a video for their website.",
+          tools: ["After Effects", "Photoshop"],
+          pieces: [
+            { type: "vimeo", id: "1114326040", label: "01" },
+            {
+              type: "placeholder",
+              label: "02",
+              aspect: 16 / 9,
+              note: "Piece 2 — landing soon",
+              description:
+                "Second Realistic Strategist piece — swap in once uploaded.",
+            },
+          ],
+        },
+      ];
+
+      const worksEl = document.getElementById("works");
+      const worksScrollEl = document.getElementById("works-scroll");
+      const worksHeadEl = document.getElementById("works-head");
+      const worksScrollbar = document.getElementById("works-scrollbar");
+      const worksScrollbarThumb = document.getElementById(
+        "works-scrollbar-thumb",
+      );
+      const videoFrame = document.getElementById("video-frame");
+      const videoContent = document.getElementById("video-content");
+      const pieceButtonsEl = document.getElementById("lower-third-pieces");
+      const lowerThirdEl = document.getElementById("video-lower-third");
+      const lowerThirdCanvas = document.getElementById("lower-third-canvas");
+      const lowerThirdCtx = lowerThirdCanvas.getContext("2d");
+
+      // ============================================================
+      // LOWER THIRD — pixelated red bar with left-to-right reveal
+      // and continuously evolving right edge (like the AE build).
+      // Anything below can be tuned without touching the render logic.
+      // ============================================================
+      const LOWER_THIRD = {
+        fillColor: "#e24632", // matches --red / active piece
+        pixelSize: 6, // px per cell in the pixel edge
+        edgeWidth: 60, // px width of the pixel fall-off zone on the right
+        transitionMs: 1000, // reveal duration
+        edgeEvolutionHz: 6, // how often the edge pixels flicker per second (higher = faster)
+        edgeFalloffPower: 1.6, // curve of the density fall-off (higher = harder edge)
+      };
+      let lowerThirdStartTime = 0;
+      let lowerThirdAnimating = false;
+      let lowerThirdRafId = null;
+      let lowerThirdW = 0,
+        lowerThirdH = 0;
+      const infoTitle = document.getElementById("info-title");
+      const infoMeta = document.getElementById("info-meta");
+      const infoDesc = document.getElementById("info-desc");
+      const infoTools = document.getElementById("info-tools");
+      const counterCurrent = document.getElementById("counter-current");
+      const counterTotal = document.getElementById("counter-total");
+
+      let activeIndex = 0;
+      let currentPieceIndex = 0;
+
+      const arCache = new Map();
+      const FALLBACK_AR = 16 / 9;
+
+      async function getVimeoAR(id) {
+        if (arCache.has(id)) return arCache.get(id);
+        try {
+          const res = await fetch(
+            `https://vimeo.com/api/oembed.json?url=https://vimeo.com/${id}`,
+          );
+          const data = await res.json();
+          const ar = data.width / data.height;
+          const safe =
+            Number.isFinite(ar) && ar > 0.2 && ar < 4 ? ar : FALLBACK_AR;
+          arCache.set(id, safe);
+          return safe;
+        } catch {
+          return FALLBACK_AR;
+        }
+      }
+
+      // Apply the visible aspect ratio to the video frame.
+      let lastAspectArgs = null;
+      function applyAspect(videoAR) {
+        lastAspectArgs = [videoAR];
+        videoFrame.style.aspectRatio = videoAR;
+        const isMobile = window.innerWidth < 1024;
+        if (isMobile) {
+          // Let CSS handle sizing — the mobile letterbox modal uses aspect-ratio
+          // + max-height (75dvh) to fit any AR correctly. An inline max-width here
+          // (calibrated for the desktop preview) squashes portrait / square videos.
+          videoFrame.style.maxWidth = "";
+        } else {
+          const maxHeight = 520;
+          const widthByHeight = Math.round(maxHeight * videoAR);
+          videoFrame.style.maxWidth = `min(100%, ${widthByHeight}px)`;
+        }
+        videoContent.style.setProperty("--iframe-height", "100%");
+        videoContent.style.setProperty("--iframe-top", "0%");
+
+        // Mobile: toggle between split-view and portrait mode based on the piece's AR.
+        // setMobileMode is a no-op if the phone width breakpoint isn't active, but the
+        // class is set on work-grid either way so a resize into mobile picks it up.
+        if (typeof setMobileMode === "function") setMobileMode(videoAR);
+      }
+
+      // Re-apply on resize so max-height stays sensible when the viewport changes
+      let aspectResizeTimer = null;
+      window.addEventListener("resize", () => {
+        if (aspectResizeTimer) clearTimeout(aspectResizeTimer);
+        aspectResizeTimer = setTimeout(() => {
+          if (lastAspectArgs) applyAspect(...lastAspectArgs);
+        }, 80);
+      });
+
+      // ============================================================
+      // SCREENSAVER — animated fluid pixel-noise field, shown while
+      // a video loads and whenever the video is scrolled out of view.
+      // Tune anything in SCREENSAVER without touching the rest.
+      // ============================================================
+      const SCREENSAVER = {
+        cellSize: 10, // px stride of the grid (cell = pixel + gap)
+        pixelSize: 5, // px size of each visible pixel square inside its cell
+        evolutionSpeed: 0.05, // time step per frame — bigger = faster flow
+        noiseScale: 0.1, // spatial frequency — smaller = larger blobs, bigger = tighter pattern
+        octaves: 3, // layers of noise added together — more = richer detail, more CPU
+        flicker: 0.04, // per-cell random jitter on top of the smooth noise (grainy character)
+        thresholds: {
+          // brightness bands, applied to the noise value in 0..1
+          bright: 0.92, // above → near-white
+          mid: 0.62, // above → mid gray
+          dark: 0.42, // above → dark gray
+          dim: 0.02, // above → dim gray (still visible on black background)
+          // below → invisible black
+        },
+        noiseAlphaOpacity: 0.26, // opacity of the SVG noise-grain overlay
+        fadeMs: 500, // CSS also has 0.5s transition — keep in sync
+        // Piece-switch pulse — flash of colour across the screensaver when the
+        // user clicks a different piece button. Signals "loading a different cut".
+        pulseColor: "#e24632", // matches the active piece-button colour (--red)
+        pulseMaxOpacity: 0.55, // 0..1 — how strong the flash is at its peak
+        pulseDurationMs: 550, // how long the whole flash lasts
+        // Project-switch glow — subtle exposure lift across the screensaver when
+        // the user clicks a different work in the list. Sexy subtle, not a wash.
+        glowColor: "#ffffff", // white bloom by default
+        glowMaxOpacity: 0.14, // 0..1 — keep low, this is a whisper
+        glowDurationMs: 420, // shorter than the pulse — feels like a flick
+      };
+
+      const screensaverEl = document.getElementById("video-screensaver");
+      const screensaverCanvas = document.getElementById("screensaver-canvas");
+      const screensaverCtx = screensaverCanvas.getContext("2d");
+      let screensaverCells = null;
+      let screensaverCols = 0,
+        screensaverRows = 0;
+      let screensaverW = 0,
+        screensaverH = 0;
+      let screensaverAnimating = false;
+      let screensaverStopAt = 0;
+      let screensaverTime = 0;
+      let screensaverRafId = null; // pending rAF id — used to guarantee only one loop
+      let screensaverLastMs = null; // wall-clock time of last frame — for delta-based evolution
+
+      function resizeScreensaverCanvas() {
+        const rect = videoFrame.getBoundingClientRect();
+        if (rect.width < 20 || rect.height < 20) return;
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        screensaverW = rect.width;
+        screensaverH = rect.height;
+        screensaverCanvas.width = rect.width * dpr;
+        screensaverCanvas.height = rect.height * dpr;
+        screensaverCtx.setTransform(1, 0, 0, 1, 0, 0);
+        screensaverCtx.scale(dpr, dpr);
+        screensaverCols = Math.ceil(rect.width / SCREENSAVER.cellSize);
+        screensaverRows = Math.ceil(rect.height / SCREENSAVER.cellSize);
+        screensaverCells = new Array(screensaverCols * screensaverRows).fill(0);
+        screensaverEl.style.setProperty(
+          "--noise-alpha-opacity",
+          SCREENSAVER.noiseAlphaOpacity,
+        );
+      }
+
+      // Fractal Brownian motion: sum of sine-based octaves at increasing
+      // frequency and decreasing amplitude. Gives smooth spatial + temporal
+      // coherence — neighbouring cells move together, whole field flows.
+      function fbm(x, y, t) {
+        const s = SCREENSAVER.noiseScale;
+        let sum = 0,
+          amp = 1,
+          freq = 1,
+          norm = 0;
+        for (let i = 0; i < SCREENSAVER.octaves; i++) {
+          sum +=
+            (amp *
+              (Math.sin(x * s * freq + t * (0.5 + i * 0.3) + i * 1.7) +
+                Math.sin(y * s * freq * 1.31 + t * (0.6 + i * 0.4) - i * 2.1) +
+                Math.sin((x - y) * s * freq * 0.63 + t * (0.7 + i * 0.2)))) /
+            3;
+          norm += amp;
+          amp *= 0.5;
+          freq *= 2;
+        }
+        return (sum / norm + 1) / 2; // roughly 0..1
+      }
+
+      function screensaverStep() {
+        screensaverRafId = null; // we're inside the callback; whatever id was pending is now consumed
+        if (!screensaverAnimating) {
+          screensaverLastMs = null;
+          return;
+        }
+        const now = performance.now();
+        if (screensaverLastMs === null) screensaverLastMs = now;
+        // real-elapsed-time based dt normalised to a 60fps frame (1 unit == one 16.67ms frame),
+        // capped so a tab-return or big pause can't jump the field forward
+        const dt = Math.min(3, (now - screensaverLastMs) / (1000 / 60));
+        screensaverLastMs = now;
+        screensaverTime += SCREENSAVER.evolutionSpeed * dt;
+        const th = SCREENSAVER.thresholds;
+        const flicker = SCREENSAVER.flicker;
+
+        for (let iy = 0; iy < screensaverRows; iy++) {
+          for (let ix = 0; ix < screensaverCols; ix++) {
+            const noise = fbm(ix, iy, screensaverTime);
+            const jitter = (Math.random() - 0.5) * flicker;
+            const v = noise + jitter;
+            let brightness;
+            if (v > th.bright) brightness = 200 + Math.random() * 55;
+            else if (v > th.mid) brightness = 100 + Math.random() * 75;
+            else if (v > th.dark) brightness = 50 + Math.random() * 45;
+            else if (v > th.dim) brightness = 20 + Math.random() * 22;
+            else brightness = 0;
+            screensaverCells[iy * screensaverCols + ix] = brightness;
+          }
+        }
+
+        const cs = SCREENSAVER.cellSize;
+        const px = SCREENSAVER.pixelSize;
+        const offset = (cs - px) / 2;
+        screensaverCtx.fillStyle = "#000";
+        screensaverCtx.fillRect(0, 0, screensaverW, screensaverH);
+        for (let i = 0; i < screensaverCells.length; i++) {
+          const v = screensaverCells[i];
+          if (v <= 3) continue;
+          const x = (i % screensaverCols) * cs + offset;
+          const y = ((i / screensaverCols) | 0) * cs + offset;
+          const g = v | 0;
+          screensaverCtx.fillStyle = `rgb(${g},${g},${g})`;
+          screensaverCtx.fillRect(x, y, px, px);
+        }
+
+        if (Date.now() > screensaverStopAt) {
+          screensaverAnimating = false;
+          screensaverLastMs = null;
+          return;
+        }
+        screensaverRafId = requestAnimationFrame(screensaverStep);
+      }
+
+      function showScreensaver() {
+        screensaverEl.classList.add("active");
+        screensaverStopAt = Number.MAX_SAFE_INTEGER;
+        if (!screensaverAnimating) {
+          screensaverAnimating = true;
+          // cancel any lingering rAF before scheduling a fresh one — belt-and-braces
+          if (screensaverRafId != null) cancelAnimationFrame(screensaverRafId);
+          screensaverLastMs = null;
+          screensaverRafId = requestAnimationFrame(screensaverStep);
+        }
+      }
+
+      function hideScreensaver() {
+        screensaverEl.classList.remove("active");
+        screensaverStopAt = Date.now() + SCREENSAVER.fadeMs + 100;
+      }
+
+      if (typeof ResizeObserver !== "undefined") {
+        new ResizeObserver(resizeScreensaverCanvas).observe(videoFrame);
+      } else {
+        window.addEventListener("resize", resizeScreensaverCanvas);
+      }
+      resizeScreensaverCanvas();
+
+      // ============================================================
+      // OFFSCREEN VIDEO PAUSE
+      // When the video scrolls out of view, pause it so it's not
+      // burning bandwidth / CPU while the visitor is elsewhere on the
+      // page. The screensaver animation used to fire here too, but
+      // that was confusing (looked like the video was loading when it
+      // wasn't), so it's been removed. The screensaver still shows
+      // while a video is genuinely loading — that's a different trigger
+      // inside loadPiece().
+      // ============================================================
+      if (typeof IntersectionObserver !== "undefined") {
+        const visibilityObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) {
+                if (currentPlayer && currentPlayer.pause) {
+                  currentPlayer.pause().catch(() => {});
+                }
+              }
+            });
+          },
+          { threshold: 0.1 },
+        );
+        visibilityObserver.observe(videoFrame);
+      }
+
+      // Tab hidden = nothing to render. Stop the canvas loop entirely.
+      // When the tab comes back and the screensaver is still marked
+      // active, restart the loop.
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) {
+          screensaverAnimating = false;
+          if (screensaverRafId != null) {
+            cancelAnimationFrame(screensaverRafId);
+            screensaverRafId = null;
+          }
+          screensaverLastMs = null;
+          if (currentPlayer && currentPlayer.pause) {
+            currentPlayer.pause().catch(() => {});
+          }
+        } else if (
+          screensaverEl.classList.contains("active") &&
+          !screensaverAnimating
+        ) {
+          screensaverAnimating = true;
+          screensaverStopAt = Number.MAX_SAFE_INTEGER;
+          if (screensaverRafId != null) cancelAnimationFrame(screensaverRafId);
+          screensaverLastMs = null;
+          screensaverRafId = requestAnimationFrame(screensaverStep);
+        }
+      });
+
+      // ============================================================
+      // AUDIO UNLOCK — browsers block autoplay-with-sound until the
+      // user has interacted somewhere on the page. Any click anywhere
+      // marks audio as available and unmutes the current player if any.
+      // The very first video still starts muted (no way around that),
+      // but once you click anything, sound joins immediately.
+      // ============================================================
+      document.addEventListener(
+        "click",
+        () => {
+          if (audioOn) return;
+          audioOn = true;
+          if (currentPlayer && currentPlayer.setMuted) {
+            currentPlayer.setMuted(false).catch(() => {});
+          }
+        },
+        true,
+      );
+
+      // ============================================================
+      // WORKS LIST — visible-count and left scroll-indicator
+      // ============================================================
+      const WORKS_LIST = {
+        maxVisible: 5, // how many items visible before scroll kicks in (try 5 or 6)
+        itemHeightPx: 47, // approximate height of one work-item incl. its 2px gap
+      };
+      worksEl.style.setProperty("--works-max-visible", WORKS_LIST.maxVisible);
+      worksEl.style.setProperty(
+        "--works-item-height",
+        WORKS_LIST.itemHeightPx + "px",
+      );
+
+      function renderWorksList() {
+        worksHeadEl.textContent = `Works · ${String(projects.length).padStart(2, "0")}`;
+        worksScrollEl.innerHTML = projects
+          .map((p, i) => {
+            const count =
+              p.pieces.length > 1
+                ? `<span class="work-item-count">×${p.pieces.length}</span>`
+                : "";
+            return `
+          <div class="work-item" data-index="${i}">
+            <span class="work-item-num">${String(i + 1).padStart(2, "0")}</span>
+            <span class="work-item-title">${p.title}</span>
+            ${count}
+          </div>
+        `;
+          })
+          .join("");
+        worksScrollEl.querySelectorAll(".work-item").forEach((el) => {
+          el.addEventListener("click", () =>
+            loadProject(parseInt(el.dataset.index), { glow: true }),
+          );
+        });
+        updateScrollbar();
+      }
+
+      // Custom left-side scroll indicator — sized to reflect
+      // visible/total ratio, position tracks scrollTop, draggable,
+      // and click-to-jump on the track.
+      function updateScrollbar() {
+        const s = worksScrollEl;
+        const scrollable = s.scrollHeight > s.clientHeight + 2;
+        worksScrollbar.classList.toggle("hidden", !scrollable);
+        if (!scrollable) return;
+        const ratio = s.clientHeight / s.scrollHeight;
+        const thumbH = Math.max(24, s.clientHeight * ratio);
+        const maxScroll = s.scrollHeight - s.clientHeight;
+        const maxThumbTop = s.clientHeight - thumbH;
+        const thumbTop =
+          maxScroll === 0 ? 0 : (s.scrollTop / maxScroll) * maxThumbTop;
+        worksScrollbarThumb.style.height = thumbH + "px";
+        worksScrollbarThumb.style.top = thumbTop + "px";
+      }
+      worksScrollEl.addEventListener("scroll", updateScrollbar);
+      window.addEventListener("resize", updateScrollbar);
+
+      // click on the track (not the thumb) to jump the scroll position there
+      worksScrollbar.addEventListener("click", (e) => {
+        if (e.target === worksScrollbarThumb) return;
+        const rect = worksScrollbar.getBoundingClientRect();
+        const clickRatio = (e.clientY - rect.top) / rect.height;
+        const s = worksScrollEl;
+        s.scrollTop = clickRatio * (s.scrollHeight - s.clientHeight);
+      });
+
+      // drag the thumb to scroll
+      let dragStartY = 0,
+        dragStartScroll = 0,
+        dragging = false;
+      worksScrollbarThumb.addEventListener("mousedown", (e) => {
+        dragging = true;
+        dragStartY = e.clientY;
+        dragStartScroll = worksScrollEl.scrollTop;
+        document.body.style.userSelect = "none";
+        e.preventDefault();
+      });
+      document.addEventListener("mousemove", (e) => {
+        if (!dragging) return;
+        const s = worksScrollEl;
+        const ratio = s.scrollHeight / s.clientHeight;
+        s.scrollTop = dragStartScroll + (e.clientY - dragStartY) * ratio;
+      });
+      document.addEventListener("mouseup", () => {
+        if (dragging) {
+          dragging = false;
+          document.body.style.userSelect = "";
+        }
+      });
+
+      function loadProject(index, { glow = false } = {}) {
+        activeIndex = index;
+        const p = projects[index];
+
+        worksScrollEl.querySelectorAll(".work-item").forEach((el, i) => {
+          el.classList.toggle("active", i === index);
+        });
+
+        infoTitle.textContent = p.title;
+        infoMeta.textContent = `${p.client} · ${p.year}`;
+        infoDesc.textContent = p.description;
+        infoTools.innerHTML = p.tools.map((t) => `<span>${t}</span>`).join("");
+
+        counterCurrent.textContent = String(index + 1).padStart(2, "0");
+        counterTotal.textContent = String(projects.length).padStart(2, "0");
+
+        if (glow) glowScreensaver();
+
+        // Mobile: sync the meta strip title/sub, and close any bottom sheets that
+        // were open — the visitor just picked a new work, so dismiss the list overlay
+        // and the description sheet.
+        if (typeof syncMobileMeta === "function") syncMobileMeta(p);
+        if (typeof workInfoEl !== "undefined" && workInfoEl)
+          workInfoEl.classList.remove("sheet-open");
+        const worksAsideEl = document.querySelector(".works");
+        if (worksAsideEl) worksAsideEl.classList.remove("sheet-open");
+
+        renderPieceButtons(p.pieces);
+        loadPiece(0);
+      }
+
+      function renderPieceButtons(pieces) {
+        if (pieces.length <= 1) {
+          hideLowerThird();
+          pieceButtonsEl.innerHTML = "";
+          return;
+        }
+        pieceButtonsEl.innerHTML = pieces
+          .map(
+            (piece, i) => `
+        <button class="lower-third-btn ${i === 0 ? "active" : ""}" data-piece="${i}">${piece.label}</button>
+      `,
+          )
+          .join("");
+        pieceButtonsEl.querySelectorAll(".lower-third-btn").forEach((btn) => {
+          btn.addEventListener("click", () =>
+            loadPiece(parseInt(btn.dataset.piece), { pulse: true }),
+          );
+        });
+        showLowerThird();
+      }
+
+      // ------------------------------------------------------------
+      // Lower-third render logic — canvas draws the solid red bar
+      // with a dithered right edge that first sweeps in from the left,
+      // then evolves in place. Content (icon + buttons) fades in once
+      // the sweep completes (via the .revealed class).
+      // ------------------------------------------------------------
+      function measureLowerThird() {
+        const rect = lowerThirdEl.getBoundingClientRect();
+        if (rect.width < 10 || rect.height < 10) return;
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        lowerThirdW = rect.width;
+        lowerThirdH = rect.height;
+        lowerThirdCanvas.width = rect.width * dpr;
+        lowerThirdCanvas.height = rect.height * dpr;
+        lowerThirdCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+
+      // deterministic per-cell noise that changes with a coarse time step —
+      // gives the "edge is evolving" look without going random every frame
+      function ltHash(x, y, t) {
+        const s = Math.sin(x * 12.9898 + y * 78.233 + t * 43.758) * 43758.5453;
+        return s - Math.floor(s);
+      }
+
+      function drawLowerThird(elapsedMs) {
+        if (lowerThirdW < 10) return;
+        const w = lowerThirdW,
+          h = lowerThirdH;
+        const cs = LOWER_THIRD.pixelSize;
+        const edgeW = LOWER_THIRD.edgeWidth;
+        const isRevealing = elapsedMs < LOWER_THIRD.transitionMs;
+        // ease-out cubic for the sweep front so it feels physical
+        const t = isRevealing
+          ? 1 - Math.pow(1 - elapsedMs / LOWER_THIRD.transitionMs, 3)
+          : 1;
+
+        // work entirely in integer cell units so every fillRect lands on exact
+        // pixel boundaries — otherwise adjacent cells anti-alias and read as gaps
+        const totalCols = Math.ceil(w / cs);
+        const edgeCols = Math.max(1, Math.ceil(edgeW / cs));
+        const revealCols = Math.floor(totalCols * t);
+        const edgeStartCol = Math.max(0, revealCols - edgeCols);
+        const rows = Math.ceil(h / cs);
+
+        lowerThirdCtx.clearRect(0, 0, w, h);
+        lowerThirdCtx.fillStyle = LOWER_THIRD.fillColor;
+
+        // solid area — one rect from col 0 to edgeStartCol
+        if (edgeStartCol > 0) {
+          lowerThirdCtx.fillRect(0, 0, edgeStartCol * cs, h);
+        }
+
+        // pixelated edge — cells from edgeStartCol up to revealCols
+        const timeStep = Math.floor(
+          (elapsedMs / 1000) * LOWER_THIRD.edgeEvolutionHz,
+        );
+        for (let cx = edgeStartCol; cx < revealCols; cx++) {
+          const localPos = Math.min(1, (cx - edgeStartCol) / edgeCols);
+          const density = Math.pow(1 - localPos, LOWER_THIRD.edgeFalloffPower);
+          for (let cy = 0; cy < rows; cy++) {
+            const n = ltHash(cx, cy, timeStep);
+            if (n < density) lowerThirdCtx.fillRect(cx * cs, cy * cs, cs, cs);
+          }
+        }
+      }
+
+      function lowerThirdStep() {
+        lowerThirdRafId = null;
+        if (!lowerThirdAnimating) return;
+        const elapsed = performance.now() - lowerThirdStartTime;
+        drawLowerThird(elapsed);
+        if (elapsed >= LOWER_THIRD.transitionMs) {
+          lowerThirdEl.classList.add("revealed");
+        }
+        lowerThirdRafId = requestAnimationFrame(lowerThirdStep);
+      }
+
+      function showLowerThird() {
+        lowerThirdEl.classList.add("active");
+        lowerThirdEl.classList.remove("revealed");
+        // measure only after the browser has actually laid out the now-visible container
+        requestAnimationFrame(() => {
+          measureLowerThird();
+          lowerThirdStartTime = performance.now();
+          if (!lowerThirdAnimating) {
+            lowerThirdAnimating = true;
+            if (lowerThirdRafId != null) cancelAnimationFrame(lowerThirdRafId);
+            lowerThirdRafId = requestAnimationFrame(lowerThirdStep);
+          }
+        });
+      }
+
+      function hideLowerThird() {
+        lowerThirdEl.classList.remove("active");
+        lowerThirdEl.classList.remove("revealed");
+        lowerThirdAnimating = false;
+        if (lowerThirdRafId != null) {
+          cancelAnimationFrame(lowerThirdRafId);
+          lowerThirdRafId = null;
+        }
+        lowerThirdCtx.clearRect(0, 0, lowerThirdW || 0, lowerThirdH || 0);
+      }
+
+      if (typeof ResizeObserver !== "undefined") {
+        new ResizeObserver(measureLowerThird).observe(lowerThirdEl);
+      }
+
+      // Reposition the lower-third depending on viewport:
+      //   desktop: sits inside .work-info, just above .info-footer (as it does at rest)
+      //   mobile / tablet: moves to be a sibling of .video-frame inside .work-video,
+      //     so it appears directly under the video in the single-column stack
+      const workVideoEl = document.querySelector(".work-video");
+      const workInfoEl = document.querySelector(".work-info");
+      const infoFooterEl = document.querySelector(".info-footer");
+      const workGridEl = document.querySelector(".work-grid");
+      const mobileMq = window.matchMedia("(max-width: 1023px)");
+      const phoneMq = window.matchMedia("(max-width: 720px)");
+      function positionLowerThird() {
+        if (mobileMq.matches) {
+          if (lowerThirdEl.parentElement !== workVideoEl)
+            workVideoEl.appendChild(lowerThirdEl);
+        } else {
+          if (lowerThirdEl.parentElement !== workInfoEl)
+            workInfoEl.insertBefore(lowerThirdEl, infoFooterEl);
+        }
+      }
+      positionLowerThird();
+      mobileMq.addEventListener("change", positionLowerThird);
+
+      // ============================================================
+      // MOBILE — meta strip sync, mode switching, bottom sheets
+      // ============================================================
+      const workInfoCloseBtn = document.getElementById("work-info-close");
+      const workEl = document.querySelector(".work");
+
+      // ============================================================
+      // Mobile letterbox modal — opens when a work is tapped on phone
+      // ============================================================
+      function isMobile() {
+        return window.matchMedia("(max-width: 1023px)").matches;
+      }
+      function openMobileModal() {
+        workEl.classList.add("mobile-modal-open");
+        document.body.style.overflow = "hidden";
+      }
+      function closeMobileModal() {
+        workEl.classList.remove("mobile-modal-open");
+        document.body.style.overflow = "";
+        // pause the video when we back out so it stops burning CPU while hidden
+        if (currentPlayer && currentPlayer.pause)
+          currentPlayer.pause().catch(() => {});
+      }
+      // Any tap on a work item opens the modal on mobile — piggy-backs on the
+      // existing loadProject click handlers (they fire first, populate content,
+      // then this delegated handler shows the modal).
+      worksScrollEl.addEventListener("click", (e) => {
+        if (e.target.closest(".work-item") && isMobile()) openMobileModal();
+      });
+      if (workInfoCloseBtn)
+        workInfoCloseBtn.addEventListener("click", closeMobileModal);
+      // Escape key also closes the modal
+      document.addEventListener("keydown", (e) => {
+        if (
+          e.key === "Escape" &&
+          workEl.classList.contains("mobile-modal-open")
+        )
+          closeMobileModal();
+      });
+
+      // Global audio state — once the user unmutes any video with a click,
+      // future videos load with audio on too.
+      let audioOn = false;
+      let currentPlayer = null;
+
+      // ------------------------------------------------------------
+      // Piece-switch effects: coloured pulse on the screensaver,
+      // and a blur-focus reveal on the info panel description
+      // ------------------------------------------------------------
+      const screensaverPulseEl = document.getElementById("screensaver-pulse");
+      const screensaverGlowEl = document.getElementById("screensaver-glow");
+      // apply pulse + glow config as CSS vars (values live in the SCREENSAVER object)
+      screensaverPulseEl.style.setProperty(
+        "--pulse-color",
+        SCREENSAVER.pulseColor,
+      );
+      screensaverPulseEl.style.setProperty(
+        "--pulse-max-opacity",
+        SCREENSAVER.pulseMaxOpacity,
+      );
+      screensaverPulseEl.style.setProperty(
+        "--pulse-duration",
+        SCREENSAVER.pulseDurationMs + "ms",
+      );
+      screensaverGlowEl.style.setProperty(
+        "--glow-color",
+        SCREENSAVER.glowColor,
+      );
+      screensaverGlowEl.style.setProperty(
+        "--glow-max-opacity",
+        SCREENSAVER.glowMaxOpacity,
+      );
+      screensaverGlowEl.style.setProperty(
+        "--glow-duration",
+        SCREENSAVER.glowDurationMs + "ms",
+      );
+
+      function pulseScreensaver() {
+        // restart animation cleanly by removing the class, forcing a reflow,
+        // then re-adding — otherwise consecutive clicks don't re-animate
+        screensaverPulseEl.classList.remove("pulsing");
+        void screensaverPulseEl.offsetWidth;
+        screensaverPulseEl.classList.add("pulsing");
+      }
+
+      function glowScreensaver() {
+        screensaverGlowEl.classList.remove("pulsing");
+        void screensaverGlowEl.offsetWidth;
+        screensaverGlowEl.classList.add("pulsing");
+      }
+
+      function playTextReveal(el) {
+        el.classList.remove("text-reveal");
+        void el.offsetWidth;
+        el.classList.add("text-reveal");
+      }
+
+      async function loadPiece(pieceIndex, { pulse = false } = {}) {
+        currentPieceIndex = pieceIndex;
+        const p = projects[activeIndex];
+        const piece = p.pieces[pieceIndex];
+
+        pieceButtonsEl.querySelectorAll(".lower-third-btn").forEach((t, i) => {
+          t.classList.toggle("active", i === pieceIndex);
+        });
+
+        // description can be overridden per piece — fall back to project's
+        const desc = piece.description || p.description;
+        infoDesc.textContent = desc;
+        playTextReveal(infoDesc);
+
+        // colour flash across the screensaver, only on piece-button switches
+        if (pulse) {
+          pulseScreensaver();
+          // On mobile portrait mode the lower-third overlays the video faded;
+          // brighten it briefly so the visitor sees which piece is now active.
+          if (typeof flashLowerThirdActive === "function")
+            flashLowerThirdActive();
+        }
+
+        // clean up previous Vimeo player if any
+        if (currentPlayer) {
+          try {
+            currentPlayer.destroy();
+          } catch {}
+          currentPlayer = null;
+        }
+
+        if (piece.type === "vimeo") {
+          showScreensaver(); // loading screen while player initializes
+
+          const ar = await getVimeoAR(piece.id);
+          applyAspect(ar);
+          // controls=0 removes chrome, but unlike background=1 lets audio play.
+          // Autoplay must start muted; we unmute after user clicks.
+          videoContent.innerHTML = `
+          <iframe src="https://player.vimeo.com/video/${piece.id}?autoplay=1&muted=1&loop=1&controls=0&title=0&byline=0&portrait=0&dnt=1" allow="autoplay; fullscreen" allowfullscreen></iframe>
+          <div class="video-click"></div>
+        `;
+
+          if (typeof Vimeo === "undefined") {
+            console.warn(
+              "[Black Atlas] Vimeo Player API script did not load. Click-to-pause / audio-toggle will not work. Check that https://player.vimeo.com/api/player.js is reachable.",
+            );
+            hideScreensaver();
+            return;
+          }
+
+          const iframe = videoContent.querySelector("iframe");
+          const clickTarget = videoContent.querySelector(".video-click");
+          let player;
+          try {
+            player = new Vimeo.Player(iframe);
+            currentPlayer = player;
+          } catch (err) {
+            console.error("[Black Atlas] Vimeo.Player init failed", err);
+            hideScreensaver();
+            return;
+          }
+
+          // Force Vimeo player to re-layout — mirrors the behavior of a real
+          // browser resize, which is what makes the initial black bar go away.
+          // We call this once shortly after ready and again on first play,
+          // since Vimeo can settle its layout at either moment depending on
+          // network / bitrate.
+          function nudgeVimeoLayout() {
+            const iframeNow = videoContent.querySelector("iframe");
+            if (!iframeNow) return;
+            const rect = iframeNow.getBoundingClientRect();
+            if (rect.width < 10) return;
+            // real 1px width change held for ~80ms is enough to trigger Vimeo's
+            // internal resize listener; then we restore
+            iframeNow.style.width =
+              Math.max(50, Math.round(rect.width - 1)) + "px";
+            setTimeout(() => {
+              iframeNow.style.width = "";
+            }, 80);
+            // also poke the global resize event that Vimeo's player subscribes to
+            window.dispatchEvent(new Event("resize"));
+          }
+
+          player
+            .ready()
+            .then(() => {
+              console.log("[Black Atlas] Vimeo player ready for", piece.id);
+              if (audioOn)
+                player
+                  .setMuted(false)
+                  .catch((err) => console.warn("setMuted failed", err));
+              // fire off a dimension probe to compare oembed AR vs the actually-played video dims,
+              // which is the honest way to diagnose the Showreel black bar
+              Promise.all([player.getVideoWidth(), player.getVideoHeight()])
+                .then(([w, h]) => {
+                  console.log(
+                    `[Black Atlas] ${piece.id} played dims ${w}x${h}, AR ${(w / h).toFixed(4)} (oembed reported AR ${ar.toFixed(4)})`,
+                  );
+                })
+                .catch(() => {});
+              // Belt: if the video is already playing by the time we're
+              // ready (race with autoplay), dismiss immediately. The 'play'
+              // event may have fired before our listener attached below.
+              player
+                .getPaused()
+                .then((paused) => {
+                  if (!paused) dismissLoading();
+                })
+                .catch(() => {});
+              setTimeout(nudgeVimeoLayout, 150);
+            })
+            .catch((err) =>
+              console.warn("[Black Atlas] player.ready failed", err),
+            );
+
+          // Dismiss the loading screensaver via multiple signals — whichever
+          // fires first wins. Previously we only listened for 'play', which
+          // caused a well-known bug:
+          //   (1) 'play' can fire BEFORE our listener attaches (race with
+          //       Vimeo autoplay kicking in via autoplay=1&muted=1). Missed.
+          //   (2) 'play' never fires if the browser blocks autoplay entirely.
+          // Result was: loading screen stays up until user clicks the video,
+          // making it look like the video was frozen when it was actually
+          // ready to watch. Now we listen for 'loaded' (video data ready,
+          // poster/first frame available) and 'bufferend' (initial buffer
+          // complete) as well. Guarded so hideScreensaver only runs once.
+          let screensaverHidden = false;
+          const dismissLoading = () => {
+            if (screensaverHidden) return;
+            screensaverHidden = true;
+            hideScreensaver();
+          };
+          player.on("loaded", dismissLoading);
+          player.on("bufferend", dismissLoading);
+
+          let playNudged = false;
+          player.on("play", () => {
+            dismissLoading();
+            if (!playNudged) {
+              playNudged = true;
+              setTimeout(nudgeVimeoLayout, 60);
+            }
+          });
+
+          // Safety net: if for any reason none of the above fire within
+          // 6 seconds (broken event pipeline, weird browser state), hide
+          // the screensaver anyway. On a genuinely slow connection where
+          // the video really is still loading, this is long enough that
+          // we don't cut the loading state short prematurely.
+          setTimeout(dismissLoading, 6000);
+
+          // Horizontal-swipe on the video area to switch pieces (mobile / touch).
+          // The tap-to-play/pause below sees swipeConsumed and skips.
+          let touchStartX = 0,
+            touchStartY = 0,
+            touchStartTime = 0;
+          let swipeConsumed = false;
+          clickTarget.addEventListener(
+            "touchstart",
+            (ev) => {
+              const t = ev.touches[0];
+              touchStartX = t.clientX;
+              touchStartY = t.clientY;
+              touchStartTime = Date.now();
+              swipeConsumed = false;
+            },
+            { passive: true },
+          );
+          clickTarget.addEventListener("touchend", (ev) => {
+            const t = ev.changedTouches[0];
+            const dx = t.clientX - touchStartX;
+            const dy = t.clientY - touchStartY;
+            const dt = Date.now() - touchStartTime;
+            const absX = Math.abs(dx),
+              absY = Math.abs(dy);
+            if (absX < 40 || absY > absX * 0.6 || dt > 600) return;
+            const proj = projects[activeIndex];
+            if (proj.pieces.length <= 1) return;
+            swipeConsumed = true;
+            if (dx < 0 && currentPieceIndex < proj.pieces.length - 1) {
+              loadPiece(currentPieceIndex + 1, { pulse: true });
+            } else if (dx > 0 && currentPieceIndex > 0) {
+              loadPiece(currentPieceIndex - 1, { pulse: true });
+            }
+          });
+
+          clickTarget.addEventListener("click", async () => {
+            if (swipeConsumed) {
+              swipeConsumed = false;
+              return;
+            }
+            console.log("[Black Atlas] video clicked. audioOn =", audioOn);
+            try {
+              if (!audioOn) {
+                audioOn = true;
+                await player.setMuted(false);
+                console.log("[Black Atlas] unmuted");
+                return;
+              }
+              const paused = await player.getPaused();
+              if (paused) {
+                await player.play();
+                console.log("[Black Atlas] played");
+              } else {
+                await player.pause();
+                console.log("[Black Atlas] paused");
+              }
+            } catch (err) {
+              console.error("[Black Atlas] click handler error", err);
+            }
+          });
+        } else if (piece.type === "mp4") {
+          // ------------------------------------------------------------
+          // Native HTML5 video for self-hosted MP4s (e.g. Cloudflare R2).
+          // Same interaction model as the Vimeo branch: first click
+          // unmutes, subsequent clicks toggle play/pause; swipe switches
+          // pieces on touch. The loading screensaver is dismissed on the
+          // first frame / playback, with a safety timeout.
+          // A known aspect ratio can be set per piece via `aspect`; if
+          // omitted we read it from the video's own dimensions on load.
+          // ------------------------------------------------------------
+          showScreensaver();
+          if (piece.aspect) applyAspect(piece.aspect);
+
+          videoContent.innerHTML = `
+          <video class="mp4-player" src="${piece.src}" autoplay muted loop playsinline preload="auto"></video>
+          <div class="video-click"></div>
+        `;
+
+          const videoEl = videoContent.querySelector("video.mp4-player");
+          const clickTarget = videoContent.querySelector(".video-click");
+
+          // If the visitor already turned audio on for an earlier piece,
+          // carry that through to this one. The <video> is created muted
+          // (browsers require muted autoplay), so we lift the mute once it
+          // can actually play. Muting stays until then to keep autoplay
+          // from being blocked.
+          if (audioOn) {
+            const applyUnmute = () => {
+              videoEl.muted = false;
+            };
+            videoEl.addEventListener("playing", applyUnmute, { once: true });
+            // also try right away in case it's already playing
+            if (!videoEl.paused) applyUnmute();
+          }
+
+          // expose a minimal player-like shim so the offscreen-pause
+          // observer (which calls currentPlayer.pause()) keeps working
+          currentPlayer = {
+            pause: () => {
+              try {
+                videoEl.pause();
+              } catch {}
+              return Promise.resolve();
+            },
+            destroy: () => {
+              try {
+                videoEl.pause();
+                videoEl.removeAttribute("src");
+                videoEl.load();
+              } catch {}
+            },
+          };
+
+          let mp4Dismissed = false;
+          const dismissMp4Loading = () => {
+            if (mp4Dismissed) return;
+            mp4Dismissed = true;
+            hideScreensaver();
+          };
+          // If no explicit aspect was given, derive it from the file once
+          // metadata is available so the frame fits the video exactly.
+          videoEl.addEventListener("loadedmetadata", () => {
+            if (!piece.aspect && videoEl.videoWidth && videoEl.videoHeight) {
+              applyAspect(videoEl.videoWidth / videoEl.videoHeight);
+            }
+          });
+          videoEl.addEventListener("loadeddata", dismissMp4Loading);
+          videoEl.addEventListener("playing", dismissMp4Loading);
+          setTimeout(dismissMp4Loading, 6000);
+
+          // Swipe to switch pieces (touch)
+          let touchStartX = 0,
+            touchStartY = 0,
+            touchStartTime = 0;
+          let swipeConsumed = false;
+          clickTarget.addEventListener(
+            "touchstart",
+            (ev) => {
+              const t = ev.touches[0];
+              touchStartX = t.clientX;
+              touchStartY = t.clientY;
+              touchStartTime = Date.now();
+              swipeConsumed = false;
+            },
+            { passive: true },
+          );
+          clickTarget.addEventListener("touchend", (ev) => {
+            const t = ev.changedTouches[0];
+            const dx = t.clientX - touchStartX;
+            const dy = t.clientY - touchStartY;
+            const dt = Date.now() - touchStartTime;
+            const absX = Math.abs(dx),
+              absY = Math.abs(dy);
+            if (absX < 40 || absY > absX * 0.6 || dt > 600) return;
+            const proj = projects[activeIndex];
+            if (proj.pieces.length <= 1) return;
+            swipeConsumed = true;
+            if (dx < 0 && currentPieceIndex < proj.pieces.length - 1) {
+              loadPiece(currentPieceIndex + 1, { pulse: true });
+            } else if (dx > 0 && currentPieceIndex > 0) {
+              loadPiece(currentPieceIndex - 1, { pulse: true });
+            }
+          });
+
+          // Click: first unmutes, then toggles play/pause
+          clickTarget.addEventListener("click", () => {
+            if (swipeConsumed) {
+              swipeConsumed = false;
+              return;
+            }
+            try {
+              if (!audioOn) {
+                audioOn = true;
+                videoEl.muted = false;
+                return;
+              }
+              if (videoEl.paused) videoEl.play();
+              else videoEl.pause();
+            } catch (err) {
+              console.error("[Black Atlas] mp4 click handler error", err);
+            }
+          });
+        } else {
+          applyAspect(piece.aspect);
+          videoContent.innerHTML = `
+          <div class="placeholder">
+            <div class="ar-badge">${piece.note}</div>
+            <div class="ar-note">Placeholder — swap in the real cut later</div>
+          </div>
+        `;
+          hideScreensaver();
+        }
+      }
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowLeft" && activeIndex > 0)
+          loadProject(activeIndex - 1, { glow: true });
+        if (e.key === "ArrowRight" && activeIndex < projects.length - 1)
+          loadProject(activeIndex + 1, { glow: true });
+      });
+
+      renderWorksList();
+      loadProject(0);
+
+      // ============================================================
+      // HERO CAPTION — rotates on each page load.
+      // "I wish i had a dog" is the signature line; the rest are little
+      // trivia facts. One is picked at random every time the page loads
+      // (or is reloaded), keeping the lowercase, offhand tone. Add or
+      // edit lines freely — keep them short so they fit on one line.
+      // ============================================================
+      const heroCaptions = [
+        "I wish i had a dog",
+        "octopuses have three hearts",
+        "honey never really spoils",
+        "a group of flamingos is called a flamboyance",
+        "bananas are berries, strawberries aren't",
+        "wombat poop is cube shaped",
+        "the shortest war in history lasted 38 minutes",
+        "sharks are older than trees",
+        "a shrimp's heart is in its head",
+        "hot water can freeze faster than cold water",
+        "there are more stars than grains of sand on earth",
+        "cows have best friends",
+        "the eiffel tower can be 15cm taller in summer",
+        "a bolt of lightning is five times hotter than the sun",
+        "sea otters hold hands while they sleep",
+        "still wish i had a dog though",
+      ];
+      const heroCaptionEl = document.getElementById("hero-caption");
+      if (heroCaptionEl) {
+        const pick =
+          heroCaptions[Math.floor(Math.random() * heroCaptions.length)];
+        heroCaptionEl.textContent = pick;
+      }
+
+      // ============================================================
+      // FAQ SECTION — data + render + accordion + noise tile
+      // ============================================================
+      const faqs = [
+        {
+          q: "How long will it take?",
+          a: "Depends on the project. Short form stuff usually takes about a days. Long form about a week. If you need graphics packages like lower thirds, transitions, intros well that has its own timeline. But honestly? We'll know more once we talk through what you actually need. That's when I can give you an actual answer.",
+        },
+        {
+          q: "What kind of projects do you love most?",
+          a: "I like making things move. Motion graphics, animation just anything where I get to bring stuff to life. Video editing is cool too, don't get me wrong. But I wanna edit at that psychiatrist level, the kind where you're invoking something in people, you know? like Oppenheimer, Severance, or Kinds of Kindness type of stuff.",
+        },
+        {
+          q: "I have an idea but I'm not sure it's fully formed. Can I still reach out?",
+          a: "Yeah, absolutely. Everything starts somewhere. We'll talk it through, see what's there, and figure it out together.",
+        },
+        {
+          q: "How do you handle feedback?",
+          a: "Fine. If something's not working, just tell me and I'll fix it. I don't take it personally. Tell me what you want different and we'll move forward.",
+        },
+        {
+          q: "How often will you update me?",
+          a: "Regular check-ins. Not too much, just consistent enough so you're never guessing where things are at. Use whatever works for you: Zulip, Slack, email, etc. I'll be there.",
+        },
+        {
+          q: "What's your process like?",
+          a: "We talk first. You tell me what you need, even if it's vague it's fine. I'll put together some references, we'll hop on a call, and you tell me what's working. Then I get to work. Rough draft, feedback, revisions if needed, final. Simple.",
+        },
+      ];
+
+      const faqGridEl = document.getElementById("faq-grid");
+      document.documentElement.classList.add("js-ready");
+
+      const ICON_OUTLINE_BOX =
+        "M12,16H10V12H6V10H10V6H12V10H16V12H12ZM18,20H4V19H3V18H2V4H3V3H4V2H18V3H19V4H20V18H19V19H18ZM17,18V17H18V5H17V4H5V5H4V17H5V18Z";
+      const ICON_FILL_OUTER =
+        "M18,20H4V19H3V18H2V4H3V3H4V2H18V3H19V4H20V18H19V19H18Z";
+      const ICON_FILL_INNER = "M12,16V12H16V10H12V6H10V10H6V12H10V16Z";
+
+      function faqIconMarkup() {
+        return `
+          <div class="faq-icon-wrap">
+            <svg class="faq-icon faq-icon-closed" viewBox="0 0 22 22" fill="currentColor" aria-hidden="true">
+              <path d="${ICON_OUTLINE_BOX}"/>
+            </svg>
+            <svg class="faq-icon faq-icon-open" viewBox="0 0 22 22" aria-hidden="true">
+              <path d="${ICON_FILL_OUTER}" fill="currentColor"/>
+              <path class="inner" d="${ICON_FILL_INNER}" fill="#f6f4ef"/>
+            </svg>
+          </div>
+        `;
+      }
+
+      const faqCol1El = document.getElementById("faq-col-1");
+      const faqCol2El = document.getElementById("faq-col-2");
+
+      function renderFaqItem(item, i) {
+        return `
+        <details class="faq-item" data-index="${i}">
+          <summary class="faq-summary">
+            <span class="faq-question">${item.q}</span>
+            ${faqIconMarkup()}
+          </summary>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">${item.a}</div>
+          </div>
+        </details>
+      `;
+      }
+
+      // Split down the middle so reading order stays natural on mobile
+      // (col-1 items stack first, then col-2 items). Adjust the split if you
+      // want a specific pairing.
+      const faqHalfway = Math.ceil(faqs.length / 2);
+      faqCol1El.innerHTML = faqs
+        .slice(0, faqHalfway)
+        .map((item, i) => renderFaqItem(item, i))
+        .join("");
+      faqCol2El.innerHTML = faqs
+        .slice(faqHalfway)
+        .map((item, i) => renderFaqItem(item, i + faqHalfway))
+        .join("");
+
+      // Height animation on open/close. Native <details> stays as the
+      // source of truth for open state (keyboard + a11y), we just wrap
+      // its toggle so max-height can animate cleanly.
+      // Caddis-style behavior: only one item open at a time — opening
+      // a new question collapses whichever was open before.
+      function faqCloseItem(item) {
+        if (!item.classList.contains("is-open")) return;
+        const answer = item.querySelector(".faq-answer");
+        // capture current height in case it was left at 'none', then animate to 0
+        answer.style.maxHeight = answer.scrollHeight + "px";
+        requestAnimationFrame(() => {
+          item.classList.remove("is-open");
+          answer.style.maxHeight = "0px";
+        });
+        answer.addEventListener(
+          "transitionend",
+          () => {
+            if (!item.classList.contains("is-open")) item.open = false;
+          },
+          { once: true },
+        );
+      }
+
+      function faqOpenItem(item) {
+        const answer = item.querySelector(".faq-answer");
+        const inner = item.querySelector(".faq-answer-inner");
+        item.open = true;
+        item.classList.add("is-open");
+        const target = inner.getBoundingClientRect().height + 4;
+        answer.style.maxHeight = target + "px";
+        answer.addEventListener(
+          "transitionend",
+          () => {
+            if (item.classList.contains("is-open"))
+              answer.style.maxHeight = "none";
+          },
+          { once: true },
+        );
+      }
+
+      faqGridEl.querySelectorAll(".faq-item").forEach((item) => {
+        const summary = item.querySelector(".faq-summary");
+        summary.addEventListener("click", (e) => {
+          e.preventDefault();
+          const wasOpen = item.classList.contains("is-open");
+          // Close every OTHER open item first
+          faqGridEl.querySelectorAll(".faq-item.is-open").forEach((other) => {
+            if (other !== item) faqCloseItem(other);
+          });
+          // Then toggle the clicked one
+          if (wasOpen) faqCloseItem(item);
+          else faqOpenItem(item);
+        });
+      });
+
+      // ============================================================
+      // SCROLL REVEAL — Caddis-style
+      // One-shot IntersectionObserver: elements with .reveal get
+      // .is-visible when they scroll into view, then are unobserved
+      // so they never re-hide. Observing runs AFTER FAQ items are
+      // rendered so those pick up too.
+      // Motion-safe check: if the user has prefers-reduced-motion,
+      // we skip the observer entirely and add is-visible to everything
+      // immediately (the CSS also disables the transition, but this
+      // avoids relying on the class-based state at all).
+      // ============================================================
+      const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+      const revealEls = document.querySelectorAll(".reveal");
+      if (prefersReducedMotion || typeof IntersectionObserver === "undefined") {
+        revealEls.forEach((el) => el.classList.add("is-visible"));
+      } else {
         const revealObserver = new IntersectionObserver(
           (entries) => {
-            entries.forEach((e) => {
-              if (e.isIntersecting) e.target.classList.add("visible");
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                revealObserver.unobserve(entry.target);
+              }
             });
           },
-          { threshold: 0.1, rootMargin: "0px 0px -40px 0px" },
+          {
+            // Trigger once ~15% of the element has entered the viewport,
+            // and pull the trigger line up 60px from the bottom so reveals
+            // feel like they're reacting to scroll rather than post-scroll.
+            threshold: 0.15,
+            rootMargin: "0px 0px -60px 0px",
+          },
         );
-        reveals.forEach((el) => revealObserver.observe(el));
+        revealEls.forEach((el) => revealObserver.observe(el));
+      }
 
-        const scrollContainer = document.getElementById("horizontalScroll");
-        const btnLeft = document.getElementById("carouselLeft");
-        const btnRight = document.getElementById("carouselRight");
-        const SCROLL_AMOUNT = 350;
-        function updateButtons() {
-          const max = scrollContainer.scrollWidth - scrollContainer.clientWidth;
-          btnLeft.classList.toggle("hidden", scrollContainer.scrollLeft <= 2);
-          btnRight.classList.toggle(
-            "hidden",
-            scrollContainer.scrollLeft >= max - 2,
-          );
-        }
-        btnLeft.addEventListener("click", () =>
-          scrollContainer.scrollBy({
-            left: -SCROLL_AMOUNT,
-            behavior: "smooth",
-          }),
-        );
-        btnRight.addEventListener("click", () =>
-          scrollContainer.scrollBy({ left: SCROLL_AMOUNT, behavior: "smooth" }),
-        );
-        scrollContainer.addEventListener("scroll", updateButtons, {
-          passive: true,
-        });
-        updateButtons();
+      // ============================================================
+      // NOISE TILES — one shared generator, two configs.
+      // FAQ noise = fine dark speckle over light paper.
+      // Hero noise = mixed light/dark grain over dark photo, tuned
+      // heavier so it reads at hero scale (like Caddis).
+      // Both are pre-generated on load and injected as CSS variables.
+      // ============================================================
+      const FAQ_NOISE = {
+        tileSize: 160,
+        density: 0.85,
+        dotAlphaMax: 0.35,
+      };
 
-        document.querySelectorAll(".qa-item").forEach((item) => {
-          item.querySelector(".qa-question").addEventListener("click", () => {
-            const isOpen = item.classList.contains("open");
-            document
-              .querySelectorAll(".qa-item")
-              .forEach((i) => i.classList.remove("open"));
-            if (!isOpen) item.classList.add("open");
-          });
-        });
+      const HERO_NOISE = {
+        tileSize: 240, // bigger tile = less obvious repeat on a big surface
+        density: 0.75, // dense grain — matches Caddis density
+        dotAlphaMax: 0.55, // per-pixel max, then --hero-noise-opacity multiplies
+        lightShare: 0.55, // ~55% of speckles are light, rest are dark → real grain
+      };
 
-        // ===== MODAL LOGIC (with BTS integration, everything else unchanged) =====
-        const overlay = document.getElementById("videoModal");
-        const btnClose = document.getElementById("modalClose");
-        const btnPrev = document.getElementById("modalPrev");
-        const btnNext = document.getElementById("modalNext");
-        const videoEl = document.getElementById("modalVideoEl");
-        const infoEl = document.getElementById("modalInfoEl");
-        const btsOverlay = document.getElementById("btsOverlay");
-        const btsTabs = document.getElementById("btsTabs");
-        const btsContent = document.getElementById("btsContent");
-
-        const projectOrder = [
-          "realistic",
-          "winedrops1",
-          "strivetech1",
-          "collab",
-          "sales",
-          "winedrops2",
-          "strivetech2",
-        ];
-
-        // ===== PROJECT DATA (add btsImages for collab & sales) =====
-        const projects = {
-          realistic: {
-            vimeoId: "1170635799",
-            title: "Coffee Ad",
-            client: "Spacegoods",
-            category: "commercial",
-            description:
-              "Space Goods sells coffee. This was a social media ad showcasing one of their coffee products that was targeted at coffee drinkers. I handled the edit and motion graphics, and used their primary brand colors throughout.",
-            tags: ["editing", "motion"],
-            year: "2025",
-            tools: ["Premiere Pro", "After Effects"],
-          },
-          winedrops1: {
-            vimeoId: "1108056464",
-            title: "Showreel 2025",
-            client: "Personal",
-            category: "Showreel",
-            description:
-              "This is my 2025 showreel. A collection of work I'm most proud of from the past year like motion graphics, edits, commercial and personal stuff",
-            tags: ["editing", "color"],
-            year: "2025",
-            tools: ["Premiere Pro", "After Effects"],
-          },
-          strivetech1: {
-            vimeoId: "1121611979",
-            title: "Social Media Content",
-            client: "StriveTech",
-            category: "social",
-            description:
-              "Produced motion graphics explainer to educate audiences on email technology.",
-            tags: ["motion", "explainer"],
-            year: "2025",
-            tools: ["After Effects", "Illustrator"],
-          },
-          collab: {
-            vimeoId: "1121503730",
-            title: "Brand Motion Exploration",
-            client: "StriveTech",
-            category: "motion",
-            description:
-              "Put together this motion piece to show StriveTech what their brand could look like in motion. Stuff like colors, shapes,how things move.",
-            tags: ["motion", "music video"],
-            year: "2025",
-            tools: ["After Effects", "Premiere Pro", "Illustrator"],
-            // ★ PROCESS / WIP — swap to real items (see commented example) when ready ★
-            btsImages: [
-              {
-                type: "wip",
-                imageUrl: "images/help-me.jpg",
-                title: "Process",
-                description:
-                  "The full process is still being built — references, planning pages, clean frames and the final cut are on the way.",
-                note: "🚧 Work in progress",
-                credit: "found image · artist unknown — happy to credit",
-              },
-              // When ready, add real items like these:
-              // { type: "image", imageUrl: "images/bts/frame-01.jpg", description: "Early styleframes.", note: "🎨 Phase 2" },
-              // { type: "text", description: "A note about this stage.", note: "📐 Blocking" },
-            ],
-            btsAspect: 1, // the WIP sketch is square
-          },
-          sales: {
-            vimeoId: "1109940880",
-            title: "Winedrops Highlight Reel",
-            client: "personal",
-            category: "Showreel",
-            description:
-              "This is a highlight reel of everything I've done for Winedrops. Edits, motion graphics, templates, and all.",
-            tags: ["editing", "motion"],
-            year: "2025",
-            tools: [
-              "Premiere Pro",
-              "After Effects",
-              "Blender",
-              "Touch Designer",
-            ],
-            btsImages: [
-              {
-                type: "wip",
-                imageUrl: "images/help-me.jpg",
-                title: "Process",
-                description:
-                  "The full process is still being built — references, planning pages, clean frames and the final cut are on the way.",
-                note: "🚧 Work in progress",
-                credit: "found image · artist unknown — happy to credit",
-              },
-            ],
-            btsAspect: 1,
-          },
-          winedrops2: {
-            vimeoId: "1114326897",
-            title: "Social Media Ad",
-            client: "SalesSource",
-            category: "social",
-            description:
-              "SalesSource is a B2B company. I made a video showcasing their services, what they offer, who it's for, how the process works.",
-            tags: ["commercial", "explainer"],
-            year: "2024",
-            tools: ["Premiere Pro", "After Effects"],
-          },
-          strivetech2: {
-            vimeoId: "1114326040",
-            title: "Website Video",
-            client: "Realistic Strategist",
-            category: "motion",
-            description:
-              "Realistic Strategist is a digital marketing company. They needed a video for their website.",
-            tags: ["motion", "style frames"],
-            year: "2023",
-            tools: ["After Effects", "Photoshop"],
-          },
-        };
-
-        const arCache = new Map();
-        async function getAR(vimeoId) {
-          if (arCache.has(vimeoId)) return arCache.get(vimeoId);
-          const FALLBACK = 16 / 9;
-          try {
-            const res = await fetch(
-              `https://vimeo.com/api/oembed.json?url=https://vimeo.com/${vimeoId}`,
-            );
-            const data = await res.json();
-            const r = data.width / data.height;
-            // guard against missing/garbage values so the box never collapses
-            const safe = Number.isFinite(r) && r > 0.2 && r < 4 ? r : FALLBACK;
-            arCache.set(vimeoId, safe);
-            return safe;
-          } catch {
-            return FALLBACK; // don't cache a failure — let it retry next open
+      // FAQ noise — monochrome dark speckles on light bg
+      function makeFaqNoise() {
+        const c = document.createElement("canvas");
+        c.width = c.height = FAQ_NOISE.tileSize;
+        const ctx = c.getContext("2d");
+        const img = ctx.createImageData(c.width, c.height);
+        const data = img.data;
+        for (let i = 0; i < data.length; i += 4) {
+          if (Math.random() < FAQ_NOISE.density) {
+            data[i] = data[i + 1] = data[i + 2] = 0;
+            data[i + 3] = FAQ_NOISE.dotAlphaMax * 255 * Math.random();
+          } else {
+            data[i + 3] = 0;
           }
         }
+        ctx.putImageData(img, 0, 0);
+        return `url("${c.toDataURL()}")`;
+      }
 
-        const playerCache = new Map();
-        function getOrCreatePlayer(vimeoId) {
-          if (playerCache.has(vimeoId)) return playerCache.get(vimeoId);
-          const iframe = document.createElement("iframe");
-          iframe.src = `https://player.vimeo.com/video/${vimeoId}?autoplay=0&loop=1&title=0&byline=0&portrait=0`;
-          iframe.setAttribute("frameborder", "0");
-          iframe.setAttribute(
-            "allow",
-            "autoplay; fullscreen; picture-in-picture",
-          );
-          iframe.setAttribute("allowfullscreen", "");
-          const player = new Vimeo.Player(iframe);
-          player.ready().then(() => iframe.classList.add("ready"));
-          playerCache.set(vimeoId, { iframe, player });
-          return { iframe, player };
-        }
-
-        // BTS State
-        let activeKey = null;
-        let btsActive = false;
-        let currentBtsIndex = 0;
-        let currentVideoAspect = 1.778;
-        let player = null;
-
-        function renderBtsTabs(count) {
-          btsTabs.innerHTML = "";
-          for (let i = 1; i <= count; i++) {
-            const tab = document.createElement("button");
-            tab.className = "bts-tab";
-            tab.dataset.index = i - 1;
-            tab.textContent = i;
-            btsTabs.appendChild(tab);
+      // Hero noise — mix of light AND dark speckles for a true film-grain feel
+      function makeHeroNoise() {
+        const c = document.createElement("canvas");
+        c.width = c.height = HERO_NOISE.tileSize;
+        const ctx = c.getContext("2d");
+        const img = ctx.createImageData(c.width, c.height);
+        const data = img.data;
+        for (let i = 0; i < data.length; i += 4) {
+          if (Math.random() < HERO_NOISE.density) {
+            const isLight = Math.random() < HERO_NOISE.lightShare;
+            // slight brightness variation within each band, so grain isn't uniform
+            const g = isLight
+              ? 210 + Math.random() * 45 // 210..255 (light speckles)
+              : Math.random() * 45; // 0..45 (dark speckles)
+            data[i] = data[i + 1] = data[i + 2] = g;
+            data[i + 3] = HERO_NOISE.dotAlphaMax * 255 * Math.random();
+          } else {
+            data[i + 3] = 0;
           }
-          updateActiveTab(0);
-          document.querySelectorAll(".bts-tab").forEach((tab) => {
-            tab.addEventListener("click", (e) => {
-              const idx = parseInt(e.currentTarget.dataset.index);
-              if (idx === currentBtsIndex) return;
-              currentBtsIndex = idx;
-              updateActiveTab(idx);
-              renderBtsContent(activeKey, idx);
+        }
+        ctx.putImageData(img, 0, 0);
+        return `url("${c.toDataURL()}")`;
+      }
+
+      requestAnimationFrame(() => {
+        document.documentElement.style.setProperty(
+          "--faq-noise-tile",
+          makeFaqNoise(),
+        );
+        document.documentElement.style.setProperty(
+          "--hero-noise-tile",
+          makeHeroNoise(),
+        );
+      });
+
+      // ============================================================
+      // NAV STATE — transparent white over hero, solid paper past it.
+      // IntersectionObserver on the hero flips the class as the user
+      // scrolls. The rootMargin offset makes the flip happen right as
+      // the hero exits the top of the viewport, not later.
+      // ============================================================
+      const heroEl = document.getElementById("hero");
+      const navEl = document.getElementById("site-nav");
+      if (heroEl && navEl && typeof IntersectionObserver !== "undefined") {
+        const navObs = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                navEl.classList.add("over-hero");
+                navEl.classList.remove("past-hero");
+              } else {
+                navEl.classList.remove("over-hero");
+                navEl.classList.add("past-hero");
+              }
             });
-          });
-        }
-
-        function updateActiveTab(index) {
-          document
-            .querySelectorAll(".bts-tab")
-            .forEach((tab, i) => tab.classList.toggle("active", i === index));
-        }
-
-        function renderBtsContent(projectKey, index) {
-          const p = projects[projectKey];
-          if (!p.btsImages) return;
-          const item = p.btsImages[index];
-
-          if (item.type === "wip") {
-            btsContent.innerHTML = `
-              <img class="bts-wip-img" src="${item.imageUrl}" alt="Work in progress" />
-              <h3>${item.title || "Process"}</h3>
-              <p>${item.description}</p>
-              <span class="bts-note">${item.note}</span>
-              ${item.credit ? `<span class="bts-credit">${item.credit}</span>` : ""}
-            `;
-          } else if (item.type === "image" && item.imageUrl) {
-            btsContent.innerHTML = `
-              <img src="${item.imageUrl}" alt="BTS ${index + 1}" style="max-width:100%; max-height:100%;" />
-              <p style="margin-top:16px;">${item.description}</p>
-              <span class="bts-note">${item.note}</span>
-            `;
-          } else {
-            btsContent.innerHTML = `
-              <h3>Process</h3>
-              <p>${item.description}</p>
-              <span class="bts-note">${item.note}</span>
-            `;
-          }
-        }
-
-        async function openModal(key) {
-          const p = projects[key];
-          if (!p) return;
-          activeKey = key;
-
-          btsActive = false;
-          btsOverlay.classList.remove("active");
-          videoEl.classList.remove("bts-transition");
-
-          videoEl.innerHTML = `<div class="modal-spinner"></div>`;
-          renderInfoPanel(key);
-          overlay.classList.add("active");
-          document.body.style.overflow = "hidden";
-          updateArrows();
-
-          const ar = await getAR(p.vimeoId);
-          currentVideoAspect = ar;
-          if (activeKey !== key) return;
-          videoEl.style.setProperty("--video-aspect", ar);
-
-          const { iframe, player: vPlayer } = getOrCreatePlayer(p.vimeoId);
-          player = vPlayer;
-          videoEl.innerHTML = "";
-          videoEl.appendChild(iframe);
-          if (!videoEl.contains(btsOverlay)) videoEl.appendChild(btsOverlay);
-          player.play().catch(() => {});
-
-          if (p.btsImages) {
-            renderBtsTabs(p.btsImages.length);
-            renderBtsContent(key, 0);
-            currentBtsIndex = 0;
-          } else {
-            btsTabs.innerHTML = "";
-            btsContent.innerHTML = "";
-          }
-        }
-
-        // ── PROCESS panel paused until the real process/BTS content is ready.
-        //    Flip this to false to bring the PROCESS button back. ──
-        const PROCESS_PAUSED = true;
-
-        function renderInfoPanel(key) {
-          const p = projects[key];
-          const idx = projectOrder.indexOf(key);
-          const total = projectOrder.length;
-          const pct = (((idx + 1) / total) * 100).toFixed(1);
-
-          const hasBts = !!p.btsImages;
-
-          // Always show FULLSCREEN and MUTE; add BEHIND if BTS exists
-          const actionButtonsHtml = `
-            <div class="action-buttons">
-              ${hasBts && !PROCESS_PAUSED ? '<button class="action-btn" data-action="behind">PROCESS</button>' : ""}
-              <button class="action-btn" data-action="fullscreen">FULLSCREEN</button>
-              <button class="action-btn" data-action="mute">MUTE</button>
-            </div>
-          `;
-
-          infoEl.innerHTML = `
-            <div class="modal-info-counter">
-              <span><span class="current-num">${String(idx + 1).padStart(2, "0")}</span> / ${String(total).padStart(2, "0")}</span>
-              <div class="modal-info-counter-bar"><div class="modal-info-counter-fill" style="width:${pct}%"></div></div>
-            </div>
-            <div class="modal-eyebrow">${p.category}</div>
-            <h2>${p.title}</h2>
-            <div class="modal-client">${p.client}</div>
-            <div class="modal-desc">${p.description}</div>
-            ${actionButtonsHtml}
-            <div class="modal-details">
-              <div class="modal-detail-item"><strong>Year</strong><p>${p.year}</p></div>
-              <div class="modal-detail-item"><strong>Tools</strong><p>${p.tools.join(", ")}</p></div>
-            </div>
-          `;
-
-          const behindBtn = infoEl.querySelector('[data-action="behind"]');
-          if (behindBtn) behindBtn.addEventListener("click", toggleBehind);
-          infoEl
-            .querySelector('[data-action="fullscreen"]')
-            .addEventListener("click", toggleFullscreen);
-          infoEl
-            .querySelector('[data-action="mute"]')
-            .addEventListener("click", toggleMute);
-        }
-
-        function toggleBehind(e) {
-          const btn = e.currentTarget;
-          const p = projects[activeKey];
-          if (!p.btsImages) return;
-
-          btsActive = !btsActive;
-          videoEl.classList.add("bts-transition");
-
-          if (btsActive) {
-            videoEl.style.setProperty("--video-aspect", p.btsAspect || 4 / 3);
-            btsOverlay.classList.add("active");
-            btn.classList.add("active");
-            if (player) player.pause().catch(() => {});
-          } else {
-            videoEl.style.setProperty("--video-aspect", currentVideoAspect);
-            btsOverlay.classList.remove("active");
-            btn.classList.remove("active");
-            if (player) player.play().catch(() => {});
-          }
-          setTimeout(() => videoEl.classList.remove("bts-transition"), 400);
-        }
-
-        function toggleFullscreen() {
-          if (!document.fullscreenElement) videoEl.requestFullscreen();
-          else document.exitFullscreen();
-        }
-
-        function toggleMute(e) {
-          const btn = e.currentTarget;
-          if (player) {
-            player.getVolume().then((vol) => {
-              const newVol = vol === 0 ? 1 : 0;
-              player.setVolume(newVol);
-              btn.textContent = newVol === 0 ? "UNMUTE" : "MUTE";
-              btn.classList.toggle("active", newVol === 0);
-            });
-          }
-        }
-
-        function updateArrows() {
-          const idx = projectOrder.indexOf(activeKey);
-          btnPrev.disabled = idx <= 0;
-          btnNext.disabled = idx >= projectOrder.length - 1;
-        }
-
-        function navigate(dir) {
-          const idx = projectOrder.indexOf(activeKey);
-          const next = idx + dir;
-          if (next < 0 || next >= projectOrder.length) return;
-          const entry = playerCache.get(projects[activeKey]?.vimeoId);
-          if (entry) entry.player.pause().catch(() => {});
-          openModal(projectOrder[next]);
-        }
-
-        function closeModal() {
-          const k = activeKey;
-          activeKey = null;
-          overlay.classList.remove("active");
-          document.body.style.overflow = "";
-          if (k) {
-            const entry = playerCache.get(projects[k]?.vimeoId);
-            if (entry) entry.player.pause().catch(() => {});
-          }
-          btsActive = false;
-          btsOverlay.classList.remove("active");
-          videoEl.style.setProperty("--video-aspect", currentVideoAspect);
-          videoEl.classList.remove("bts-transition");
-          setTimeout(() => {
-            if (!activeKey) {
-              videoEl.innerHTML = "";
-              videoEl.style.removeProperty("--video-aspect");
-              infoEl.innerHTML = "";
-            }
-          }, 280);
-        }
-
-        document.querySelectorAll(".project-card").forEach((card) => {
-          const key = card.dataset.project;
-          if (!projects[key]) return;
-          card.addEventListener(
-            "pointerenter",
-            () => getAR(projects[key].vimeoId),
-            { once: true },
-          );
-          card.addEventListener("click", () => openModal(key));
-        });
-
-        btnClose.addEventListener("click", closeModal);
-        btnPrev.addEventListener("click", () => navigate(-1));
-        btnNext.addEventListener("click", () => navigate(1));
-        overlay.addEventListener("click", (e) => {
-          if (e.target === overlay) closeModal();
-        });
-        document.addEventListener("keydown", (e) => {
-          if (!activeKey) return;
-          if (e.key === "Escape") closeModal();
-          if (e.key === "ArrowLeft") navigate(-1);
-          if (e.key === "ArrowRight") navigate(1);
-        });
-      })();
+          },
+          {
+            // fire when the hero is mostly out of the top of the viewport
+            rootMargin: "-72px 0px 0px 0px",
+            threshold: 0,
+          },
+        );
+        navObs.observe(heroEl);
+      }
     </script>
   </body>
 </html>
