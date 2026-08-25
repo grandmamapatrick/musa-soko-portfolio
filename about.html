@@ -8,14 +8,37 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=DM+Serif+Display:ital@0;1&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap"
       rel="stylesheet"
     />
     <style>
+      /* ============================================================
+       TOKENS — mirrored from index.html so about lives in the same
+       visual world. If you ever move to a shared stylesheet, this
+       block is the one to extract.
+       ============================================================ */
       :root {
-        --primary-bg: #e24632; /* Red */
-        --text-light: #f7e3c2; /* Cream */
-        --ink: #0d1f26;
+        --paper: #f6f4ef;
+        --paper-panel: #ecebe4;
+        --ink: #0f0f0f;
+        --ink-soft: rgba(15, 15, 15, 0.55);
+        --ink-muted: rgba(15, 15, 15, 0.32);
+        --line: rgba(15, 15, 15, 0.14);
+
+        --cyan: #0092c9;
+        --red: #e24632;
+        --orange: #f69223;
+        --purple: #6513e0;
+        --lime: #d1e82d;
+        --lavender: #8378d8;
+
+        --font-display: "Space Grotesk", system-ui, sans-serif;
+        --font-mono: "Space Mono", ui-monospace, monospace;
+
+        /* Noise tile — populated at runtime, same generator as index.
+           Used by the portrait's grain overlay. */
+        --faq-noise-tile: none;
+        --faq-noise-opacity: 0.25;
       }
 
       * {
@@ -23,310 +46,485 @@
         padding: 0;
         box-sizing: border-box;
       }
-
+      html {
+        font-size: 16px;
+      }
       body {
-        font-family: "Inter", sans-serif;
-        background-color: var(--primary-bg);
-        color: var(--text-light);
-        transition: background-color 0.4s ease; /* Smooth transition for the blue Easter egg */
+        font-family: var(--font-display);
+        background: var(--paper);
+        color: var(--ink);
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
         overflow-x: hidden;
       }
 
-      /* NAV & STROKE (Preserved exact dimensions) */
+      .wrap {
+        max-width: 1300px;
+        margin: 0 auto;
+        padding-inline: clamp(24px, 4vw, 64px);
+      }
+
+      /* ============================================================
+       NAV — fixed at top, paper background with border-bottom line.
+       Unlike index.html this doesn't need the transparent-over-hero
+       state (no hero on this page), so we skip the observer and just
+       style it visible. Account-box SVG sits next to the logo exactly
+       like index so switching pages doesn't feel like a jump.
+       ============================================================ */
       nav {
         position: fixed;
         top: 0;
-        width: 100%;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        max-width: 1350px;
+        margin: 0 auto;
+        padding: 24px clamp(24px, 4vw, 64px);
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 26px 72px;
-        z-index: 999;
-        background-color: #e24632;
+        background: var(--paper);
       }
-
-      nav::after {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 87%;
-        height: 2px;
-        background-color: var(--text-light);
-      }
-
       .logo {
-        font-size: 19px;
-        font-weight: 900;
-        color: var(--text-light);
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-family: var(--font-mono);
+        font-weight: 700;
+        font-size: 13px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--ink);
         text-decoration: none;
+      }
+      .logo-icon {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
       }
       .nav-links {
         display: flex;
-        gap: 40px;
+        gap: 28px;
       }
       .nav-links a {
-        font-size: 16px;
-        font-weight: 700;
-        color: var(--text-light);
+        font-family: var(--font-mono);
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--ink);
         text-decoration: none;
-        letter-spacing: 0.04em;
-        text-transform: none;
-        opacity: 0.6;
-      }
-      .nav-links a.active {
-        opacity: 1;
+        padding: 6px 12px;
+        border: 1px solid transparent;
+        transition:
+          color 0.2s ease,
+          border-color 0.2s ease;
       }
       .nav-links a:hover {
-        opacity: 1;
+        color: var(--cyan);
+        border-color: currentColor;
+      }
+      /* Current-page marker — About stays cyan and bordered */
+      .nav-links a.active {
+        color: var(--cyan);
+        border-color: currentColor;
       }
 
-      /* MAIN CONTENT */
-      main {
-        --photo-size: 380px; /* ← PORTRAIT SIZE. raise to enlarge, lower to shrink */
-        --photo-x: 16px; /* ← nudge photo across: + right, - left */
-        --photo-y: 0px; /* ← nudge photo up/down: + down, - up */
-        --photo-filter: none; /* ← COLOR. for black & white use: grayscale(100%) contrast(1.1) */
-        max-width: 87%;
-        margin: 160px auto 100px;
+      /* ============================================================
+       ABOUT SECTION
+       ============================================================ */
+      .about {
+        padding-block: 140px 96px;
+        /* positioning context for the decorative character */
+        position: relative;
       }
 
-      .hero-name {
-        font-size: clamp(60px, 15vw, 180px);
-        font-weight: 900;
-        line-height: 0.8;
-        letter-spacing: -0.06em;
-        margin-bottom: 80px;
-        text-transform: lowercase;
+      /* ============================================================
+       ABOUT CHARACTER
+       The Twinkies transparent WebM, placed on the right side of the
+       about section (see the screenshot — sits above the divider,
+       between the bio and the signoff). Decorative only: autoplays
+       muted + looped, no hover, no tap. Hidden below 1024px.
+
+       Tunable inline via:
+         --x     distance from the RIGHT edge
+         --y     distance from the TOP of the .about section
+         --size  width of the video
+       ============================================================ */
+      .about-char {
+        position: absolute;
+        right: var(--x, 80px);
+        top: var(--y, 560px);
+        width: var(--size, 240px);
+        height: auto;
+        z-index: 5;
+        line-height: 0;
+        pointer-events: none; /* purely decorative */
+      }
+      .about-char video {
+        display: block;
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+      }
+      @media (max-width: 1023px) {
+        .about-char {
+          display: none;
+        }
       }
 
-      .signoff {
-        margin-top: 140px;
-        border-top: 1px solid rgba(247, 227, 194, 0.2);
-        padding-top: 60px;
+      .section-eyebrow {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 14px;
       }
-      .signoff-name {
-        font-size: clamp(60px, 15vw, 180px);
-        font-weight: 900;
-        line-height: 0.8;
-        letter-spacing: -0.06em;
-        text-transform: lowercase;
+      .eyebrow-icon {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
       }
-      .signoff-tag {
-        font-size: clamp(18px, 3vw, 26px);
+      .section-title {
+        font-family: var(--font-display);
+        font-size: clamp(28px, 3.2vw, 42px);
         font-weight: 500;
-        opacity: 0.7;
-        margin-top: 28px;
-        text-transform: lowercase;
-        padding: 10px;
+        letter-spacing: -0.02em;
+        line-height: 1.05;
+        margin-bottom: 56px;
+        max-width: 720px;
       }
 
-      /* THE TIGHTER GRID */
-      .content-grid {
+      /* Portrait + bio grid */
+      .about-grid {
         display: grid;
-        grid-template-columns: var(--photo-size) 1fr; /* photo width | text fills the rest */
-        gap: 59.2px; /* space between photo and text */
-        align-items: start; /* vertical alignment of photo vs text */
-        max-width: 1100px; /* width of the whole cluster — lower = tighter & more centered */
-        margin: 0 auto; /* centers the cluster on the page */
+        grid-template-columns: 380px minmax(0, 1fr);
+        gap: 60px;
+        align-items: start;
+        max-width: 1100px;
       }
 
-      .portrait-area {
-        width: var(--photo-size); /* controlled by --photo-size above */
+      /* Portrait — bordered paper-panel with a grain overlay via
+         ::after so it picks up the site's texture language. Multiply
+         blend so the grain reads as grain, not a light wash. */
+      .portrait {
+        position: relative;
+        width: 380px;
         max-width: 100%;
         aspect-ratio: 1 / 1.2;
-        background: var(--ink);
+        background: var(--paper-panel);
         overflow: hidden;
-        border: 1px solid rgba(247, 227, 194, 0.2);
-        transform: translate(
-          var(--photo-x),
-          var(--photo-y)
-        ); /* nudge via --photo-x / --photo-y */
+        border: 1px solid var(--line);
       }
-
-      .portrait-area img {
+      .portrait img {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        filter: var(
-          --photo-filter
-        ); /* none = color, grayscale(100%) contrast(1.1) = B&W (set on <main>) */
-        opacity: 1;
+        display: block;
+      }
+      .portrait::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: var(--faq-noise-tile);
+        background-repeat: repeat;
+        opacity: var(--faq-noise-opacity);
+        pointer-events: none;
+        mix-blend-mode: multiply;
       }
 
-      .bio-col {
-        max-width: 600px;
+      .bio {
+        max-width: 620px;
       }
-
-      .bio-text {
-        font-size: 26px;
+      .bio-lead {
+        font-family: var(--font-display);
+        font-size: clamp(20px, 2.2vw, 26px);
         font-weight: 500;
         line-height: 1.3;
+        letter-spacing: -0.01em;
+        color: var(--ink);
         margin-bottom: 28px;
       }
-      .bio-sub {
-        font-size: 19px;
-        font-weight: 500;
-        line-height: 1.5;
-        margin-bottom: 24px;
-        opacity: 0.9;
+      .bio-para {
+        font-family: var(--font-display);
+        font-size: 15px;
+        line-height: 1.65;
+        color: var(--ink);
+        margin-bottom: 18px;
       }
-      .beyond-text {
-        font-size: 19px;
-        line-height: 1.55;
-        margin-bottom: 22px;
-        opacity: 0.92;
-      }
-      .beyond-text:last-child {
+      .bio-para:last-child {
         margin-bottom: 0;
       }
 
-      .metadata {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 40px;
-        border-top: 1px solid rgba(247, 227, 194, 0.2);
-        padding-top: 30px;
+      /* ============================================================
+       SIGNOFF — the alias moment. Mirrors the "I'm Musa Soko" hero
+       treatment on index but for grandmama patrick. Huge, lowercase,
+       display weight. Space Grotesk maxes at 700 rather than 900 but
+       the presence at this scale still commands the space.
+       ============================================================ */
+      .signoff {
+        margin-top: 120px;
+        padding-top: 56px;
+        border-top: 1px solid var(--line);
       }
-
-      .label {
-        font-size: 10px;
-        font-weight: 900;
-        text-transform: uppercase;
-        letter-spacing: 0.2em;
-        color: var(--ink);
-        margin-bottom: 12px;
-        display: block;
-      }
-
-      .list-item {
-        font-size: 14px;
-        opacity: 0.8;
-        margin-bottom: 4px;
-        list-style: none;
-      }
-
-      .eyebrow {
-        display: inline-block;
-        font-size: 13px;
+      .signoff-name {
+        font-family: var(--font-display);
+        font-size: clamp(56px, 13vw, 156px);
         font-weight: 700;
-        letter-spacing: 0.25em;
-        text-transform: uppercase;
+        line-height: 0.9;
+        letter-spacing: -0.05em;
         color: var(--ink);
-        opacity: 0.75;
+        text-transform: lowercase;
       }
-      .beyond-link {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        margin-top: 36px;
-        font-size: 13px;
-        font-weight: 700;
-        letter-spacing: 0.25em;
-        text-transform: uppercase;
-        color: var(--ink);
-        text-decoration: none;
-        border-bottom: 1px solid rgba(13, 31, 38, 0.4);
-        padding-bottom: 5px;
-        transition:
-          gap 0.2s ease,
-          opacity 0.2s ease;
+      .signoff-tag {
+        font-family: var(--font-display);
+        font-size: clamp(16px, 2vw, 22px);
+        font-weight: 400;
+        color: var(--ink-soft);
+        margin-top: 24px;
+        text-transform: lowercase;
+        letter-spacing: 0.005em;
       }
-      .beyond-link:hover {
-        gap: 16px;
-        opacity: 0.75;
-      }
-      .beyond-link .arrow {
-        font-size: 16px;
-        letter-spacing: 0;
-      }
-      .placeholder {
-        border: 1px dashed rgba(247, 227, 194, 0.45);
-        padding: 30px 32px;
-      }
-      .placeholder .lead {
-        font-size: 22px;
-        font-weight: 500;
-        font-style: italic;
-        line-height: 1.4;
-        margin-bottom: 22px;
-      }
-      .placeholder .hint {
-        font-size: 12px;
-        font-weight: 700;
-        text-transform: uppercase;
+      /* Small mono-type label above the alias — same rhythm as the
+         section eyebrows elsewhere on the site, no icon needed here. */
+      .signoff-alias {
+        font-family: var(--font-mono);
+        font-size: 11px;
         letter-spacing: 0.18em;
-        opacity: 0.6;
-        margin-bottom: 14px;
-      }
-      .placeholder ul {
-        list-style: none;
-      }
-      .placeholder li {
-        font-size: 18px;
-        line-height: 1.75;
-        opacity: 0.85;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+        margin-bottom: 16px;
       }
 
+      /* ============================================================
+       SCROLL REVEAL — same system as index. One-shot fade + slide up.
+       Motion-safe.
+       ============================================================ */
+      .reveal {
+        opacity: 0;
+        transform: translateY(24px);
+        transition:
+          opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+          transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+        will-change: opacity, transform;
+      }
+      .reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .reveal[data-delay="1"] {
+        transition-delay: 80ms;
+      }
+      .reveal[data-delay="2"] {
+        transition-delay: 160ms;
+      }
+      .reveal[data-delay="3"] {
+        transition-delay: 240ms;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .reveal,
+        .reveal[data-delay] {
+          opacity: 1;
+          transform: none;
+          transition: none;
+          transition-delay: 0s;
+        }
+      }
+
+      /* ============================================================
+       RESPONSIVE
+       ============================================================ */
       @media (max-width: 900px) {
-        .content-grid {
+        .about {
+          padding-block: 120px 72px;
+        }
+        .about-grid {
           grid-template-columns: 1fr;
+          gap: 40px;
         }
-        .portrait-area {
-          max-width: 100%;
+        .portrait {
+          width: 100%;
+          max-width: 380px;
+          /* Center horizontally now that the grid has collapsed
+             — otherwise the portrait sits flush-left, which reads
+             like an alignment bug on narrower screens. */
+          margin-inline: auto;
         }
+        .section-title {
+          margin-bottom: 40px;
+        }
+        .signoff {
+          margin-top: 80px;
+          padding-top: 40px;
+        }
+      }
+      @media (max-width: 720px) {
         nav {
-          padding: 20px 40px;
+          padding: 18px 20px;
+        }
+        .nav-links {
+          gap: 8px;
+        }
+        .nav-links a {
+          font-size: 10px;
+          padding: 5px 8px;
+        }
+        .about {
+          padding-block: 100px 56px;
+        }
+        .about-grid {
+          gap: 32px;
         }
       }
     </style>
   </head>
-  <body id="pageBody">
-    <nav>
-      <a href="index.html" class="logo">Musa Soko</a>
+  <body>
+    <nav id="site-nav">
+      <a href="index.html" class="logo">
+        <svg
+          class="logo-icon"
+          viewBox="0 0 22 22"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            d="M4 2H18V3H19V4H20V18H19V19H18V20H4V19H3V18H2V4H3V3H4V2M4 16H5V15H7V14H15V15H17V16H18V5H17V4H5V5H4V16M16 18V17H14V16H8V17H6V18H16M9 5H13V6H14V7H15V11H14V12H13V13H9V12H8V11H7V7H8V6H9V5M12 8V7H10V8H9V10H10V11H12V10H13V8H12Z"
+          />
+        </svg>
+        <span>Musa Soko</span>
+      </a>
       <div class="nav-links">
-        <a href="index.html">Work</a>
+        <a href="index.html#work">Work</a>
         <a href="about.html" class="active">About</a>
+        <a href="index.html#faq">FAQ</a>
         <a href="contact.html">Contact</a>
       </div>
     </nav>
 
-    <main>
-      <div class="content-grid">
-        <div class="portrait-area">
-          <img src="images/Me/me.webp" alt="Portrait" />
-        </div>
+    <section class="about wrap">
+      <!-- Decorative character — Twinkies transparent WebM. Position with
+           --x (from RIGHT), --y (from TOP of section), --size (width).
+           No hover, no tap. Hidden below 1024px. -->
+      <div
+        class="about-char"
+        style="--x: 120px; --y: 645px; --size: 220px"
+        aria-hidden="true"
+      >
+        <video
+          src="images/twinkies.webm"
+          autoplay
+          loop
+          muted
+          playsinline
+        ></video>
+      </div>
 
-        <div class="bio-col">
-          <p class="bio-text">
-            Hi! My name is Musa, and I love making stuff that makes people feel
-            something, through motion and video editing.
+      <div class="section-eyebrow reveal">
+        <svg
+          class="eyebrow-icon"
+          viewBox="0 0 22 22"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            d="M4 2H18V3H19V4H20V18H19V19H18V20H4V19H3V18H2V4H3V3H4V2M4 16H5V15H7V14H15V15H17V16H18V5H17V4H5V5H4V16M16 18V17H14V16H8V17H6V18H16M9 5H13V6H14V7H15V11H14V12H13V13H9V12H8V11H7V7H8V6H9V5M12 8V7H10V8H9V10H10V11H12V10H13V8H12Z"
+          />
+        </svg>
+        <span>About</span>
+      </div>
+      <h1 class="section-title reveal" data-delay="1">Hi, I'm Musa</h1>
+
+      <div class="about-grid reveal" data-delay="2">
+        <div class="portrait">
+          <img src="images/Me/me.webp" alt="Portrait of Musa Soko" />
+        </div>
+        <div class="bio">
+          <p class="bio-lead">
+            I love making stuff that makes people feel something, through motion
+            and video editing.
           </p>
-          <p class="bio-sub">
-            I’m a 24-year-old South African motion designer and video editor
-            based in Johannesburg. I’ve been working in the motion design and
+          <p class="bio-para">
+            I'm a 24-year-old South African motion designer and video editor
+            based in Johannesburg. I've been working in the motion design and
             video editing industry for about four years now, with companies both
             abroad and here at home.
           </p>
-          <p class="bio-sub">
-            I love learning new things. I’m always on a new course, picking up a
+          <p class="bio-para">
+            I love learning new things. I'm always on a new course, picking up a
             new technique, honing my skills, or just experimenting. And in my
             free time, I run around, play games, and draw a little.
           </p>
-          <a class="beyond-link" href="sketchbook.html">
-            beyond the work <span class="arrow">→</span>
-          </a>
         </div>
       </div>
 
-      <div class="signoff">
+      <div class="signoff reveal">
+        <div class="signoff-alias">also known as</div>
         <h2 class="signoff-name">
-          grandmama <br />
+          grandmama<br />
           patrick
         </h2>
         <p class="signoff-tag">i like making things.</p>
       </div>
-    </main>
+    </section>
+
+    <script>
+      // ============================================================
+      // SCROLL REVEAL — one-shot IntersectionObserver, same as index
+      // ============================================================
+      const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+      const revealEls = document.querySelectorAll(".reveal");
+      if (prefersReducedMotion || typeof IntersectionObserver === "undefined") {
+        revealEls.forEach((el) => el.classList.add("is-visible"));
+      } else {
+        const revealObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                revealObserver.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.15, rootMargin: "0px 0px -60px 0px" },
+        );
+        revealEls.forEach((el) => revealObserver.observe(el));
+      }
+
+      // ============================================================
+      // NOISE TILE — same generator as index's FAQ items. Powers the
+      // grain overlay on the portrait. Runs once on load.
+      // ============================================================
+      const FAQ_NOISE = { tileSize: 160, density: 0.85, dotAlphaMax: 0.35 };
+
+      function makeFaqNoise() {
+        const c = document.createElement("canvas");
+        c.width = c.height = FAQ_NOISE.tileSize;
+        const ctx = c.getContext("2d");
+        const img = ctx.createImageData(c.width, c.height);
+        const data = img.data;
+        for (let i = 0; i < data.length; i += 4) {
+          if (Math.random() < FAQ_NOISE.density) {
+            data[i] = data[i + 1] = data[i + 2] = 0;
+            data[i + 3] = FAQ_NOISE.dotAlphaMax * 255 * Math.random();
+          } else {
+            data[i + 3] = 0;
+          }
+        }
+        ctx.putImageData(img, 0, 0);
+        return `url("${c.toDataURL()}")`;
+      }
+
+      requestAnimationFrame(() => {
+        document.documentElement.style.setProperty(
+          "--faq-noise-tile",
+          makeFaqNoise(),
+        );
+      });
+    </script>
   </body>
 </html>
