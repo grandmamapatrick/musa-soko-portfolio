@@ -1402,7 +1402,7 @@
         <a href="#work">Work</a>
         <a href="about.html">About</a>
         <a href="#faq">FAQ</a>
-        <a href="contact">Contact</a>
+        <a href="#contact">Contact</a>
       </div>
     </nav>
 
@@ -1615,7 +1615,7 @@
           client: "SalesSource",
           year: 2024,
           description:
-            "Social media ad for SalesSource. Quick-cut motion with a punchy visual identity.",
+            "A social media ad for SalesSource, explaining what their services are. They're a B2B outbound and performance marketing company. Marketing automation, content strategy, that kind of work.",
           tools: ["Premiere Pro", "After Effects"],
           pieces: [{ type: "vimeo", id: "1114326897", label: "01" }],
         },
@@ -1689,10 +1689,14 @@
           client: "StriveTech",
           year: 2025,
           description:
-            "Motion piece to show StriveTech what their brand could look like in motion. Colors, shapes, how things move.",
+            "I was the motion graphics designer and video editor for StriveTech, making content in an explainer style. Most of it was motion graphics, videos breaking down their services.",
           tools: ["After Effects", "Premiere Pro", "Illustrator"],
           pieces: [
-            { type: "vimeo", id: "1121503730", label: "01" },
+            {
+              type: "mp4",
+              label: "01",
+              src: "https://pub-17f47521370245af90110b842a9cd4d7.r2.dev/StriveTech.mp4",
+            },
             { type: "vimeo", id: "1121611979", label: "02" },
           ],
         },
@@ -1713,16 +1717,14 @@
               // Multi-paragraph description — .info-desc has white-space:
               // pre-line so the blank line between paragraphs renders as
               // a real paragraph break.
-              description: `Cuvée was a visual direction I wanted to present to the company, a concept for a new look. It was a concept piece.
-
-For the look, I leaned on something I'd noticed: sommeliers and a lot of wine brands gravitate toward black and white. So I built the foundation in monochrome, then put a twist on it. Gold accents with a grungy texture, like peeling the foil off a champagne bottle, and a deep purple underneath. The gold and purple were the luxury cues, purple especially, since historically only the rich and royal got to wear it.`,
+              description: `This was a concept piece I showcased for Winedrops, a direction for a new look. Sommeliers and wine brands gravitate toward black and white, so I built the foundation in monochrome then put a twist on it. Gold accents with a grungy texture, like peeling the foil off a champagne bottle, and a deep purple underneath for the luxury cues.`,
             },
             {
               type: "vimeo",
               id: "1114454162",
               label: "03",
               description:
-                "Long-form piece for Winedrops. I handled the edit and motion graphics. It's a sommelier tasting different wines side by side, Sassicaia included, which is up there with the most expensive bottles. The point is to see whether they can actually tell the difference, whether the pricey stuff really tastes better.",
+                "Long-form piece for Winedrops. I handled the edit and motion graphics. It's the founder of Winedrops tasting different wines side by side, Sassicaia included, which is up there with the most expensive bottles. The point is to see whether they can actually tell the difference, whether the pricey stuff really tastes better.",
             },
           ],
         },
@@ -1734,17 +1736,7 @@ For the look, I leaned on something I'd noticed: sommeliers and a lot of wine br
           description:
             "Realistic Strategist is a digital marketing company. They needed a video for their website.",
           tools: ["After Effects", "Photoshop"],
-          pieces: [
-            { type: "vimeo", id: "1114326040", label: "01" },
-            {
-              type: "placeholder",
-              label: "02",
-              aspect: 16 / 9,
-              note: "Piece 2 — landing soon",
-              description:
-                "Second Realistic Strategist piece — swap in once uploaded.",
-            },
-          ],
+          pieces: [{ type: "vimeo", id: "1114326040", label: "01" }],
         },
       ];
 
@@ -2013,30 +2005,19 @@ For the look, I leaned on something I'd noticed: sommeliers and a lot of wine br
       resizeScreensaverCanvas();
 
       // ============================================================
-      // OFFSCREEN VIDEO PAUSE
-      // When the video scrolls out of view, pause it so it's not
-      // burning bandwidth / CPU while the visitor is elsewhere on the
-      // page. The screensaver animation used to fire here too, but
-      // that was confusing (looked like the video was loading when it
-      // wasn't), so it's been removed. The screensaver still shows
-      // while a video is genuinely loading — that's a different trigger
-      // inside loadPiece().
+      // OFFSCREEN VIDEO PAUSE — REMOVED
+      // Previously we paused the current player whenever the video frame
+      // scrolled out of view, to save bandwidth / CPU. Removed because
+      // it created a bad UX: on scroll back, the video showed a black
+      // paused frame that the visitor had to click to resume. If the
+      // scroll-away happened DURING loading, they got a black loading
+      // rectangle that required a click to continue loading — nothing
+      // told them to do that, so they'd sit and wait.
+      // Videos now keep running / keep loading in the background while
+      // the visitor is elsewhere on the page. The tab-hidden handler
+      // below still pauses when the whole tab isn't visible, so we
+      // aren't burning cycles when the user is in another tab entirely.
       // ============================================================
-      if (typeof IntersectionObserver !== "undefined") {
-        const visibilityObserver = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              if (!entry.isIntersecting) {
-                if (currentPlayer && currentPlayer.pause) {
-                  currentPlayer.pause().catch(() => {});
-                }
-              }
-            });
-          },
-          { threshold: 0.1 },
-        );
-        visibilityObserver.observe(videoFrame);
-      }
 
       // Tab hidden = nothing to render. Stop the canvas loop entirely.
       // When the tab comes back and the screensaver is still marked
