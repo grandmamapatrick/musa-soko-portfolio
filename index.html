@@ -4,11 +4,84 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Musa Soko | Motion Designer &amp; Video Editor</title>
+
+    <!-- ============================================================
+         SEO + SOCIAL SHARING META
+         Description is what Google shows under the title in results.
+         Canonical tells Google which URL is the real one. Open Graph
+         and Twitter Card control how the page previews when someone
+         shares the link on WhatsApp, LinkedIn, Twitter, iMessage etc.
+         JSON-LD below is a machine-readable "about me" block so
+         search engines can connect "grandmama patrick" to Musa Soko.
+         ============================================================ -->
+    <meta
+      name="description"
+      content="Portfolio of Musa Soko, aka grandmama patrick. Freelance video editor and motion graphics designer based in Johannesburg."
+    />
+    <meta
+      name="keywords"
+      content="Musa Soko, grandmama patrick, video editor, motion graphics, motion designer, Johannesburg, portfolio, after effects, premiere pro"
+    />
+    <meta name="author" content="Musa Soko" />
+    <link rel="canonical" href="https://grandmamapatrick.github.io/" />
+
+    <!-- Open Graph — used by Facebook, LinkedIn, WhatsApp, iMessage, Slack -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://grandmamapatrick.github.io/" />
+    <meta
+      property="og:title"
+      content="Musa Soko | Motion Designer &amp; Video Editor"
+    />
+    <meta
+      property="og:description"
+      content="Portfolio of Musa Soko, aka grandmama patrick. Freelance video editor and motion graphics designer based in Johannesburg."
+    />
+    <meta
+      property="og:image"
+      content="https://grandmamapatrick.github.io/images/hero.webp"
+    />
+    <meta property="og:site_name" content="Musa Soko" />
+
+    <!-- Twitter Card — Twitter's equivalent of Open Graph -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Musa Soko | Motion Designer &amp; Video Editor"
+    />
+    <meta
+      name="twitter:description"
+      content="Portfolio of Musa Soko, aka grandmama patrick. Freelance video editor and motion graphics designer based in Johannesburg."
+    />
+    <meta
+      name="twitter:image"
+      content="https://grandmamapatrick.github.io/images/hero.webp"
+    />
+
+    <!-- JSON-LD Person schema. Helps search engines understand who this
+         site belongs to, the alias, the location, the role. Boosts the
+         chance of "grandmama patrick" queries landing on this page. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Musa Soko",
+        "alternateName": "grandmama patrick",
+        "jobTitle": "Video Editor and Motion Graphics Designer",
+        "url": "https://grandmamapatrick.github.io/",
+        "image": "https://grandmamapatrick.github.io/images/hero.webp",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Johannesburg",
+          "addressCountry": "ZA"
+        },
+        "sameAs": []
+      }
+    </script>
     <link rel="icon" type="image/png" href="images/favicon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap"
       rel="stylesheet"
     />
     <script src="https://player.vimeo.com/api/player.js"></script>
@@ -29,7 +102,7 @@
         --orange: #f69223; /* active project index + tool tag hover */
         --purple: #6513e0; /* RESERVED for sketchbook button */
 
-        --font-display: "Space Grotesk", system-ui, sans-serif;
+        --font-display: "Epilogue", system-ui, sans-serif;
         --font-mono: "Space Mono", ui-monospace, monospace;
       }
 
@@ -292,6 +365,10 @@
         aspect-ratio: 16 / 9;
         max-width: 100%;
         margin: 0 auto;
+        /* isolation: isolate creates a stacking context here so the
+           pulse/glow blend modes (multiply, screen) stay contained
+           within the video-frame instead of leaking to elements behind. */
+        isolation: isolate;
         transition:
           aspect-ratio 0.35s ease,
           max-width 0.35s ease;
@@ -367,15 +444,17 @@
         mix-blend-mode: screen;
         pointer-events: none;
       }
-      /* Piece-switch pulse — red multiplied through the pixels so each cell
-       shifts to its own shade of red (bright → red, mid → dark red, black stays) */
+      /* Piece-switch pulse — red multiplied through whatever's showing
+         (video frame, screensaver noise). Lives at video-frame level so
+         its opacity is independent of the screensaver's fade-in — this
+         is what makes the pulse actually visible on piece switches. */
       .video-screensaver-pulse {
         position: absolute;
         inset: 0;
         background: var(--pulse-color, #e24632);
         mix-blend-mode: multiply;
         pointer-events: none;
-        z-index: 4;
+        z-index: 8;
         opacity: 0;
       }
       .video-screensaver-pulse.pulsing {
@@ -392,15 +471,15 @@
           opacity: 0;
         }
       }
-      /* Project-switch glow — brief exposure lift across the screensaver.
-       Subtle, screen blend so bright pixels bloom slightly instead of tinting. */
+      /* Project-switch glow — brief exposure lift. Same reasoning as the
+         pulse above: lives at video-frame level so it's not dampened. */
       .video-screensaver-glow {
         position: absolute;
         inset: 0;
         background: var(--glow-color, #ffffff);
         mix-blend-mode: screen;
         pointer-events: none;
-        z-index: 4;
+        z-index: 9;
         opacity: 0;
       }
       .video-screensaver-glow.pulsing {
@@ -882,6 +961,121 @@
       nav.past-hero .nav-links a {
         color: transparent;
         pointer-events: none;
+      }
+
+      /* ============================================================
+       MOBILE HAMBURGER NAV
+       Below 720px the .nav-links row is hidden and the .nav-hamburger
+       button takes its place. Tapping it opens a small dropdown panel
+       anchored to the top-right of the nav.
+
+       Colour states (mirrors the logo):
+         over-hero  → white icon, sits over the dark hero
+         past-hero  → ink icon on solid paper — nav comes back on phone
+                      even though desktop past-hero fades everything away,
+                      because on mobile the visitor needs the hamburger
+                      to reach nav after scrolling
+         menu-open  → ink icon on solid paper, so the dropdown reads
+                      against a solid nav bar
+       ============================================================ */
+      .nav-hamburger {
+        display: none;
+        background: transparent;
+        border: 0;
+        padding: 6px;
+        margin: -6px;
+        cursor: pointer;
+        color: var(--ink);
+      }
+      .nav-hamburger svg {
+        width: 22px;
+        height: 22px;
+        display: block;
+      }
+      .nav-hamburger .icon-close {
+        display: none;
+      }
+      nav.mobile-menu-open .nav-hamburger .icon-open {
+        display: none;
+      }
+      nav.mobile-menu-open .nav-hamburger .icon-close {
+        display: block;
+      }
+      /* Over-hero: hamburger goes white to match the logo text
+         against the dark hero photo */
+      nav.over-hero .nav-hamburger {
+        color: var(--paper);
+      }
+
+      @media (max-width: 720px) {
+        .nav-hamburger {
+          display: block;
+        }
+        /* Hide the inline nav links on phone — hamburger takes over */
+        .nav-links {
+          display: none;
+        }
+        /* On phone, past-hero brings the nav BACK as solid paper so the
+           hamburger stays reachable. Desktop past-hero (which fades
+           everything to transparent) is a design choice that only makes
+           sense when the visitor can scroll back to the hero for nav —
+           on phone with the hamburger, that constraint is gone. */
+        nav.past-hero {
+          background: var(--paper);
+          border-bottom-color: var(--line);
+        }
+        nav.past-hero .logo {
+          color: var(--ink);
+          pointer-events: auto;
+        }
+        nav.past-hero .nav-hamburger {
+          color: var(--ink);
+        }
+        /* Menu-open forces solid paper nav so the dropdown has a
+           legible background behind the hamburger */
+        nav.mobile-menu-open {
+          background: var(--paper);
+          border-bottom-color: var(--line);
+        }
+        nav.mobile-menu-open .logo {
+          color: var(--ink);
+          pointer-events: auto;
+        }
+        nav.mobile-menu-open .nav-hamburger {
+          color: var(--ink);
+        }
+        /* Dropdown panel — activates when nav.mobile-menu-open is set.
+           Small panel anchored to the top-right of the nav. */
+        nav.mobile-menu-open .nav-links {
+          display: flex;
+          position: absolute;
+          top: 100%;
+          right: 20px;
+          background: var(--paper);
+          z-index: 90;
+          flex-direction: column;
+          align-items: stretch;
+          gap: 2px;
+          padding: 8px;
+          min-width: 180px;
+          border: 1px solid var(--line);
+          box-shadow: 0 12px 28px rgba(15, 15, 15, 0.12);
+        }
+        nav.mobile-menu-open .nav-links a {
+          color: var(--ink);
+          font-family: var(--font-display);
+          font-size: 16px;
+          font-weight: 500;
+          letter-spacing: -0.01em;
+          text-transform: none;
+          padding: 10px 14px;
+          border: 0;
+          text-align: left;
+          pointer-events: auto;
+        }
+        nav.mobile-menu-open .nav-links a:hover {
+          color: var(--cyan);
+        }
       }
 
       /* Anchor jumps land below the fixed nav rather than under it */
@@ -1402,8 +1596,35 @@
         <a href="#work">Work</a>
         <a href="about.html">About</a>
         <a href="#faq">FAQ</a>
-        <a href="contact">Contact</a>
+        <a href="contact.html">Contact</a>
       </div>
+      <button
+        class="nav-hamburger"
+        id="nav-hamburger"
+        aria-label="Open menu"
+        aria-expanded="false"
+      >
+        <!-- Three-bar hamburger icon, pixel-art style to match the site's other icons -->
+        <svg
+          class="icon-open"
+          viewBox="0 0 22 22"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path d="M2 4H20V6H2V4M2 10H20V12H2V10M2 16H20V18H2V16Z" />
+        </svg>
+        <!-- Close X icon — pixel-art multiply glyph from Musa's uploaded SVG -->
+        <svg
+          class="icon-close"
+          viewBox="0 0 22 22"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            d="M16 16H14V15H13V14H12V13H10V14H9V15H8V16H6V14H7V13H8V12H9V10H8V9H7V8H6V6H8V7H9V8H10V9H12V8H13V7H14V6H16V8H15V9H14V10H13V12H14V13H15V14H16Z"
+          />
+        </svg>
+      </button>
     </nav>
 
     <section class="hero" id="hero">
@@ -1495,9 +1716,9 @@
             <div class="video-content" id="video-content"></div>
             <div class="video-screensaver" id="video-screensaver">
               <canvas id="screensaver-canvas"></canvas>
-              <div class="video-screensaver-pulse" id="screensaver-pulse"></div>
-              <div class="video-screensaver-glow" id="screensaver-glow"></div>
             </div>
+            <div class="video-screensaver-pulse" id="screensaver-pulse"></div>
+            <div class="video-screensaver-glow" id="screensaver-glow"></div>
           </div>
         </div>
 
@@ -1820,11 +2041,6 @@
         }
         videoContent.style.setProperty("--iframe-height", "100%");
         videoContent.style.setProperty("--iframe-top", "0%");
-
-        // Mobile: toggle between split-view and portrait mode based on the piece's AR.
-        // setMobileMode is a no-op if the phone width breakpoint isn't active, but the
-        // class is set on work-grid either way so a resize into mobile picks it up.
-        if (typeof setMobileMode === "function") setMobileMode(videoAR);
       }
 
       // Re-apply on resize so max-height stays sensible when the viewport changes
@@ -2173,10 +2389,8 @@
 
         if (glow) glowScreensaver();
 
-        // Mobile: sync the meta strip title/sub, and close any bottom sheets that
-        // were open — the visitor just picked a new work, so dismiss the list overlay
-        // and the description sheet.
-        if (typeof syncMobileMeta === "function") syncMobileMeta(p);
+        // Mobile: close any bottom sheets that were open — the visitor just
+        // picked a new work, so dismiss the list overlay and description sheet.
         if (typeof workInfoEl !== "undefined" && workInfoEl)
           workInfoEl.classList.remove("sheet-open");
         const worksAsideEl = document.querySelector(".works");
@@ -2321,9 +2535,7 @@
       const workVideoEl = document.querySelector(".work-video");
       const workInfoEl = document.querySelector(".work-info");
       const infoFooterEl = document.querySelector(".info-footer");
-      const workGridEl = document.querySelector(".work-grid");
       const mobileMq = window.matchMedia("(max-width: 1023px)");
-      const phoneMq = window.matchMedia("(max-width: 720px)");
       function positionLowerThird() {
         if (mobileMq.matches) {
           if (lowerThirdEl.parentElement !== workVideoEl)
@@ -2380,6 +2592,12 @@
       // future videos load with audio on too.
       let audioOn = false;
       let currentPlayer = null;
+      // Gate for the very first video autoplay. While this is false, videos
+      // load but do NOT auto-play — they sit paused on their first frame /
+      // poster so the visitor can explore the hero without a video kicking
+      // off underneath them. The first tap on ANY video flips this to true,
+      // after which every subsequent piece autoplays like normal.
+      let firstVideoInteracted = false;
 
       // ------------------------------------------------------------
       // Piece-switch effects: coloured pulse on the screensaver,
@@ -2450,10 +2668,6 @@
         // colour flash across the screensaver, only on piece-button switches
         if (pulse) {
           pulseScreensaver();
-          // On mobile portrait mode the lower-third overlays the video faded;
-          // brighten it briefly so the visitor sees which piece is now active.
-          if (typeof flashLowerThirdActive === "function")
-            flashLowerThirdActive();
         }
 
         // clean up previous Vimeo player if any
@@ -2469,10 +2683,14 @@
 
           const ar = await getVimeoAR(piece.id);
           applyAspect(ar);
+          // Autoplay only after the visitor has tapped a video at least once.
+          // Before that, the video loads but stays parked on its poster / first
+          // frame — no surprise playback while they're still in the hero.
+          const vimeoAutoplay = firstVideoInteracted ? 1 : 0;
           // controls=0 removes chrome, but unlike background=1 lets audio play.
-          // Autoplay must start muted; we unmute after user clicks.
+          // Autoplay (when it happens) must start muted; we unmute after user clicks.
           videoContent.innerHTML = `
-          <iframe src="https://player.vimeo.com/video/${piece.id}?autoplay=1&muted=1&loop=1&controls=0&title=0&byline=0&portrait=0&dnt=1" allow="autoplay; fullscreen" allowfullscreen></iframe>
+          <iframe src="https://player.vimeo.com/video/${piece.id}?autoplay=${vimeoAutoplay}&muted=1&loop=1&controls=0&title=0&byline=0&portrait=0&dnt=1" allow="autoplay; fullscreen" allowfullscreen></iframe>
           <div class="video-click"></div>
         `;
 
@@ -2525,13 +2743,27 @@
                 player
                   .setMuted(false)
                   .catch((err) => console.warn("setMuted failed", err));
-              // fire off a dimension probe to compare oembed AR vs the actually-played video dims,
-              // which is the honest way to diagnose the Showreel black bar
+              // Compare oembed's reported AR against the actual played
+              // dimensions. Vimeo's oembed sometimes lies (this is why
+              // the "Showreel black bar" bug happened). If it does, we
+              // re-apply the real AR so the frame fits the video and
+              // update the cache so this project doesn't have the same
+              // hiccup next time.
               Promise.all([player.getVideoWidth(), player.getVideoHeight()])
                 .then(([w, h]) => {
+                  const trueAR = w / h;
                   console.log(
-                    `[Black Atlas] ${piece.id} played dims ${w}x${h}, AR ${(w / h).toFixed(4)} (oembed reported AR ${ar.toFixed(4)})`,
+                    `[Black Atlas] ${piece.id} played dims ${w}x${h}, AR ${trueAR.toFixed(4)} (oembed reported AR ${ar.toFixed(4)})`,
                   );
+                  if (
+                    Number.isFinite(trueAR) &&
+                    trueAR > 0.2 &&
+                    trueAR < 4 &&
+                    Math.abs(trueAR - ar) > 0.01
+                  ) {
+                    applyAspect(trueAR);
+                    arCache.set(piece.id, trueAR);
+                  }
                 })
                 .catch(() => {});
               // Belt: if the video is already playing by the time we're
@@ -2627,6 +2859,16 @@
             }
             console.log("[Black Atlas] video clicked. audioOn =", audioOn);
             try {
+              // First-ever video tap. Flip the gate so every future piece
+              // autoplays, and kick off playback for this one. The capture-
+              // phase document click listener above has already set audioOn
+              // and called setMuted, so we don't need to do it again here.
+              if (!firstVideoInteracted) {
+                firstVideoInteracted = true;
+                await player.play();
+                console.log("[Black Atlas] first play");
+                return;
+              }
               if (!audioOn) {
                 audioOn = true;
                 await player.setMuted(false);
@@ -2658,8 +2900,12 @@
           showScreensaver();
           if (piece.aspect) applyAspect(piece.aspect);
 
+          // Same first-tap gate as the Vimeo branch: no autoplay until the
+          // visitor has engaged with a video at least once. preload="auto"
+          // still loads the file so the first frame is ready to show.
+          const mp4AutoplayAttr = firstVideoInteracted ? "autoplay " : "";
           videoContent.innerHTML = `
-          <video class="mp4-player" src="${piece.src}" autoplay muted loop playsinline preload="auto"></video>
+          <video class="mp4-player" src="${piece.src}" ${mp4AutoplayAttr}muted loop playsinline preload="auto"></video>
           <div class="video-click"></div>
         `;
 
@@ -2680,9 +2926,18 @@
             if (!videoEl.paused) applyUnmute();
           }
 
-          // expose a minimal player-like shim so the offscreen-pause
-          // observer (which calls currentPlayer.pause()) keeps working
+          // Expose a Vimeo-player-like shim so the offscreen-pause
+          // observer AND the global audio-unlock click handler both work
+          // the same way for MP4 as they do for Vimeo. Without setMuted
+          // here, clicks outside the video wouldn't unmute an MP4 —
+          // only Vimeo players would react.
           currentPlayer = {
+            setMuted: (muted) => {
+              try {
+                videoEl.muted = muted;
+              } catch {}
+              return Promise.resolve();
+            },
             pause: () => {
               try {
                 videoEl.pause();
@@ -2749,13 +3004,20 @@
             }
           });
 
-          // Click: first unmutes, then toggles play/pause
+          // Click: first tap flips the gate + starts playback; subsequent
+          // taps handle unmute-then-toggle-play/pause like Vimeo does.
           clickTarget.addEventListener("click", () => {
             if (swipeConsumed) {
               swipeConsumed = false;
               return;
             }
             try {
+              if (!firstVideoInteracted) {
+                firstVideoInteracted = true;
+                // Capture-phase listener already set audioOn and cleared mute
+                videoEl.play();
+                return;
+              }
               if (!audioOn) {
                 audioOn = true;
                 videoEl.muted = false;
@@ -2788,6 +3050,34 @@
 
       renderWorksList();
       loadProject(0);
+
+      // ============================================================
+      // PRELOAD VIMEO ASPECT RATIOS
+      // Kicks off oembed fetches for every Vimeo piece during browser
+      // idle time. Warms the arCache so the first click on any piece
+      // doesn't wait on a network round-trip before resizing the frame.
+      // Runs AFTER loadProject(0) so the initial video isn't delayed
+      // by the preload traffic, and uses requestIdleCallback so it
+      // never fights the main thread.
+      // ============================================================
+      function preloadVimeoARs() {
+        const ids = [];
+        for (const p of projects) {
+          for (const piece of p.pieces) {
+            if (piece.type === "vimeo" && !arCache.has(piece.id)) {
+              ids.push(piece.id);
+            }
+          }
+        }
+        // Fire them all off — getVimeoAR handles its own caching + fallback
+        const load = () => ids.forEach((id) => getVimeoAR(id));
+        if (typeof requestIdleCallback === "function") {
+          requestIdleCallback(load, { timeout: 3000 });
+        } else {
+          setTimeout(load, 1500);
+        }
+      }
+      preloadVimeoARs();
 
       // ============================================================
       // HERO CAPTION — rotates on each page load.
@@ -3099,6 +3389,61 @@
           },
         );
         navObs.observe(heroEl);
+      }
+
+      // ============================================================
+      // MOBILE HAMBURGER MENU
+      // Small dropdown panel toggled by the .nav-hamburger button.
+      // Closes on link tap, Escape, tap-outside, resize into desktop,
+      // or a second tap of the hamburger. No scroll lock since it's
+      // a small panel, not a fullscreen overlay.
+      // ============================================================
+      const navHamburger = document.getElementById("nav-hamburger");
+      if (navHamburger && navEl) {
+        const closeMobileMenu = () => {
+          navEl.classList.remove("mobile-menu-open");
+          navHamburger.setAttribute("aria-expanded", "false");
+          navHamburger.setAttribute("aria-label", "Open menu");
+        };
+        const openMobileMenu = () => {
+          navEl.classList.add("mobile-menu-open");
+          navHamburger.setAttribute("aria-expanded", "true");
+          navHamburger.setAttribute("aria-label", "Close menu");
+        };
+        navHamburger.addEventListener("click", (e) => {
+          e.stopPropagation();
+          if (navEl.classList.contains("mobile-menu-open")) closeMobileMenu();
+          else openMobileMenu();
+        });
+        // Tap a link → menu closes and the browser follows the link
+        navEl.querySelectorAll(".nav-links a").forEach((a) => {
+          a.addEventListener("click", () => {
+            if (navEl.classList.contains("mobile-menu-open")) closeMobileMenu();
+          });
+        });
+        // Tap anywhere outside the nav → close
+        document.addEventListener("click", (e) => {
+          if (
+            navEl.classList.contains("mobile-menu-open") &&
+            !navEl.contains(e.target)
+          ) {
+            closeMobileMenu();
+          }
+        });
+        // Escape → close
+        document.addEventListener("keydown", (e) => {
+          if (
+            e.key === "Escape" &&
+            navEl.classList.contains("mobile-menu-open")
+          )
+            closeMobileMenu();
+        });
+        // Resize into desktop → close (no reason to keep the dropdown state)
+        const desktopMq = window.matchMedia("(min-width: 721px)");
+        desktopMq.addEventListener("change", (e) => {
+          if (e.matches && navEl.classList.contains("mobile-menu-open"))
+            closeMobileMenu();
+        });
       }
     </script>
   </body>
