@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://grandmamapatrick.github.io/sitemap.xml
