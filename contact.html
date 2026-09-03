@@ -4,11 +4,84 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Musa Soko | Contact</title>
+
+    <!-- ============================================================
+         SEO + SOCIAL SHARING META
+         Description is what Google shows under the title in results.
+         Canonical tells Google which URL is the real one. Open Graph
+         and Twitter Card control how the page previews when someone
+         shares the link on WhatsApp, LinkedIn, Twitter, iMessage etc.
+         JSON-LD below is a machine-readable "about me" block so
+         search engines can connect "grandmama patrick" to Musa Soko.
+         ============================================================ -->
+    <meta
+      name="description"
+      content="Contact Musa Soko, aka grandmama patrick. Freelance video editor and motion graphics designer based in Johannesburg."
+    />
+    <meta
+      name="keywords"
+      content="Musa Soko, grandmama patrick, contact, video editor, motion graphics, motion designer, Johannesburg, portfolio, after effects, premiere pro"
+    />
+    <meta name="author" content="Musa Soko" />
+    <link
+      rel="canonical"
+      href="https://grandmamapatrick.github.io/contact.html"
+    />
+
+    <!-- Open Graph — used by Facebook, LinkedIn, WhatsApp, iMessage, Slack -->
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://grandmamapatrick.github.io/contact.html"
+    />
+    <meta property="og:title" content="Musa Soko | Contact" />
+    <meta
+      property="og:description"
+      content="Contact Musa Soko, aka grandmama patrick. Freelance video editor and motion graphics designer based in Johannesburg."
+    />
+    <meta
+      property="og:image"
+      content="https://grandmamapatrick.github.io/images/hero.webp"
+    />
+    <meta property="og:site_name" content="Musa Soko" />
+
+    <!-- Twitter Card — Twitter's equivalent of Open Graph -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Musa Soko | Contact" />
+    <meta
+      name="twitter:description"
+      content="Contact Musa Soko, aka grandmama patrick. Freelance video editor and motion graphics designer based in Johannesburg."
+    />
+    <meta
+      name="twitter:image"
+      content="https://grandmamapatrick.github.io/images/hero.webp"
+    />
+
+    <!-- JSON-LD Person schema. Helps search engines understand who this
+         site belongs to, the alias, the location, the role. Boosts the
+         chance of "grandmama patrick" queries landing on this page. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Musa Soko",
+        "alternateName": "grandmama patrick",
+        "jobTitle": "Video Editor and Motion Graphics Designer",
+        "url": "https://grandmamapatrick.github.io/",
+        "image": "https://grandmamapatrick.github.io/images/hero.webp",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Johannesburg",
+          "addressCountry": "ZA"
+        },
+        "sameAs": []
+      }
+    </script>
     <link rel="icon" type="image/png" href="images/favicon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap"
       rel="stylesheet"
     />
     <style>
@@ -32,7 +105,7 @@
         --lavender: #8378d8;
         --success: #2f8f52;
 
-        --font-display: "Space Grotesk", system-ui, sans-serif;
+        --font-display: "Epilogue", system-ui, sans-serif;
         --font-mono: "Space Mono", ui-monospace, monospace;
 
         /* Noise tile — populated at runtime, same generator as the site */
@@ -73,7 +146,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: rgba(101, 19, 224, 0);
+       
       }
       .logo {
         display: inline-flex;
@@ -397,22 +470,103 @@
           left: 32px;
         }
       }
+      /* ============================================================
+       MOBILE HAMBURGER NAV
+       Below 720px the .nav-links row is hidden and the .nav-hamburger
+       button takes its place. Tapping it opens a small dropdown panel
+       anchored to the top-right of the nav. Contact has a global
+       `button { width: 100%; background: ink; ... }` rule for the
+       form's send button — every property below explicitly resets
+       that so the hamburger stays a small icon-only button, no matter
+       whether the nav ends up transparent or opaque.
+       ============================================================ */
+      .nav-hamburger {
+        display: none;
+        width: auto;
+        background: transparent;
+        color: var(--ink);
+        border: 0;
+        padding: 6px;
+        margin: -6px;
+        font-family: inherit;
+        font-size: inherit;
+        font-weight: normal;
+        text-transform: none;
+        letter-spacing: normal;
+        cursor: pointer;
+        overflow: visible;
+        transition: none;
+      }
+      .nav-hamburger:hover:not(:disabled) {
+        background: transparent;
+        color: var(--cyan);
+        border-color: transparent;
+      }
+      .nav-hamburger svg {
+        width: 22px;
+        height: 22px;
+        display: block;
+      }
+      .nav-hamburger .icon-close {
+        display: none;
+      }
+      nav.mobile-menu-open .nav-hamburger .icon-open {
+        display: none;
+      }
+      nav.mobile-menu-open .nav-hamburger .icon-close {
+        display: block;
+      }
       @media (max-width: 720px) {
         nav {
           padding: 18px 20px;
         }
-        .nav-links {
-          gap: 8px;
+        .nav-hamburger {
+          display: block;
         }
-        .nav-links a {
-          font-size: 10px;
-          padding: 5px 8px;
+        /* hide the inline nav row on phone */
+        .nav-links {
+          display: none;
+        }
+        /* Dropdown version — activates when nav.mobile-menu-open is set.
+           Small panel anchored to the top-right of the nav. */
+        nav.mobile-menu-open .nav-links {
+          display: flex;
+          position: absolute;
+          top: 100%;
+          right: 20px;
+          background: var(--paper);
+          z-index: 90;
+          flex-direction: column;
+          align-items: stretch;
+          gap: 2px;
+          padding: 8px;
+          min-width: 180px;
+          border: 1px solid var(--line);
+          box-shadow: 0 12px 28px rgba(15, 15, 15, 0.12);
+        }
+        nav.mobile-menu-open .nav-links a {
+          color: var(--ink);
+          font-family: var(--font-display);
+          font-size: 16px;
+          font-weight: 500;
+          letter-spacing: -0.01em;
+          text-transform: none;
+          padding: 10px 14px;
+          border: 0;
+          text-align: left;
+        }
+        nav.mobile-menu-open .nav-links a:hover {
+          color: var(--cyan);
+        }
+        /* Keep the active-page marker visible on mobile too */
+        nav.mobile-menu-open .nav-links a.active {
+          color: var(--cyan);
         }
       }
     </style>
   </head>
   <body>
-    <nav>
+    <nav id="site-nav">
       <a href="index.html" class="logo">
         <svg
           class="logo-icon"
@@ -430,8 +584,35 @@
         <a href="index.html#work">Work</a>
         <a href="about.html">About</a>
         <a href="index.html#faq">FAQ</a>
-        <a href="contact.html" class="active">Contact</a>
+        <a href="contact.html">Contact</a>
       </div>
+      <button
+        class="nav-hamburger"
+        id="nav-hamburger"
+        aria-label="Open menu"
+        aria-expanded="false"
+      >
+        <!-- Three-bar hamburger icon, pixel-art style to match the site's other icons -->
+        <svg
+          class="icon-open"
+          viewBox="0 0 22 22"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path d="M2 4H20V6H2V4M2 10H20V12H2V10M2 16H20V18H2V16Z" />
+        </svg>
+        <!-- Close X icon — pixel-art multiply glyph from Musa's uploaded SVG -->
+        <svg
+          class="icon-close"
+          viewBox="0 0 22 22"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            d="M16 16H14V15H13V14H12V13H10V14H9V15H8V16H6V14H7V13H8V12H9V10H8V9H7V8H6V6H8V7H9V8H10V9H12V8H13V7H14V6H16V8H15V9H14V10H13V12H14V13H15V14H16Z"
+          />
+        </svg>
+      </button>
     </nav>
 
     <main>
@@ -457,7 +638,7 @@
 
         <!-- Signal easter egg — becomes a live link to the scratchbook
              once the message field crosses 25 characters. -->
-        <a href="sketchbook.html" class="signal-area">
+        <a href="scratchbook.html" class="signal-area">
           <div class="peak-container">
             <div class="peak-bar" id="bar1"></div>
             <div class="peak-bar" id="bar2"></div>
@@ -482,7 +663,7 @@
             type="hidden"
             name="subject"
             id="subjectField"
-            value="You got mail from your portfolio"
+            value="New enquiry from your portfolio"
           />
           <input type="hidden" name="replyto" id="replytoField" value="" />
           <input type="hidden" name="from_name" value="Musa Soko Portfolio" />
@@ -691,6 +872,56 @@
           console.error("Form error:", err);
         }
       });
+
+      // ============================================================
+      // MOBILE HAMBURGER MENU
+      // Small dropdown panel — same behavior as index. Toggles the
+      // mobile-menu-open class; closes on link tap, Escape, outside
+      // tap, or a second tap of the hamburger.
+      // ============================================================
+      const navHamburger = document.getElementById("nav-hamburger");
+      const navEl = document.getElementById("site-nav");
+      if (navHamburger && navEl) {
+        const closeMobileMenu = () => {
+          navEl.classList.remove("mobile-menu-open");
+          navHamburger.setAttribute("aria-expanded", "false");
+          navHamburger.setAttribute("aria-label", "Open menu");
+        };
+        const openMobileMenu = () => {
+          navEl.classList.add("mobile-menu-open");
+          navHamburger.setAttribute("aria-expanded", "true");
+          navHamburger.setAttribute("aria-label", "Close menu");
+        };
+        navHamburger.addEventListener("click", () => {
+          if (navEl.classList.contains("mobile-menu-open")) closeMobileMenu();
+          else openMobileMenu();
+        });
+        navEl.querySelectorAll(".nav-links a").forEach((a) => {
+          a.addEventListener("click", () => {
+            if (navEl.classList.contains("mobile-menu-open")) closeMobileMenu();
+          });
+        });
+        document.addEventListener("click", (e) => {
+          if (
+            navEl.classList.contains("mobile-menu-open") &&
+            !navEl.contains(e.target)
+          ) {
+            closeMobileMenu();
+          }
+        });
+        document.addEventListener("keydown", (e) => {
+          if (
+            e.key === "Escape" &&
+            navEl.classList.contains("mobile-menu-open")
+          )
+            closeMobileMenu();
+        });
+        const desktopMq = window.matchMedia("(min-width: 721px)");
+        desktopMq.addEventListener("change", (e) => {
+          if (e.matches && navEl.classList.contains("mobile-menu-open"))
+            closeMobileMenu();
+        });
+      }
     </script>
   </body>
 </html>
