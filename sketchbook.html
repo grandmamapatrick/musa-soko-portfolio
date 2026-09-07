@@ -4,6 +4,72 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Musa Soko | Sketchbook</title>
+
+    <!-- ============================================================
+         SEO + SOCIAL SHARING META
+         ============================================================ -->
+    <meta
+      name="description"
+      content="Sketchbook of Musa Soko, aka grandmama patrick. Sketches, motion experiments, posters, and creative bits from a freelance video editor and motion designer based in Johannesburg."
+    />
+    <meta
+      name="keywords"
+      content="Musa Soko, grandmama patrick, sketchbook, sketches, motion graphics, experiments, posters, motion designer, video editor, Johannesburg"
+    />
+    <meta name="author" content="Musa Soko" />
+    <link
+      rel="canonical"
+      href="https://grandmamapatrick.github.io/sketchbook.html"
+    />
+
+    <!-- Open Graph — WhatsApp, LinkedIn, Facebook, iMessage, Slack -->
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://grandmamapatrick.github.io/sketchbook.html"
+    />
+    <meta property="og:title" content="Musa Soko | Sketchbook" />
+    <meta
+      property="og:description"
+      content="Sketchbook of Musa Soko, aka grandmama patrick. Sketches, motion experiments, posters, and creative bits from a freelance video editor and motion designer based in Johannesburg."
+    />
+    <meta
+      property="og:image"
+      content="https://grandmamapatrick.github.io/images/hero.webp"
+    />
+    <meta property="og:site_name" content="Musa Soko" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Musa Soko | Sketchbook" />
+    <meta
+      name="twitter:description"
+      content="Sketchbook of Musa Soko, aka grandmama patrick. Sketches, motion experiments, posters, and creative bits from a freelance video editor and motion designer based in Johannesburg."
+    />
+    <meta
+      name="twitter:image"
+      content="https://grandmamapatrick.github.io/images/hero.webp"
+    />
+
+    <!-- JSON-LD Person schema — same as other pages, ties "grandmama
+         patrick" to Musa Soko so searches on either land on his site. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Musa Soko",
+        "alternateName": "grandmama patrick",
+        "jobTitle": "Video Editor and Motion Graphics Designer",
+        "url": "https://grandmamapatrick.github.io/",
+        "image": "https://grandmamapatrick.github.io/images/hero.webp",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Johannesburg",
+          "addressCountry": "ZA"
+        },
+        "sameAs": []
+      }
+    </script>
     <link rel="icon" type="image/png" href="images/favicon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -525,45 +591,7 @@
         text-overflow: ellipsis;
       }
 
-      /* WIP window: same chrome, custom body */
-      .pin.wipwin,
-      .pin.wipwin:hover {
-        cursor: default;
-        transform: none;
-        box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.4);
-      }
-      .pin.wipwin .wart {
-        aspect-ratio: 5 / 3;
-        display: grid;
-        place-items: center;
-        border: 1px solid var(--ink);
-        margin: 5px 5px 0;
-        background-image: repeating-linear-gradient(
-          45deg,
-          rgba(253, 186, 74, 0.55) 0 12px,
-          rgba(255, 255, 255, 0) 12px 24px
-        );
-      }
-      .pin.wipwin .wart h2 {
-        font-family: var(--pixel);
-        font-weight: 700;
-        font-size: 17px;
-        line-height: 0.95;
-        color: var(--ink);
-        text-align: center;
-      }
-      .pin.wipwin .wart h2 .alt {
-        color: var(--purple);
-      }
-      .pin.wipwin .wmsg {
-        padding: 11px 9px 12px;
-        font-size: 12.5px;
-        line-height: 1.5;
-        color: #333;
-      }
-      .pin.wipwin .wmsg b {
-        color: var(--purple);
-      }
+      /* WIP window styles removed with the readme.txt tile */
       .win .wbtns {
         display: flex;
         gap: 3px;
@@ -717,7 +745,7 @@
       <p class="page-blurb">
         <b>beyond the work,</b> i just like making stuff. sketches, experiments,
         posters, motion bits, bloops and drafts, the stuff that doesn't usually
-        see daylight. still filling this up, so more's on the way.
+        see daylight.
       </p>
     </header>
 
@@ -725,18 +753,18 @@
 
     <script>
       /* ─────────────────────────────────────────────────────────────
-         SCRATCHBOOK PIECES
-         Put your files in:  images/scratchbook/
+         SKETCHBOOK PIECES
+         Put your files in:  images/sketchbook/
          Then add ONE line per piece to the list below.
 
          IMAGE (jpg / png / webp / gif):
            { title: "name", tag: "SKETCH", year: "2025", ar: "auto",
-             kind: "img", src: "images/scratchbook/your-file.jpg" }
+             kind: "img", src: "images/sketchbook/your-file.jpg" }
 
          VIDEO (mp4 / webm):
            { title: "name", tag: "LOOP", year: "2025", ar: "auto",
-             kind: "video", src: "images/scratchbook/poster.jpg",
-             embed: "images/scratchbook/your-clip.webm" }
+             kind: "video", src: "images/sketchbook/poster.jpg",
+             embed: "images/sketchbook/your-clip.webm" }
 
          tag options : MOTION · POSTER · LOOP · SKETCH · EXPERIMENT
          ar          : "auto" fits the file's real shape (or force e.g. "4/5")
@@ -828,7 +856,7 @@
           year: "2025",
           ar: "auto",
           kind: "img",
-          src: "images/sketchbook/Fing%20Ting.png",
+          src: "images/sketchbook/FIng%20Ting.png",
         },
         {
           title: "pink black",
@@ -864,6 +892,7 @@
       // ── OPENED-WINDOW SIZE (tweak these two numbers) ──
       const WIN_W = 460; // default width for a piece window
       const WIN_W_LANDSCAPE = 780; // wider default when a piece is landscape (wider than tall)
+      const WIN_W_PORTRAIT = 360; // smaller default when a piece is portrait (taller than wide)
 
       function focusWin(el) {
         document
@@ -1147,10 +1176,13 @@
         applyAutoRatio(win);
         if (player) wirePlayer(win);
         // landscape pieces (wider than tall) open bigger by default
-        (function widenIfLandscape() {
+        (function sizeByOrientation() {
           const apply = (ww, hh) => {
-            if (ww && hh && ww > hh * 1.15)
+            if (!ww || !hh) return;
+            if (ww > hh * 1.15)
               win.style.width = "min(" + WIN_W_LANDSCAPE + "px, 94vw)";
+            else if (hh > ww * 1.15)
+              win.style.width = "min(" + WIN_W_PORTRAIT + "px, 92vw)";
           };
           const v = win.querySelector("video");
           const im = win.querySelector("img");
@@ -1207,7 +1239,7 @@
           "<p>you've seen everything in here, for now. more scraps on the way.</p>" +
           '<button class="endcard-btn" data-startover>start over</button>' +
           "</div>";
-        const win = makeWin("end-window", "scratchbook.exe", body, {
+        const win = makeWin("end-window", "sketchbook.exe", body, {
           left: innerWidth / 2 - 170,
           top: 96,
           width: "min(340px, 92vw)",
@@ -1241,22 +1273,6 @@
           '<svg class="tico" width="13" height="13" viewBox="0 0 16 16"><rect x="1" y="2" width="14" height="12" fill="#fff" stroke="#16121f"/><circle cx="5" cy="6" r="1.4" fill="#fdba4a"/><path d="M2 13 L6 8 L9 11 L11 9 L14 13 Z" fill="#6513e0"/></svg>';
         const vidIco =
           '<svg class="tico" width="13" height="13" viewBox="0 0 16 16"><rect x="1" y="2" width="14" height="12" fill="#fff" stroke="#16121f"/><path d="M6 5 L11 8 L6 11 Z" fill="#e24632"/></svg>';
-        const docIco =
-          '<svg class="tico" width="13" height="13" viewBox="0 0 16 16"><path d="M3 1 H10 L13 4 V15 H3 Z" fill="#fff" stroke="#16121f"/><path d="M5 6 H11 M5 8 H11 M5 10 H9" stroke="#16121f"/></svg>';
-
-        // WIP window (info only)
-        const wip = document.createElement("div");
-        wip.className = "pin wipwin";
-        wip.innerHTML =
-          '<div class="tbar">' +
-          docIco +
-          '<span class="tname">readme.txt</span>' +
-          btns +
-          "</div>" +
-          '<div class="wart"><h2>WORK IN <span class="alt">PROGRESS</span></h2></div>' +
-          '<div class="wmsg"><b>i\'m still ' +
-          "uploading my work,</b> so it's not full yet. come back, there'll be more.</div>";
-        board.appendChild(wip);
 
         // pieces as little windows
         // mix videos + images so they don't clump: shuffled display order,
