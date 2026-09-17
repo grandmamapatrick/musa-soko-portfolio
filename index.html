@@ -2567,9 +2567,15 @@
       function closeMobileModal() {
         workEl.classList.remove("mobile-modal-open");
         document.body.style.overflow = "";
-        // pause the video when we back out so it stops burning CPU while hidden
-        if (currentPlayer && currentPlayer.pause)
-          currentPlayer.pause().catch(() => {});
+        // Mute BEFORE pause — pause() can fail silently on Vimeo (postMessage
+        // race between closing and the pause command landing), which would
+        // leave audio playing behind the closed modal with no visible video.
+        // Muting first guarantees silence even if pause hasn't landed yet.
+        if (currentPlayer) {
+          if (currentPlayer.setMuted)
+            currentPlayer.setMuted(true).catch(() => {});
+          if (currentPlayer.pause) currentPlayer.pause().catch(() => {});
+        }
       }
       // Any tap on a work item opens the modal on mobile — piggy-backs on the
       // existing loadProject click handlers (they fire first, populate content,
@@ -2670,13 +2676,18 @@
           pulseScreensaver();
         }
 
-        // clean up previous Vimeo player if any
+        // clean up previous player if any — clear the DOM synchronously
+        // so no audio leaks during the switch. Vimeo's destroy() is async
+        // (Promise-based) and the getVimeoAR fetch below can take hundreds
+        // of ms; without this immediate innerHTML wipe, the old iframe stays
+        // in the DOM and keeps playing audio during that window.
         if (currentPlayer) {
           try {
             currentPlayer.destroy();
           } catch {}
           currentPlayer = null;
         }
+        videoContent.innerHTML = "";
 
         if (piece.type === "vimeo") {
           showScreensaver(); // loading screen while player initializes
@@ -2687,10 +2698,18 @@
           // Before that, the video loads but stays parked on its poster / first
           // frame — no surprise playback while they're still in the hero.
           const vimeoAutoplay = firstVideoInteracted ? 1 : 0;
-          // controls=0 removes chrome, but unlike background=1 lets audio play.
-          // Autoplay (when it happens) must start muted; we unmute after user clicks.
+          // muted=1 is REQUIRED by iOS Safari when autoplay=1 (browsers block
+          // autoplay-with-sound). But when autoplay=0, muted=1 is not only
+          // unnecessary — it becomes a trap: iOS's postMessage-based Player API
+          // setMuted(false) can silently fail, leaving the video stuck muted
+          // even after the visitor taps. So on the first video (paused, waiting
+          // for a tap) we DON'T mute — the tap that starts playback is a fresh
+          // user gesture and produces sound directly. On subsequent autoplaying
+          // pieces we still need muted=1 for the autoplay, and unmute via the
+          // click handler below (which re-issues setMuted inside a gesture).
+          const vimeoMuted = firstVideoInteracted ? 1 : 0;
           videoContent.innerHTML = `
-          <iframe src="https://player.vimeo.com/video/${piece.id}?autoplay=${vimeoAutoplay}&muted=1&loop=1&controls=0&title=0&byline=0&portrait=0&dnt=1" allow="autoplay; fullscreen" allowfullscreen></iframe>
+          <iframe src="https://player.vimeo.com/video/${piece.id}?autoplay=${vimeoAutoplay}&muted=${vimeoMuted}&loop=1&controls=0&title=0&byline=0&portrait=0&dnt=1" allow="autoplay; fullscreen" allowfullscreen></iframe>
           <div class="video-click"></div>
         `;
 
@@ -2804,6 +2823,11 @@
           let playNudged = false;
           player.on("play", () => {
             dismissLoading();
+            // Re-assert unmute at the moment playback starts — safety net
+            // for cases where the ready() setMuted silently failed on iOS.
+            // 'play' is a state transition rather than a lifecycle event,
+            // and postMessage-based mute changes tend to stick better here.
+            if (audioOn) player.setMuted(false).catch(() => {});
             if (!playNudged) {
               playNudged = true;
               setTimeout(nudgeVimeoLayout, 60);
@@ -2860,21 +2884,27 @@
             console.log("[Black Atlas] video clicked. audioOn =", audioOn);
             try {
               // First-ever video tap. Flip the gate so every future piece
-              // autoplays, and kick off playback for this one. The capture-
-              // phase document click listener above has already set audioOn
-              // and called setMuted, so we don't need to do it again here.
+              // autoplays, and start this one. Explicit setMuted(false) here
+              // handles the case where the iframe was loaded with muted=1
+              // (subsequent pieces after the first, when firstVideoInteracted
+              // was already true from a prior tap that was later reset — rare
+              // but possible). On the first video the iframe URL has muted=0,
+              // so setMuted(false) is a no-op but harmless.
               if (!firstVideoInteracted) {
                 firstVideoInteracted = true;
+                audioOn = true;
+                player.setMuted(false).catch(() => {});
                 await player.play();
                 console.log("[Black Atlas] first play");
                 return;
               }
-              if (!audioOn) {
-                audioOn = true;
-                await player.setMuted(false);
-                console.log("[Black Atlas] unmuted");
-                return;
-              }
+              // Every subsequent tap re-asserts unmute inside a fresh user
+              // gesture context — this is the safety net for iOS Safari,
+              // where the ready() setMuted can silently fail because the
+              // postMessage-based Player API doesn't reliably carry gesture
+              // context. Idempotent (no-op if already unmuted).
+              audioOn = true;
+              player.setMuted(false).catch(() => {});
               const paused = await player.getPaused();
               if (paused) {
                 await player.play();
@@ -3004,8 +3034,9 @@
             }
           });
 
-          // Click: first tap flips the gate + starts playback; subsequent
-          // taps handle unmute-then-toggle-play/pause like Vimeo does.
+          // Click: first tap flips the gate + starts playback with audio;
+          // subsequent taps toggle play/pause. Every tap re-asserts muted=false
+          // as a safety net (idempotent — no-op if already unmuted).
           clickTarget.addEventListener("click", () => {
             if (swipeConsumed) {
               swipeConsumed = false;
@@ -3014,15 +3045,13 @@
             try {
               if (!firstVideoInteracted) {
                 firstVideoInteracted = true;
-                // Capture-phase listener already set audioOn and cleared mute
+                audioOn = true;
+                videoEl.muted = false;
                 videoEl.play();
                 return;
               }
-              if (!audioOn) {
-                audioOn = true;
-                videoEl.muted = false;
-                return;
-              }
+              audioOn = true;
+              videoEl.muted = false;
               if (videoEl.paused) videoEl.play();
               else videoEl.pause();
             } catch (err) {
@@ -3102,6 +3131,7 @@
         "the eiffel tower can be 15cm taller in summer",
         "a bolt of lightning is five times hotter than the sun",
         "sea otters hold hands while they sleep",
+        "i'm thinking i'm back",
         "still wish i had a dog though",
       ];
       const heroCaptionEl = document.getElementById("hero-caption");
