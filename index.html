@@ -2246,6 +2246,20 @@
           screensaverLastMs = null;
           return;
         }
+        // On mobile the video frame is hidden until a work is tapped, so the
+        // grid can't be sized yet. Wait for it instead of crashing (which
+        // used to kill the loading animation for the rest of the visit).
+        if (!screensaverCells) {
+          resizeScreensaverCanvas();
+          if (!screensaverCells) {
+            if (Date.now() > screensaverStopAt) {
+              screensaverAnimating = false;
+              return;
+            }
+            screensaverRafId = requestAnimationFrame(screensaverStep);
+            return;
+          }
+        }
         const now = performance.now();
         if (screensaverLastMs === null) screensaverLastMs = now;
         // real-elapsed-time based dt normalised to a 60fps frame (1 unit == one 16.67ms frame),
