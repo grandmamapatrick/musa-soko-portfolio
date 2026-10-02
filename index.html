@@ -16,18 +16,24 @@
          ============================================================ -->
     <meta
       name="description"
-      content="Portfolio of Musa Soko, grandmama patrick. Freelance video editor and motion graphics designer based in Johannesburg."
+      content="Portfolio of Musa Soko, aka grandmama patrick. Freelance video editor and motion graphics designer based in Johannesburg."
     />
     <meta
       name="keywords"
       content="Musa Soko, grandmama patrick, video editor, motion graphics, motion designer, Johannesburg, portfolio, after effects, premiere pro"
     />
     <meta name="author" content="Musa Soko" />
-    <link rel="canonical" href="https://grandmamapatrick.github.io/" />
+    <link
+      rel="canonical"
+      href="https://grandmamapatrick.github.io/musa-soko-portfolio/"
+    />
 
     <!-- Open Graph — used by Facebook, LinkedIn, WhatsApp, iMessage, Slack -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://grandmamapatrick.github.io/" />
+    <meta
+      property="og:url"
+      content="https://grandmamapatrick.github.io/musa-soko-portfolio/"
+    />
     <meta
       property="og:title"
       content="Musa Soko | Motion Designer &amp; Video Editor"
@@ -38,7 +44,7 @@
     />
     <meta
       property="og:image"
-      content="https://grandmamapatrick.github.io/images/hero.webp"
+      content="https://grandmamapatrick.github.io/musa-soko-portfolio/images/hero.webp"
     />
     <meta property="og:site_name" content="Musa Soko" />
 
@@ -54,7 +60,7 @@
     />
     <meta
       name="twitter:image"
-      content="https://grandmamapatrick.github.io/images/hero.webp"
+      content="https://grandmamapatrick.github.io/musa-soko-portfolio/images/hero.webp"
     />
 
     <!-- JSON-LD Person schema. Helps search engines understand who this
@@ -67,8 +73,8 @@
         "name": "Musa Soko",
         "alternateName": "grandmama patrick",
         "jobTitle": "Video Editor and Motion Graphics Designer",
-        "url": "https://grandmamapatrick.github.io/",
-        "image": "https://grandmamapatrick.github.io/images/hero.webp",
+        "url": "https://grandmamapatrick.github.io/musa-soko-portfolio/",
+        "image": "https://grandmamapatrick.github.io/musa-soko-portfolio/images/hero.webp",
         "address": {
           "@type": "PostalAddress",
           "addressLocality": "Johannesburg",
@@ -84,7 +90,6 @@
       href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap"
       rel="stylesheet"
     />
-    <script src="https://player.vimeo.com/api/player.js"></script>
     <style>
       /* ============================================================
        TOKENS — black and white base, colors only on interaction
@@ -243,7 +248,7 @@
       }
 
       /* ============================================================
-       LEFT — works list (NieR inventory style, no dividers)
+       LEFT — works list (NieR inventory style, bordered items)
        ============================================================ */
       .works {
         display: flex;
@@ -310,10 +315,12 @@
         gap: 10px;
         padding: 12px 14px;
         background: var(--paper-panel);
+        border: 1px solid var(--line); /* same border as the FAQ cards */
         cursor: pointer;
         transition:
           background 0.15s ease,
-          color 0.15s ease;
+          color 0.15s ease,
+          border-color 0.2s ease;
         font-size: 14px;
         flex-shrink: 0;
       }
@@ -325,6 +332,7 @@
       }
       .work-item.active {
         background: var(--ink);
+        border-color: var(--ink);
         color: var(--paper);
         font-weight: 500;
       }
@@ -403,6 +411,24 @@
         background: #000;
         pointer-events: none;
       }
+      /* PAUSE DITHER — pixel canvas laid exactly over the MP4. Same
+         box + object-fit as the video so the blocks line up with it. */
+      .video-content canvas.pause-dither {
+        position: absolute;
+        top: var(--iframe-top, 0%);
+        left: 0;
+        width: 100%;
+        height: var(--iframe-height, 100%);
+        object-fit: cover;
+        image-rendering: crisp-edges;
+        image-rendering: pixelated;
+        pointer-events: none;
+        opacity: 0;
+        display: block;
+      }
+      .video-content canvas.pause-dither.on {
+        opacity: 1;
+      }
       /* invisible overlay on top of the iframe that captures clicks for play/pause */
       .video-click {
         position: absolute;
@@ -412,6 +438,42 @@
         pointer-events: auto;
         background: transparent;
         touch-action: pan-y;
+      }
+
+      /* PLAY-STATE SIGN — bare pause/play icon, bottom-right of the
+       video. White with a soft dark shadow so it reads on bright and
+       dark footage alike, without a scrim over the video. Only shown
+       when the visitor taps. Paused stays up; Playing flashes then fades. */
+      .play-state {
+        position: absolute;
+        right: 14px;
+        bottom: 14px;
+        z-index: 11;
+        color: #fff;
+        filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.55))
+          drop-shadow(0 1px 6px rgba(0, 0, 0, 0.45));
+        pointer-events: none;
+        opacity: 0;
+        transform: scale(0.85);
+        transition:
+          opacity 0.15s ease,
+          transform 0.15s ease;
+      }
+      .play-state.on {
+        opacity: 1;
+        transform: none;
+      }
+      .play-state-icon {
+        width: 26px;
+        height: 26px;
+        display: block;
+      }
+      .play-state .icon-pause,
+      .play-state.is-paused .icon-play {
+        display: none;
+      }
+      .play-state.is-paused .icon-pause {
+        display: block;
       }
 
       /* SCREENSAVER — animated pixel noise overlay.
@@ -694,32 +756,6 @@
         color: var(--ink);
         font-weight: 700;
       }
-      .nav-arrows {
-        display: flex;
-        gap: 4px;
-      }
-      .arrow-btn {
-        background: transparent;
-        border: 1px solid var(--line);
-        color: var(--ink);
-        font-family: var(--font-mono);
-        font-size: 11px;
-        letter-spacing: 0.1em;
-        padding: 6px 10px;
-        cursor: pointer;
-        transition:
-          color 0.2s ease,
-          border-color 0.2s ease;
-      }
-      .arrow-btn:hover:not(:disabled) {
-        border-color: var(--cyan);
-        color: var(--cyan);
-      }
-      .arrow-btn:disabled {
-        opacity: 0.28;
-        cursor: not-allowed;
-      }
-
       /* Hidden on desktop — mobile-only chrome */
       .work-info-close {
         display: none;
@@ -877,13 +913,17 @@
           right: 12px;
           width: 34px;
           height: 34px;
-          border: 0.5px solid var(--line);
-          border-radius: 50%;
-          background: var(--paper);
+          border: 1px solid var(--line);
+          border-radius: 0;
+          background: #f6f4ef;
           color: var(--ink);
           cursor: pointer;
           z-index: 220;
           font-size: 14px;
+          transition: border-color 0.2s ease;
+        }
+        .work.mobile-modal-open .work-info-close:hover {
+          border-color: rgba(15, 15, 15, 0.28);
         }
       }
 
@@ -1719,6 +1759,24 @@
             </div>
             <div class="video-screensaver-pulse" id="screensaver-pulse"></div>
             <div class="video-screensaver-glow" id="screensaver-glow"></div>
+            <div class="play-state" id="play-state" aria-hidden="true">
+              <svg
+                class="play-state-icon icon-pause"
+                viewBox="0 0 22 22"
+                fill="currentColor"
+              >
+                <path d="M6 4H9V18H6V4M13 18V4H16V18H13Z" />
+              </svg>
+              <svg
+                class="play-state-icon icon-play"
+                viewBox="0 0 22 22"
+                fill="currentColor"
+              >
+                <path
+                  d="M10 5V6H11V7H12V8H13V9H14V10H15V12H14V13H13V14H12V15H11V16H10V17H9V18H7V4H9V5H10Z"
+                />
+              </svg>
+            </div>
           </div>
         </div>
 
@@ -1838,7 +1896,13 @@
           description:
             "A social media ad for SalesSource, explaining what their services are. They're a B2B outbound and performance marketing company. Marketing automation, content strategy, that kind of work.",
           tools: ["Premiere Pro", "After Effects"],
-          pieces: [{ type: "vimeo", id: "1114326897", label: "01" }],
+          pieces: [
+            {
+              type: "mp4",
+              label: "01",
+              src: "https://pub-17f47521370245af90110b842a9cd4d7.r2.dev/Sales%20Source%20(1080p).mp4",
+            },
+          ],
         },
         {
           id: "novus-f",
@@ -1848,7 +1912,13 @@
           description:
             "A personal project. I wanted a mixed media kind of video, something with both 3D and 2D elements in it. It was an experiment with mixing the two, and it turned out great.",
           tools: ["After Effects", "Blender", "Illustrator"],
-          pieces: [{ type: "vimeo", id: "1195165495", label: "01" }],
+          pieces: [
+            {
+              type: "mp4",
+              label: "01",
+              src: "https://pub-17f47521370245af90110b842a9cd4d7.r2.dev/Novus%20F.mp4",
+            },
+          ],
         },
         {
           id: "feed-cpt",
@@ -1892,7 +1962,13 @@
           description:
             "A collection of work I'm most proud of from the past year. Motion graphics, edits, commercial and personal stuff.",
           tools: ["Premiere Pro", "After Effects"],
-          pieces: [{ type: "vimeo", id: "1108056464", label: "01" }],
+          pieces: [
+            {
+              type: "mp4",
+              label: "01",
+              src: "https://pub-17f47521370245af90110b842a9cd4d7.r2.dev/Showreel.mp4",
+            },
+          ],
         },
         {
           id: "coffee",
@@ -1902,7 +1978,13 @@
           description:
             "A social media ad for one of Spacegoods' coffee products. I handled the edit and motion graphics, using their brand colors throughout.",
           tools: ["Premiere Pro", "After Effects"],
-          pieces: [{ type: "vimeo", id: "1170635799", label: "01" }],
+          pieces: [
+            {
+              type: "mp4",
+              label: "01",
+              src: "https://pub-17f47521370245af90110b842a9cd4d7.r2.dev/Spacegoods%20(1080p).mp4",
+            },
+          ],
         },
         {
           id: "strivetech-motion",
@@ -1918,7 +2000,11 @@
               label: "01",
               src: "https://pub-17f47521370245af90110b842a9cd4d7.r2.dev/StriveTech.mp4",
             },
-            { type: "vimeo", id: "1121611979", label: "02" },
+            {
+              type: "mp4",
+              label: "02",
+              src: "https://pub-17f47521370245af90110b842a9cd4d7.r2.dev/social_media_content-strivetech_v1%20(1080p).mp4",
+            },
           ],
         },
         {
@@ -1930,17 +2016,23 @@
             "A highlight reel of everything I've done for Winedrops. Edits, motion graphics, templates, and all.",
           tools: ["Premiere Pro", "After Effects", "Blender", "Touch Designer"],
           pieces: [
-            { type: "vimeo", id: "1109940880", label: "01" },
             {
-              type: "vimeo",
-              id: "1172141046",
+              type: "mp4",
+              label: "01",
+              src: "https://pub-17f47521370245af90110b842a9cd4d7.r2.dev/Winedrops%20Highlight%20Reel.mp4",
+            },
+            {
+              type: "mp4",
               label: "02",
+              src: "https://pub-17f47521370245af90110b842a9cd4d7.r2.dev/cuv%C3%89e_v1%20(1080p).mp4",
               // Multi-paragraph description — .info-desc has white-space:
               // pre-line so the blank line between paragraphs renders as
               // a real paragraph break.
               description: `This was a concept piece I showcased for Winedrops, a direction for a new look. Sommeliers and wine brands gravitate toward black and white, so I built the foundation in monochrome then put a twist on it. Gold accents with a grungy texture, like peeling the foil off a champagne bottle, and a deep purple underneath for the luxury cues.`,
             },
             {
+              // Long-form piece, stays on Vimeo (too big for R2). No pause
+              // dither here since Vimeo iframes can't be read by the page.
               type: "vimeo",
               id: "1114454162",
               label: "03",
@@ -1957,7 +2049,13 @@
           description:
             "Realistic Strategist is a digital marketing company. They needed a video for their website.",
           tools: ["After Effects", "Premiere Pro"],
-          pieces: [{ type: "vimeo", id: "1114326040", label: "01" }],
+          pieces: [
+            {
+              type: "mp4",
+              label: "01",
+              src: "https://pub-17f47521370245af90110b842a9cd4d7.r2.dev/Website%20Video%20(1080p).mp4",
+            },
+          ],
         },
       ];
 
@@ -2285,7 +2383,7 @@
       // ============================================================
       const WORKS_LIST = {
         maxVisible: 5, // how many items visible before scroll kicks in (try 5 or 6)
-        itemHeightPx: 47, // approximate height of one work-item incl. its 2px gap
+        itemHeightPx: 49, // approximate height of one work-item incl. its 2px gap and 1px border
       };
       worksEl.style.setProperty("--works-max-visible", WORKS_LIST.maxVisible);
       worksEl.style.setProperty(
@@ -2311,9 +2409,13 @@
           })
           .join("");
         worksScrollEl.querySelectorAll(".work-item").forEach((el) => {
-          el.addEventListener("click", () =>
-            loadProject(parseInt(el.dataset.index), { glow: true }),
-          );
+          el.addEventListener("click", () => {
+            // Picking a work is a clear "I want to watch this", so it
+            // unlocks autoplay the same way tapping a video does.
+            firstVideoInteracted = true;
+            audioOn = true;
+            loadProject(parseInt(el.dataset.index), { glow: true });
+          });
         });
         updateScrollbar();
       }
@@ -2414,9 +2516,11 @@
           )
           .join("");
         pieceButtonsEl.querySelectorAll(".lower-third-btn").forEach((btn) => {
-          btn.addEventListener("click", () =>
-            loadPiece(parseInt(btn.dataset.piece), { pulse: true }),
-          );
+          btn.addEventListener("click", () => {
+            firstVideoInteracted = true;
+            audioOn = true;
+            loadPiece(parseInt(btn.dataset.piece), { pulse: true });
+          });
         });
         showLowerThird();
       }
@@ -2487,11 +2591,26 @@
         }
       }
 
+      // Only redraw during the reveal or when the edge pattern actually
+      // ticks (edgeEvolutionHz), and skip entirely while scrolled away.
+      // Same look, a fraction of the work of redrawing every frame.
+      let lowerThirdLastTick = -1;
+      let lowerThirdOnScreen = true;
+      if (typeof IntersectionObserver !== "undefined") {
+        new IntersectionObserver((entries) => {
+          lowerThirdOnScreen = entries[0].isIntersecting;
+        }).observe(lowerThirdEl);
+      }
       function lowerThirdStep() {
         lowerThirdRafId = null;
         if (!lowerThirdAnimating) return;
         const elapsed = performance.now() - lowerThirdStartTime;
-        drawLowerThird(elapsed);
+        const tick = Math.floor((elapsed / 1000) * LOWER_THIRD.edgeEvolutionHz);
+        const revealing = elapsed < LOWER_THIRD.transitionMs + 100;
+        if (lowerThirdOnScreen && (revealing || tick !== lowerThirdLastTick)) {
+          drawLowerThird(elapsed);
+          lowerThirdLastTick = tick;
+        }
         if (elapsed >= LOWER_THIRD.transitionMs) {
           lowerThirdEl.classList.add("revealed");
         }
@@ -2505,6 +2624,7 @@
         requestAnimationFrame(() => {
           measureLowerThird();
           lowerThirdStartTime = performance.now();
+          lowerThirdLastTick = -1;
           if (!lowerThirdAnimating) {
             lowerThirdAnimating = true;
             if (lowerThirdRafId != null) cancelAnimationFrame(lowerThirdRafId);
@@ -2657,8 +2777,237 @@
         el.classList.add("text-reveal");
       }
 
+      // ============================================================
+      // PLAY-STATE SIGN — shown on visitor tap only, so programmatic
+      // pauses (piece switches, tab hidden) don't flash it.
+      // ============================================================
+      let playStateTimer = 0;
+      function showPlayState(paused) {
+        const el = document.getElementById("play-state");
+        if (!el) return;
+        clearTimeout(playStateTimer);
+        el.classList.toggle("is-paused", paused);
+        el.classList.add("on");
+        if (!paused) {
+          playStateTimer = setTimeout(() => el.classList.remove("on"), 900);
+        }
+      }
+      function hidePlayState() {
+        const el = document.getElementById("play-state");
+        clearTimeout(playStateTimer);
+        if (el) el.classList.remove("on");
+      }
+
+      // ============================================================
+      // PAUSE DITHER — when an R2 MP4 is paused, the frame is redrawn as
+      // a 2-bit Bayer-dithered image. Settings come from the Pause Dither
+      // Lab. Needs CORS on the bucket; Vimeo iframes can't be read.
+      // ============================================================
+      const PAUSE_DITHER = {
+        // OFF for now. Kept for the planned "for the enthusiasts" deep-dive
+        // section, where it'll kick in instead of on every pause. Set to
+        // true to bring back the dither-on-pause everywhere.
+        enabled: false,
+        // Target number of blocks across the video. The real count snaps
+        // to the nearest value where every block is a whole number of
+        // screen pixels, so the dither stays crisp instead of shimmering.
+        // Lower = chunkier, higher = finer.
+        blocksAcross: 400,
+        dither: "bayer8",
+        bits: 2,
+        threshold: 0.5,
+        contrast: 1.2,
+        brightness: 0,
+        ink: "#0f0f0f",
+        paper: "#f6f4ef",
+        invert: false,
+      };
+      const BAYER = (() => {
+        const make = (n) => {
+          if (n === 1) return [[0]];
+          const m = make(n / 2),
+            h = n / 2,
+            out = [];
+          for (let y = 0; y < n; y++) {
+            out.push([]);
+            for (let x = 0; x < n; x++) {
+              const q = (y < h ? 0 : 2) + (x < h ? 0 : 1);
+              out[y].push(m[y % h][x % h] * 4 + [0, 2, 3, 1][q]);
+            }
+          }
+          return out;
+        };
+        return { bayer2: make(2), bayer4: make(4), bayer8: make(8) };
+      })();
+      const hexToRgb = (h) =>
+        [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+
+      function attachPauseDither(videoEl, canvas) {
+        const src = document.createElement("canvas");
+        const srcCtx = src.getContext("2d", { willReadFrequently: true });
+        const tmp = document.createElement("canvas");
+        const tmpCtx = tmp.getContext("2d", { willReadFrequently: true });
+        const outCtx = canvas.getContext("2d");
+        let enabled = true;
+        let visible = false;
+
+        function capture() {
+          if (!enabled || videoEl.readyState < 2 || !videoEl.videoWidth)
+            return false;
+          const w = Math.min(videoEl.videoWidth, 960);
+          const h = Math.round((w * videoEl.videoHeight) / videoEl.videoWidth);
+          src.width = w;
+          src.height = h;
+          srcCtx.drawImage(videoEl, 0, 0, w, h);
+          try {
+            srcCtx.getImageData(0, 0, 1, 1);
+            return true;
+          } catch (e) {
+            // Frame is CORS-tainted: leave the video alone, no effect.
+            enabled = false;
+            return false;
+          }
+        }
+
+        // Pick a block size in whole device pixels that lands closest to
+        // the blocksAcross target, then size the grid to match.
+        function grid() {
+          const target = PAUSE_DITHER.blocksAcross;
+          const dpr = window.devicePixelRatio || 1;
+          const devW = Math.round(
+            (canvas.clientWidth || videoEl.clientWidth || 0) * dpr,
+          );
+          const devH = Math.round(
+            (canvas.clientHeight || videoEl.clientHeight || 0) * dpr,
+          );
+          if (!devW || !devH) {
+            return {
+              cols: target,
+              rows: Math.max(1, Math.round((target * src.height) / src.width)),
+            };
+          }
+          const r = devW / target;
+          let best = null;
+          for (const k of [
+            Math.max(1, Math.floor(r)),
+            Math.max(1, Math.ceil(r)),
+          ]) {
+            const cols = Math.round(devW / k);
+            if (
+              !best ||
+              Math.abs(cols - target) < Math.abs(best.cols - target)
+            ) {
+              best = { cols, rows: Math.max(1, Math.round(devH / k)) };
+            }
+          }
+          return best;
+        }
+
+        // Halve step by step so big reductions average instead of alias
+        function downsample(cols, rows) {
+          let from = src,
+            w = src.width,
+            h = src.height;
+          while (w / 2 > cols && h / 2 > rows) {
+            w = Math.round(w / 2);
+            h = Math.round(h / 2);
+            const step = document.createElement("canvas");
+            step.width = w;
+            step.height = h;
+            const sc = step.getContext("2d");
+            sc.imageSmoothingQuality = "high";
+            sc.drawImage(from, 0, 0, w, h);
+            from = step;
+          }
+          tmp.width = cols;
+          tmp.height = rows;
+          tmpCtx.imageSmoothingEnabled = true;
+          tmpCtx.imageSmoothingQuality = "high";
+          tmpCtx.drawImage(from, 0, 0, cols, rows);
+          return tmpCtx.getImageData(0, 0, cols, rows);
+        }
+
+        function render() {
+          const S = PAUSE_DITHER;
+          const { cols, rows } = grid();
+          const img = downsample(cols, rows);
+          const d = img.data,
+            n = cols * rows;
+          const L = (1 << S.bits) - 1;
+          const M = BAYER[S.dither] || BAYER.bayer8,
+            size = M.length,
+            area = size * size;
+          const shift = 0.5 - S.threshold;
+          const ink = hexToRgb(S.ink),
+            paper = hexToRgb(S.paper);
+          for (let i = 0, p = 0; i < n; i++, p += 4) {
+            let l =
+              (0.2126 * d[p] + 0.7152 * d[p + 1] + 0.0722 * d[p + 2]) / 255;
+            l = (l - 0.5) * S.contrast + 0.5 + S.brightness + shift;
+            if (S.invert) l = 1 - l;
+            const x = i % cols,
+              y = (i / cols) | 0;
+            const t = (M[y % size][x % size] + 0.5) / area;
+            const q = Math.min(L, Math.max(0, Math.floor(l * L + t)));
+            const f = q / L;
+            d[p] = ink[0] + (paper[0] - ink[0]) * f;
+            d[p + 1] = ink[1] + (paper[1] - ink[1]) * f;
+            d[p + 2] = ink[2] + (paper[2] - ink[2]) * f;
+            d[p + 3] = 255;
+          }
+          canvas.width = cols;
+          canvas.height = rows;
+          outCtx.putImageData(img, 0, 0);
+        }
+
+        const onResize = () => {
+          if (visible) render();
+        };
+        window.addEventListener("resize", onResize);
+
+        return {
+          show() {
+            if (!PAUSE_DITHER.enabled || !capture()) return;
+            render();
+            canvas.classList.add("on");
+            visible = true;
+          },
+          hide() {
+            canvas.classList.remove("on");
+            visible = false;
+          },
+          disable() {
+            enabled = false;
+            this.hide();
+          },
+          destroy() {
+            enabled = false;
+            window.removeEventListener("resize", onResize);
+          },
+        };
+      }
+
+      let vimeoApiPromise = null;
+      function loadVimeoApi() {
+        if (typeof Vimeo !== "undefined") return Promise.resolve();
+        if (!vimeoApiPromise) {
+          vimeoApiPromise = new Promise((resolve) => {
+            const sc = document.createElement("script");
+            sc.src = "https://player.vimeo.com/api/player.js";
+            sc.onload = resolve;
+            sc.onerror = () => {
+              vimeoApiPromise = null;
+              resolve();
+            };
+            document.head.appendChild(sc);
+          });
+        }
+        return vimeoApiPromise;
+      }
+
       async function loadPiece(pieceIndex, { pulse = false } = {}) {
         currentPieceIndex = pieceIndex;
+        hidePlayState();
         const p = projects[activeIndex];
         const piece = p.pieces[pieceIndex];
 
@@ -2692,7 +3041,12 @@
         if (piece.type === "vimeo") {
           showScreensaver(); // loading screen while player initializes
 
-          const ar = await getVimeoAR(piece.id);
+          // Vimeo's player script is only fetched when a Vimeo piece is
+          // actually opened, instead of blocking every page load.
+          const [ar] = await Promise.all([
+            getVimeoAR(piece.id),
+            loadVimeoApi(),
+          ]);
           applyAspect(ar);
           // Autoplay only after the visitor has tapped a video at least once.
           // Before that, the video loads but stays parked on its poster / first
@@ -2818,6 +3172,21 @@
             hideScreensaver();
           };
           player.on("loaded", dismissLoading);
+          // Idle pause sign, same as the MP4 branch
+          player.on("loaded", () => {
+            setTimeout(() => {
+              player
+                .getPaused()
+                .then((p) => {
+                  if (p && currentPlayer === player) showPlayState(true);
+                })
+                .catch(() => {});
+            }, 600);
+          });
+          player.on("play", () => {
+            const sign = document.getElementById("play-state");
+            if (sign && sign.classList.contains("is-paused")) hidePlayState();
+          });
           player.on("bufferend", dismissLoading);
 
           let playNudged = false;
@@ -2895,6 +3264,7 @@
                 audioOn = true;
                 player.setMuted(false).catch(() => {});
                 await player.play();
+                showPlayState(false);
                 console.log("[Black Atlas] first play");
                 return;
               }
@@ -2908,9 +3278,11 @@
               const paused = await player.getPaused();
               if (paused) {
                 await player.play();
+                showPlayState(false);
                 console.log("[Black Atlas] played");
               } else {
                 await player.pause();
+                showPlayState(true);
                 console.log("[Black Atlas] paused");
               }
             } catch (err) {
@@ -2935,12 +3307,68 @@
           // still loads the file so the first frame is ready to show.
           const mp4AutoplayAttr = firstVideoInteracted ? "autoplay " : "";
           videoContent.innerHTML = `
-          <video class="mp4-player" src="${piece.src}" ${mp4AutoplayAttr}muted loop playsinline preload="auto"></video>
+          <video class="mp4-player" crossorigin="anonymous" src="${piece.src}${piece.src.includes("?") ? "&" : "?"}cors=1" ${mp4AutoplayAttr}muted loop playsinline preload="auto"></video>
+          <canvas class="pause-dither"></canvas>
           <div class="video-click"></div>
         `;
 
           const videoEl = videoContent.querySelector("video.mp4-player");
           const clickTarget = videoContent.querySelector(".video-click");
+
+          // Pause dither: frame turns into the dithered image on pause,
+          // clears on play. ?cors=1 on the src skips any copies browsers
+          // cached before CORS was switched on.
+          const dither = attachPauseDither(
+            videoEl,
+            videoContent.querySelector("canvas.pause-dither"),
+          );
+          let playerDestroyed = false;
+          videoEl.addEventListener("pause", () => {
+            if (!playerDestroyed) dither.show();
+          });
+          videoEl.addEventListener("play", () => {
+            dither.hide();
+            const sign = document.getElementById("play-state");
+            if (sign && sign.classList.contains("is-paused")) hidePlayState();
+          });
+          // Autoplay safety net: if the browser refuses to start it with
+          // sound, start it muted instead of leaving it sitting there.
+          if (firstVideoInteracted) {
+            videoEl.addEventListener(
+              "canplay",
+              () => {
+                if (playerDestroyed || !videoEl.paused) return;
+                videoEl.play().catch(() => {
+                  videoEl.muted = true;
+                  videoEl.play().catch(() => {});
+                });
+              },
+              { once: true },
+            );
+          }
+          // If the video is ready but sitting paused (first visit, before
+          // any tap), show the pause sign so it's clear it's paused.
+          videoEl.addEventListener(
+            "loadeddata",
+            () => {
+              setTimeout(() => {
+                if (!playerDestroyed && videoEl.paused) showPlayState(true);
+              }, 600);
+            },
+            { once: true },
+          );
+          // Safety net: if a CORS request ever fails, reload without it so
+          // the video still plays. Only the pause effect is lost.
+          let corsRetried = false;
+          videoEl.addEventListener("error", () => {
+            if (playerDestroyed || corsRetried) return;
+            corsRetried = true;
+            dither.disable();
+            videoEl.removeAttribute("crossorigin");
+            videoEl.src = piece.src;
+            videoEl.load();
+            if (firstVideoInteracted) videoEl.play().catch(() => {});
+          });
 
           // If the visitor already turned audio on for an earlier piece,
           // carry that through to this one. The <video> is created muted
@@ -2950,6 +3378,16 @@
           if (audioOn) {
             const applyUnmute = () => {
               videoEl.muted = false;
+              // Some browsers (Safari mostly) stop a video that gets its
+              // sound turned on without a fresh tap. If that happens, put
+              // it back to muted and keep it playing; the next tap on the
+              // video brings the sound back.
+              setTimeout(() => {
+                if (!playerDestroyed && videoEl.paused) {
+                  videoEl.muted = true;
+                  videoEl.play().catch(() => {});
+                }
+              }, 300);
             };
             videoEl.addEventListener("playing", applyUnmute, { once: true });
             // also try right away in case it's already playing
@@ -2975,6 +3413,8 @@
               return Promise.resolve();
             },
             destroy: () => {
+              playerDestroyed = true;
+              dither.destroy();
               try {
                 videoEl.pause();
                 videoEl.removeAttribute("src");
@@ -3048,12 +3488,18 @@
                 audioOn = true;
                 videoEl.muted = false;
                 videoEl.play();
+                showPlayState(false);
                 return;
               }
               audioOn = true;
               videoEl.muted = false;
-              if (videoEl.paused) videoEl.play();
-              else videoEl.pause();
+              if (videoEl.paused) {
+                videoEl.play();
+                showPlayState(false);
+              } else {
+                videoEl.pause();
+                showPlayState(true);
+              }
             } catch (err) {
               console.error("[Black Atlas] mp4 click handler error", err);
             }
