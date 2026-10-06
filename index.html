@@ -476,6 +476,99 @@
         display: block;
       }
 
+      /* BUFFERING — pixel orbit. 8 squares in a ring, one bright head with
+       a fading trail, stepping round like old game UI. Same white + soft
+       shadow as the pause sign so it reads on any footage. Shown only
+       after a short delay so quick hiccups don't flicker it on and off. */
+      .buffering {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 44px;
+        height: 44px;
+        margin: -22px 0 0 -22px;
+        z-index: 11;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.15s ease;
+        filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.55))
+          drop-shadow(0 1px 6px rgba(0, 0, 0, 0.45));
+      }
+      .buffering.on {
+        opacity: 1;
+      }
+      .buffering i {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        background: #fff;
+        opacity: 0.12;
+        animation: buffering-orbit 0.88s step-end infinite paused;
+      }
+      .buffering.on i {
+        animation-play-state: running;
+      }
+      .buffering i:nth-child(1) {
+        left: 19px;
+        top: 0;
+        animation-delay: 0s;
+      }
+      .buffering i:nth-child(2) {
+        left: 32px;
+        top: 6px;
+        animation-delay: 0.11s;
+      }
+      .buffering i:nth-child(3) {
+        left: 38px;
+        top: 19px;
+        animation-delay: 0.22s;
+      }
+      .buffering i:nth-child(4) {
+        left: 32px;
+        top: 32px;
+        animation-delay: 0.33s;
+      }
+      .buffering i:nth-child(5) {
+        left: 19px;
+        top: 38px;
+        animation-delay: 0.44s;
+      }
+      .buffering i:nth-child(6) {
+        left: 6px;
+        top: 32px;
+        animation-delay: 0.55s;
+      }
+      .buffering i:nth-child(7) {
+        left: 0;
+        top: 19px;
+        animation-delay: 0.66s;
+      }
+      .buffering i:nth-child(8) {
+        left: 6px;
+        top: 6px;
+        animation-delay: 0.77s;
+      }
+      @keyframes buffering-orbit {
+        0% {
+          opacity: 1;
+        }
+        12.5% {
+          opacity: 0.75;
+        }
+        25% {
+          opacity: 0.5;
+        }
+        37.5% {
+          opacity: 0.25;
+        }
+        50% {
+          opacity: 0.12;
+        }
+        100% {
+          opacity: 0.12;
+        }
+      }
+
       /* SCREENSAVER — animated pixel noise overlay.
        Shown as loading screen and as idle screensaver. */
       .video-screensaver {
@@ -1759,6 +1852,9 @@
             </div>
             <div class="video-screensaver-pulse" id="screensaver-pulse"></div>
             <div class="video-screensaver-glow" id="screensaver-glow"></div>
+            <div class="buffering" id="buffering" aria-hidden="true">
+              <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+            </div>
             <div class="play-state" id="play-state" aria-hidden="true">
               <svg
                 class="play-state-icon icon-pause"
@@ -3001,6 +3097,27 @@
         };
       }
 
+      // ============================================================
+      // BUFFERING ICON — appears when playback stalls mid-video. Waits
+      // 500ms first so short hiccups don't flash it, and stays out of the
+      // way while the full loading screensaver is showing.
+      // ============================================================
+      let bufferingTimer = 0;
+      function showBuffering() {
+        clearTimeout(bufferingTimer);
+        bufferingTimer = setTimeout(() => {
+          const el = document.getElementById("buffering");
+          const saver = document.getElementById("video-screensaver");
+          if (!el || (saver && saver.classList.contains("active"))) return;
+          el.classList.add("on");
+        }, 500);
+      }
+      function hideBuffering() {
+        clearTimeout(bufferingTimer);
+        const el = document.getElementById("buffering");
+        if (el) el.classList.remove("on");
+      }
+
       let vimeoApiPromise = null;
       function loadVimeoApi() {
         if (typeof Vimeo !== "undefined") return Promise.resolve();
@@ -3022,6 +3139,7 @@
       async function loadPiece(pieceIndex, { pulse = false } = {}) {
         currentPieceIndex = pieceIndex;
         hidePlayState();
+        hideBuffering();
         const p = projects[activeIndex];
         const piece = p.pieces[pieceIndex];
 
@@ -3186,6 +3304,11 @@
             hideScreensaver();
           };
           player.on("loaded", dismissLoading);
+          player.on("bufferstart", () => {
+            if (currentPlayer === player) showBuffering();
+          });
+          player.on("bufferend", hideBuffering);
+          player.on("pause", hideBuffering);
           // Idle pause sign, same as the MP4 branch
           player.on("loaded", () => {
             setTimeout(() => {
@@ -3340,6 +3463,12 @@
           videoEl.addEventListener("pause", () => {
             if (!playerDestroyed) dither.show();
           });
+          videoEl.addEventListener("waiting", () => {
+            if (!playerDestroyed && !videoEl.paused) showBuffering();
+          });
+          ["playing", "pause", "canplaythrough", "seeked", "error"].forEach(
+            (ev) => videoEl.addEventListener(ev, hideBuffering),
+          );
           videoEl.addEventListener("play", () => {
             dither.hide();
             const sign = document.getElementById("play-state");
@@ -3936,6 +4065,12 @@
         });
       }
     </script>
-    <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "03cde9157bdf4c348ac15d4c18317802"}'></script><!-- End Cloudflare Web Analytics -->
+    <!-- Cloudflare Web Analytics -->
+    <script
+      type="module"
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon='{"token": "03cde9157bdf4c348ac15d4c18317802"}'
+    ></script>
+    <!-- End Cloudflare Web Analytics -->
   </body>
 </html>
