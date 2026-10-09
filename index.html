@@ -2515,6 +2515,7 @@
             // unlocks autoplay the same way tapping a video does.
             firstVideoInteracted = true;
             audioOn = true;
+            gcEvent("open-" + gcSlug(projects[parseInt(el.dataset.index)].title));
             loadProject(parseInt(el.dataset.index), { glow: true });
           });
         });
@@ -3068,6 +3069,34 @@
       // 500ms first so short hiccups don't flash it, and stays out of the
       // way while the full loading screensaver is showing.
       // ============================================================
+      // ============================================================
+      // GOATCOUNTER EVENTS — shows up in the GoatCounter dashboard as:
+      //   open-<work>             picked a work from the list
+      //   play-<work>[-piece]     the video started playing
+      //   watched-25/50/75/100-<work>[-piece]   how far they got
+      // Each is counted once per time a visitor opens that piece.
+      // ============================================================
+      const gcQueue = [];
+      function gcSlug(t) {
+        return String(t).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+      }
+      function gcSend(name) {
+        try {
+          window.goatcounter.count({ path: name, title: name, event: true });
+        } catch (e) {}
+      }
+      function gcEvent(name) {
+        if (window.goatcounter && window.goatcounter.count) gcSend(name);
+        else gcQueue.push(name); // script still loading; sent on page load
+      }
+      window.addEventListener("load", () => {
+        setTimeout(() => {
+          if (window.goatcounter && window.goatcounter.count) {
+            while (gcQueue.length) gcSend(gcQueue.shift());
+          }
+        }, 500);
+      });
+
       let bufferingTimer = 0;
       function showBuffering() {
         clearTimeout(bufferingTimer);
@@ -3108,6 +3137,30 @@
         hideBuffering();
         const p = projects[activeIndex];
         const piece = p.pieces[pieceIndex];
+
+        // Analytics for this piece (see GOATCOUNTER EVENTS)
+        const gcKey =
+          gcSlug(p.title) + (p.pieces.length > 1 ? "-" + piece.label : "");
+        let gcPlayed = false;
+        let gcLastPct = 0;
+        const gcMilestones = new Set();
+        const gcOnPlay = () => {
+          if (gcPlayed) return;
+          gcPlayed = true;
+          gcEvent("play-" + gcKey);
+        };
+        const gcOnProgress = (pct) => {
+          // Videos loop, so a jump from near the end back to the start
+          // counts as watching all the way through.
+          if (pct < gcLastPct - 20 && gcLastPct > 90) pct = 100;
+          gcLastPct = pct;
+          for (const m of [25, 50, 75, 100]) {
+            if (pct >= (m === 100 ? 97 : m) && !gcMilestones.has(m)) {
+              gcMilestones.add(m);
+              gcEvent("watched-" + m + "-" + gcKey);
+            }
+          }
+        };
 
         pieceButtonsEl.querySelectorAll(".lower-third-btn").forEach((t, i) => {
           t.classList.toggle("active", i === pieceIndex);
@@ -3267,6 +3320,10 @@
             hideScreensaver();
           };
           player.on("loaded", dismissLoading);
+          player.on("play", gcOnPlay);
+          player.on("timeupdate", (d) => {
+            if (d && d.duration) gcOnProgress((d.seconds / d.duration) * 100);
+          });
           player.on("bufferstart", () => {
             if (currentPlayer === player) showBuffering();
           });
@@ -3428,6 +3485,10 @@
           let playerDestroyed = false;
           videoEl.addEventListener("pause", () => {
             if (!playerDestroyed) dither.show();
+          });
+          videoEl.addEventListener("play", gcOnPlay);
+          videoEl.addEventListener("timeupdate", () => {
+            if (videoEl.duration) gcOnProgress((videoEl.currentTime / videoEl.duration) * 100);
           });
           videoEl.addEventListener("waiting", () => {
             if (!playerDestroyed && !videoEl.paused) showBuffering();
@@ -4032,5 +4093,7 @@
       }
     </script>
     <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "03cde9157bdf4c348ac15d4c18317802"}'></script><!-- End Cloudflare Web Analytics -->
+    <!-- GoatCounter (page views + video events) -->
+    <script data-goatcounter="https://grandmamapatrick.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
   </body>
 </html>
