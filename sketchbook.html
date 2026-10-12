@@ -2,23 +2,41 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
     <title>Musa Soko | Sketchbook</title>
     <meta
       name="description"
       content="Sketchbook of Musa Soko, aka grandmama patrick. Sketches, motion experiments, posters and creative bits from a video editor and motion designer based in Johannesburg."
     />
     <meta name="author" content="Musa Soko" />
-    <link rel="canonical" href="https://grandmamapatrick.github.io/musa-soko-portfolio/sketchbook.html" />
+    <link
+      rel="canonical"
+      href="https://grandmamapatrick.github.io/musa-soko-portfolio/sketchbook.html"
+    />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://grandmamapatrick.github.io/musa-soko-portfolio/sketchbook.html" />
+    <meta
+      property="og:url"
+      content="https://grandmamapatrick.github.io/musa-soko-portfolio/sketchbook.html"
+    />
     <meta property="og:title" content="Musa Soko | Sketchbook" />
-    <meta property="og:description" content="Sketches, motion experiments, posters and creative bits by Musa Soko (grandmama patrick)." />
-    <meta property="og:image" content="https://grandmamapatrick.github.io/musa-soko-portfolio/images/hero.webp" />
+    <meta
+      property="og:description"
+      content="Sketches, motion experiments, posters and creative bits by Musa Soko (grandmama patrick)."
+    />
+    <meta
+      property="og:image"
+      content="https://grandmamapatrick.github.io/musa-soko-portfolio/images/hero.webp"
+    />
     <meta property="og:site_name" content="Musa Soko" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Musa Soko | Sketchbook" />
-    <meta name="twitter:image" content="https://grandmamapatrick.github.io/musa-soko-portfolio/images/hero.webp" />
+    <meta
+      name="twitter:image"
+      content="https://grandmamapatrick.github.io/musa-soko-portfolio/images/hero.webp"
+    />
     <link rel="icon" type="image/png" href="images/favicon.png" />
     <style>
       /* ============================================================
@@ -28,12 +46,11 @@
       :root {
         --bg: #f2f5f7; /* page */
         --panel: #c0cbd6; /* empty tiles */
-        --ink: #0d0d0d;
+        --ink: #0d0d0d; /* text */
         --dim: rgba(13, 13, 13, 0.58);
         --line: rgba(13, 13, 13, 0.16);
         --display: "Helvetica Neue", Helvetica, Arial, sans-serif;
         --mono: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        --hover: var(--ink); /* hover frame colour, change here */
         --gap: 8px;
         box-sizing: border-box;
         padding-top: env(safe-area-inset-top, 0px);
@@ -47,16 +64,103 @@
       *::after {
         box-sizing: inherit;
       }
-      html,
-      body {
-        margin: 0;
+      html {
         background: var(--bg);
-        color: var(--ink);
       }
       body {
+        margin: 0;
+        background: transparent;
+        color: var(--ink);
         font-family: var(--display);
         -webkit-font-smoothing: antialiased;
         min-height: 100vh;
+      }
+      button {
+        font-family: inherit;
+      }
+
+      /* ---------- background texture ----------
+         One layer fixed behind everything. Pick the look by changing the
+         class on <body>: tex-crt, tex-spotlight, tex-weave, tex-grid,
+         tex-dots, tex-grille. These were made for the dark version; the
+         page is plain white right now, so none is switched on. */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+      }
+      body.tex-crt::before {
+        /* faint scanlines */
+        background: repeating-linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 0.03) 0 1px,
+          transparent 1px 3px
+        );
+      }
+      body.tex-spotlight::before {
+        /* gallery wall: a soft pool of light from above, darker edges */
+        background:
+          radial-gradient(
+            ellipse 70% 55% at 50% 0%,
+            rgba(255, 255, 255, 0.07),
+            transparent 70%
+          ),
+          radial-gradient(
+            ellipse at 50% 50%,
+            transparent 55%,
+            rgba(0, 0, 0, 0.55) 100%
+          );
+      }
+      body.tex-weave::before {
+        /* fine linen / canvas weave */
+        background:
+          repeating-linear-gradient(
+            0deg,
+            rgba(255, 255, 255, 0.022) 0 1px,
+            transparent 1px 2px
+          ),
+          repeating-linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.022) 0 1px,
+            transparent 1px 3px
+          );
+      }
+      body.tex-grid::before {
+        /* tiny pixel grid */
+        background:
+          linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px) 0 0 /
+            4px 4px,
+          linear-gradient(
+              90deg,
+              rgba(255, 255, 255, 0.035) 1px,
+              transparent 1px
+            )
+            0 0 / 4px 4px;
+      }
+      body.tex-dots::before {
+        /* halftone dots */
+        background: radial-gradient(
+            rgba(255, 255, 255, 0.08) 0.8px,
+            transparent 1.3px
+          )
+          0 0 / 6px 6px;
+      }
+      body.tex-grille::before {
+        /* RGB aperture grille plus scanlines, the closest to a real CRT */
+        background:
+          repeating-linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0.4) 0 1px,
+            transparent 1px 3px
+          ),
+          repeating-linear-gradient(
+            90deg,
+            rgba(255, 60, 90, 0.035) 0 1px,
+            rgba(80, 255, 140, 0.025) 1px 2px,
+            rgba(90, 130, 255, 0.04) 2px 3px
+          );
       }
       a {
         color: inherit;
@@ -66,32 +170,45 @@
         outline-offset: 2px;
       }
 
-      /* ---------- top bar ---------- */
+      /* ---------- top bar ----------
+         Just the way back to the portfolio. It sticks to the top so it's
+         always there while scrolling the wall. */
       .bar {
-        display: flex;
-        justify-content: space-between;
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        padding: 16px clamp(16px, 4vw, 48px);
+        pointer-events: none;
+      }
+      .home {
+        pointer-events: auto;
+        display: inline-flex;
         align-items: center;
-        gap: 1rem;
-        padding: 18px clamp(16px, 4vw, 48px);
-        font-family: var(--mono);
+        gap: 8px;
+        padding: 8px 12px 8px 10px;
         font-size: 13px;
-      }
-      .bar a {
-        text-decoration: none;
-        color: var(--dim);
-        transition: color 0.15s ease;
-      }
-      .bar a:hover {
         color: var(--ink);
+        text-decoration: none;
+        background: rgba(242, 245, 247, 0.72);
+        -webkit-backdrop-filter: blur(8px);
+        backdrop-filter: blur(8px);
+        border: 1px solid var(--line);
+        transition:
+          border-color 0.15s ease,
+          background 0.15s ease;
       }
-      .bar nav {
-        display: flex;
-        gap: clamp(14px, 3vw, 28px);
+      .home:hover {
+        border-color: var(--ink);
+      }
+      .home svg {
+        width: 14px;
+        height: 14px;
+        display: block;
       }
 
       /* ---------- header ---------- */
       .head {
-        padding: clamp(24px, 5vw, 64px) clamp(16px, 4vw, 48px) 28px;
+        padding: clamp(12px, 3vw, 40px) clamp(16px, 4vw, 48px) 28px;
         max-width: 1600px;
         margin: 0 auto;
       }
@@ -193,28 +310,24 @@
         height: 100%;
         object-fit: cover;
       }
-      .piece::after {
-        /* hover frame, one colour (--hover) */
-        content: "";
-        position: absolute;
-        inset: 0;
-        box-shadow: inset 0 0 0 0 var(--hover);
-        transition: box-shadow 0.12s ease;
-        pointer-events: none;
-      }
       .cap {
+        /* the name fades in softly at the bottom on hover, no frame */
         position: absolute;
         left: 0;
         right: 0;
         bottom: 0;
-        padding: 8px 10px;
-        background: var(--ink);
-        color: var(--bg);
-        font-family: var(--mono);
+        padding: 26px 10px 8px;
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.6),
+          rgba(0, 0, 0, 0)
+        );
+        color: #ffffff;
         font-size: 12px;
         line-height: 1.3;
-        transform: translateY(100%);
-        transition: transform 0.15s ease;
+        opacity: 0;
+        transition: opacity 0.25s ease;
+        pointer-events: none;
       }
       .kind {
         position: absolute;
@@ -222,26 +335,22 @@
         right: 8px;
         width: 20px;
         height: 20px;
-        background: var(--ink);
+        background: rgba(13, 13, 13, 0.6);
         display: grid;
         place-items: center;
       }
       @media (hover: hover) {
-        .piece:hover::after,
-        .piece:focus-visible::after {
-          box-shadow: inset 0 0 0 3px var(--hover);
-        }
         .piece:hover .cap,
         .piece:focus-visible .cap {
-          transform: none;
+          opacity: 1;
         }
       }
       /* touch screens: names always visible */
       @media (hover: none) {
         .cap {
-          transform: none;
+          opacity: 1;
           font-size: 11px;
-          padding: 6px 8px;
+          padding: 20px 8px 6px;
         }
       }
 
@@ -272,6 +381,13 @@
         display: flex;
       }
       .win {
+        /* the viewer keeps its light colours in dark mode */
+        --bg: #f2f5f7;
+        --panel: #c0cbd6;
+        --ink: #0d0d0d;
+        --dim: rgba(13, 13, 13, 0.58);
+        --line: rgba(13, 13, 13, 0.16);
+        color: var(--ink);
         position: relative;
         background: var(--bg);
         border: 1px solid var(--ink);
@@ -429,26 +545,46 @@
   </head>
   <body>
     <div class="bar">
-      <a href="index.html">← portfolio</a>
-      <nav aria-label="Site">
-        <a href="index.html#work">work</a>
-        <a href="about.html">about</a>
-        <a href="contact.html">contact</a>
-      </nav>
+      <a class="home" href="index.html">
+        <svg viewBox="0 0 22 22" fill="currentColor" aria-hidden="true">
+          <path d="M4 10H6V8H8V6H10V10H18V12H10V16H8V14H6V12H4Z" />
+        </svg>
+        portfolio
+      </a>
     </div>
 
     <header class="head">
       <h1 class="sr-only">Musa Soko sketchbook</h1>
       <div class="head-row">
         <p class="blurb">
-          <b>beyond the work,</b> i just like making stuff. sketches, experiments, posters, motion
-          bits, bloops and drafts, the stuff that doesn't usually see daylight.
+          <b>beyond the work,</b> i just like making stuff. sketches,
+          experiments, posters, motion bits, bloops and drafts, the stuff that
+          doesn't usually see daylight.
         </p>
         <button class="shuffle" id="shuffle" type="button">
           <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
-            <rect x="1" y="1" width="14" height="14" fill="none" stroke="currentColor" />
-            <rect x="3.5" y="3.5" width="2.5" height="2.5" fill="currentColor" />
-            <rect x="6.75" y="6.75" width="2.5" height="2.5" fill="currentColor" />
+            <rect
+              x="1"
+              y="1"
+              width="14"
+              height="14"
+              fill="none"
+              stroke="currentColor"
+            />
+            <rect
+              x="3.5"
+              y="3.5"
+              width="2.5"
+              height="2.5"
+              fill="currentColor"
+            />
+            <rect
+              x="6.75"
+              y="6.75"
+              width="2.5"
+              height="2.5"
+              fill="currentColor"
+            />
             <rect x="10" y="10" width="2.5" height="2.5" fill="currentColor" />
           </svg>
           shuffle a piece
@@ -463,12 +599,28 @@
       <a href="mailto:musasoko.ln@gmail.com">musasoko.ln@gmail.com</a>
     </footer>
 
-    <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Piece viewer">
+    <div
+      class="lb"
+      id="lb"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Piece viewer"
+    >
       <div class="win" id="win">
-        <button class="win-close" id="lbClose" type="button" aria-label="Close">✕</button>
+        <button class="win-close" id="lbClose" type="button" aria-label="Close">
+          ✕
+        </button>
         <div class="stage" id="lbStage"></div>
         <div id="lbPlayer"></div>
-        <div class="win-foot"><b id="lbTitle"></b><span class="win-meta"><span id="lbYear"></span><button class="copy" id="lbCopy" type="button">copy link</button></span></div>
+        <div class="win-foot">
+          <b id="lbTitle"></b
+          ><span class="win-meta"
+            ><span id="lbYear"></span
+            ><button class="copy" id="lbCopy" type="button">
+              copy link
+            </button></span
+          >
+        </div>
       </div>
     </div>
 
@@ -480,7 +632,11 @@
          ───────────────────────────────────────────────────────────── */
       let works = [];
 
-      const slug = (t) => String(t).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+      const slug = (t) =>
+        String(t)
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-|-$/g, "");
 
       // GoatCounter: which pieces get opened (shows as open-sketch-<name>)
       function gcEvent(name) {
@@ -556,7 +712,7 @@
           k.className = "kind";
           k.setAttribute("aria-hidden", "true");
           k.innerHTML =
-            '<svg width="10" height="10" viewBox="0 0 22 22" fill="#f2f5f7"><path d="M10 5V6H11V7H12V8H13V9H14V10H15V12H14V13H13V14H12V15H11V16H10V17H9V18H7V4H9V5H10Z"/></svg>';
+            '<svg width="10" height="10" viewBox="0 0 22 22" fill="#ffffff"><path d="M10 5V6H11V7H12V8H13V9H14V10H15V12H14V13H13V14H12V15H11V16H10V17H9V18H7V4H9V5H10Z"/></svg>';
           media.appendChild(k);
         } else {
           const img = document.createElement("img");
@@ -618,7 +774,11 @@
         watched.forEach((v) => {
           if (paused) v.pause();
         });
-        if (!paused && io) watched.forEach((v) => { io.unobserve(v); io.observe(v); });
+        if (!paused && io)
+          watched.forEach((v) => {
+            io.unobserve(v);
+            io.observe(v);
+          });
       }
 
       // ---------- viewer ----------
@@ -637,9 +797,12 @@
         return Math.max(220, Math.min(base, maxByHeight));
       }
 
-      const ICON_PAUSE = '<svg viewBox="0 0 22 22" fill="currentColor"><path d="M6 4H9V18H6V4M13 18V4H16V18H13Z"/></svg>';
-      const ICON_PLAY = '<svg viewBox="0 0 22 22" fill="currentColor"><path d="M10 5V6H11V7H12V8H13V9H14V10H15V12H14V13H13V14H12V15H11V16H10V17H9V18H7V4H9V5H10Z"/></svg>';
-      const ICON_SOUND = '<svg viewBox="0 0 22 22" fill="currentColor"><path d="M3 8H7L12 4V18L7 14H3Z"/><path d="M14 8H16V14H14Z M17 6H19V16H17Z"/></svg>';
+      const ICON_PAUSE =
+        '<svg viewBox="0 0 22 22" fill="currentColor"><path d="M6 4H9V18H6V4M13 18V4H16V18H13Z"/></svg>';
+      const ICON_PLAY =
+        '<svg viewBox="0 0 22 22" fill="currentColor"><path d="M10 5V6H11V7H12V8H13V9H14V10H15V12H14V13H13V14H12V15H11V16H10V17H9V18H7V4H9V5H10Z"/></svg>';
+      const ICON_SOUND =
+        '<svg viewBox="0 0 22 22" fill="currentColor"><path d="M3 8H7L12 4V18L7 14H3Z"/><path d="M14 8H16V14H14Z M17 6H19V16H17Z"/></svg>';
       const fmt = (t) => {
         t = Math.floor(t || 0);
         return Math.floor(t / 60) + ":" + String(t % 60).padStart(2, "0");
@@ -666,7 +829,9 @@
             '<div class="pbar"><button class="pbtn" data-pp aria-label="Play or pause"></button>' +
             '<div class="seek" role="slider" aria-label="Seek" tabindex="0"><i></i></div>' +
             '<span class="ptime">0:00</span>' +
-            '<button class="pbtn" data-mute aria-label="Sound on or off">' + ICON_SOUND + "</button></div>";
+            '<button class="pbtn" data-mute aria-label="Sound on or off">' +
+            ICON_SOUND +
+            "</button></div>";
           wirePlayer(v);
           v.play().catch(() => {
             v.muted = true;
@@ -702,7 +867,8 @@
         v.addEventListener("play", sync);
         v.addEventListener("pause", sync);
         v.addEventListener("timeupdate", () => {
-          if (v.duration) fill.style.width = (v.currentTime / v.duration) * 100 + "%";
+          if (v.duration)
+            fill.style.width = (v.currentTime / v.duration) * 100 + "%";
           time.textContent = fmt(v.currentTime) + " / " + fmt(v.duration);
         });
         const seekTo = (e) => {
@@ -719,8 +885,10 @@
         seek.addEventListener("pointermove", (e) => dragging && seekTo(e));
         seek.addEventListener("pointerup", () => (dragging = false));
         seek.addEventListener("keydown", (e) => {
-          if (e.key === "ArrowRight") v.currentTime = Math.min(v.duration || 0, v.currentTime + 5);
-          if (e.key === "ArrowLeft") v.currentTime = Math.max(0, v.currentTime - 5);
+          if (e.key === "ArrowRight")
+            v.currentTime = Math.min(v.duration || 0, v.currentTime + 5);
+          if (e.key === "ArrowLeft")
+            v.currentTime = Math.max(0, v.currentTime - 5);
         });
         mute.addEventListener("click", () => {
           v.muted = !v.muted;
@@ -800,8 +968,18 @@
         });
     </script>
 
-    <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "03cde9157bdf4c348ac15d4c18317802"}'></script><!-- End Cloudflare Web Analytics -->
+    <!-- Cloudflare Web Analytics -->
+    <script
+      type="module"
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon='{"token": "03cde9157bdf4c348ac15d4c18317802"}'
+    ></script>
+    <!-- End Cloudflare Web Analytics -->
     <!-- GoatCounter (page views + which pieces get opened) -->
-    <script data-goatcounter="https://grandmamapatrick.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+    <script
+      data-goatcounter="https://grandmamapatrick.goatcounter.com/count"
+      async
+      src="https://gc.zgo.at/count.js"
+    ></script>
   </body>
 </html>
