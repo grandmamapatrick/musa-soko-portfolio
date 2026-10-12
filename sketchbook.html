@@ -2,41 +2,23 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, viewport-fit=cover"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>Musa Soko | Sketchbook</title>
     <meta
       name="description"
       content="Sketchbook of Musa Soko, aka grandmama patrick. Sketches, motion experiments, posters and creative bits from a video editor and motion designer based in Johannesburg."
     />
     <meta name="author" content="Musa Soko" />
-    <link
-      rel="canonical"
-      href="https://grandmamapatrick.github.io/musa-soko-portfolio/sketchbook.html"
-    />
+    <link rel="canonical" href="https://grandmamapatrick.github.io/musa-soko-portfolio/sketchbook.html" />
     <meta property="og:type" content="website" />
-    <meta
-      property="og:url"
-      content="https://grandmamapatrick.github.io/musa-soko-portfolio/sketchbook.html"
-    />
+    <meta property="og:url" content="https://grandmamapatrick.github.io/musa-soko-portfolio/sketchbook.html" />
     <meta property="og:title" content="Musa Soko | Sketchbook" />
-    <meta
-      property="og:description"
-      content="Sketches, motion experiments, posters and creative bits by Musa Soko (grandmama patrick)."
-    />
-    <meta
-      property="og:image"
-      content="https://grandmamapatrick.github.io/musa-soko-portfolio/images/hero.webp"
-    />
+    <meta property="og:description" content="Sketches, motion experiments, posters and creative bits by Musa Soko (grandmama patrick)." />
+    <meta property="og:image" content="https://grandmamapatrick.github.io/musa-soko-portfolio/images/hero.webp" />
     <meta property="og:site_name" content="Musa Soko" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Musa Soko | Sketchbook" />
-    <meta
-      name="twitter:image"
-      content="https://grandmamapatrick.github.io/musa-soko-portfolio/images/hero.webp"
-    />
+    <meta name="twitter:image" content="https://grandmamapatrick.github.io/musa-soko-portfolio/images/hero.webp" />
     <link rel="icon" type="image/png" href="images/favicon.png" />
     <style>
       /* ============================================================
@@ -120,13 +102,23 @@
         line-height: 1;
         letter-spacing: -0.02em;
       }
+      /* title is hidden on screen but kept for search engines and
+         screen readers */
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+      }
       .head-row {
         display: flex;
         flex-wrap: wrap;
         align-items: flex-end;
         justify-content: space-between;
         gap: 16px;
-        margin-top: 14px;
+        margin-top: 0;
       }
       .blurb {
         max-width: 54ch;
@@ -446,37 +438,17 @@
     </div>
 
     <header class="head">
-      <h1 class="title">sketchbook</h1>
+      <h1 class="sr-only">Musa Soko sketchbook</h1>
       <div class="head-row">
         <p class="blurb">
-          <b>beyond the work,</b> i just like making stuff. sketches,
-          experiments, posters, motion bits, bloops and drafts, the stuff that
-          doesn't usually see daylight.
+          <b>beyond the work,</b> i just like making stuff. sketches, experiments, posters, motion
+          bits, bloops and drafts, the stuff that doesn't usually see daylight.
         </p>
         <button class="shuffle" id="shuffle" type="button">
           <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
-            <rect
-              x="1"
-              y="1"
-              width="14"
-              height="14"
-              fill="none"
-              stroke="currentColor"
-            />
-            <rect
-              x="3.5"
-              y="3.5"
-              width="2.5"
-              height="2.5"
-              fill="currentColor"
-            />
-            <rect
-              x="6.75"
-              y="6.75"
-              width="2.5"
-              height="2.5"
-              fill="currentColor"
-            />
+            <rect x="1" y="1" width="14" height="14" fill="none" stroke="currentColor" />
+            <rect x="3.5" y="3.5" width="2.5" height="2.5" fill="currentColor" />
+            <rect x="6.75" y="6.75" width="2.5" height="2.5" fill="currentColor" />
             <rect x="10" y="10" width="2.5" height="2.5" fill="currentColor" />
           </svg>
           shuffle a piece
@@ -491,28 +463,12 @@
       <a href="mailto:musasoko.ln@gmail.com">musasoko.ln@gmail.com</a>
     </footer>
 
-    <div
-      class="lb"
-      id="lb"
-      role="dialog"
-      aria-modal="true"
-      aria-label="Piece viewer"
-    >
+    <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Piece viewer">
       <div class="win" id="win">
-        <button class="win-close" id="lbClose" type="button" aria-label="Close">
-          ✕
-        </button>
+        <button class="win-close" id="lbClose" type="button" aria-label="Close">✕</button>
         <div class="stage" id="lbStage"></div>
         <div id="lbPlayer"></div>
-        <div class="win-foot">
-          <b id="lbTitle"></b
-          ><span class="win-meta"
-            ><span id="lbYear"></span
-            ><button class="copy" id="lbCopy" type="button">
-              copy link
-            </button></span
-          >
-        </div>
+        <div class="win-foot"><b id="lbTitle"></b><span class="win-meta"><span id="lbYear"></span><button class="copy" id="lbCopy" type="button">copy link</button></span></div>
       </div>
     </div>
 
@@ -524,11 +480,7 @@
          ───────────────────────────────────────────────────────────── */
       let works = [];
 
-      const slug = (t) =>
-        String(t)
-          .toLowerCase()
-          .replace(/[^a-z0-9]+/g, "-")
-          .replace(/^-|-$/g, "");
+      const slug = (t) => String(t).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
       // GoatCounter: which pieces get opened (shows as open-sketch-<name>)
       function gcEvent(name) {
@@ -666,11 +618,7 @@
         watched.forEach((v) => {
           if (paused) v.pause();
         });
-        if (!paused && io)
-          watched.forEach((v) => {
-            io.unobserve(v);
-            io.observe(v);
-          });
+        if (!paused && io) watched.forEach((v) => { io.unobserve(v); io.observe(v); });
       }
 
       // ---------- viewer ----------
@@ -689,12 +637,9 @@
         return Math.max(220, Math.min(base, maxByHeight));
       }
 
-      const ICON_PAUSE =
-        '<svg viewBox="0 0 22 22" fill="currentColor"><path d="M6 4H9V18H6V4M13 18V4H16V18H13Z"/></svg>';
-      const ICON_PLAY =
-        '<svg viewBox="0 0 22 22" fill="currentColor"><path d="M10 5V6H11V7H12V8H13V9H14V10H15V12H14V13H13V14H12V15H11V16H10V17H9V18H7V4H9V5H10Z"/></svg>';
-      const ICON_SOUND =
-        '<svg viewBox="0 0 22 22" fill="currentColor"><path d="M3 8H7L12 4V18L7 14H3Z"/><path d="M14 8H16V14H14Z M17 6H19V16H17Z"/></svg>';
+      const ICON_PAUSE = '<svg viewBox="0 0 22 22" fill="currentColor"><path d="M6 4H9V18H6V4M13 18V4H16V18H13Z"/></svg>';
+      const ICON_PLAY = '<svg viewBox="0 0 22 22" fill="currentColor"><path d="M10 5V6H11V7H12V8H13V9H14V10H15V12H14V13H13V14H12V15H11V16H10V17H9V18H7V4H9V5H10Z"/></svg>';
+      const ICON_SOUND = '<svg viewBox="0 0 22 22" fill="currentColor"><path d="M3 8H7L12 4V18L7 14H3Z"/><path d="M14 8H16V14H14Z M17 6H19V16H17Z"/></svg>';
       const fmt = (t) => {
         t = Math.floor(t || 0);
         return Math.floor(t / 60) + ":" + String(t % 60).padStart(2, "0");
@@ -721,9 +666,7 @@
             '<div class="pbar"><button class="pbtn" data-pp aria-label="Play or pause"></button>' +
             '<div class="seek" role="slider" aria-label="Seek" tabindex="0"><i></i></div>' +
             '<span class="ptime">0:00</span>' +
-            '<button class="pbtn" data-mute aria-label="Sound on or off">' +
-            ICON_SOUND +
-            "</button></div>";
+            '<button class="pbtn" data-mute aria-label="Sound on or off">' + ICON_SOUND + "</button></div>";
           wirePlayer(v);
           v.play().catch(() => {
             v.muted = true;
@@ -759,8 +702,7 @@
         v.addEventListener("play", sync);
         v.addEventListener("pause", sync);
         v.addEventListener("timeupdate", () => {
-          if (v.duration)
-            fill.style.width = (v.currentTime / v.duration) * 100 + "%";
+          if (v.duration) fill.style.width = (v.currentTime / v.duration) * 100 + "%";
           time.textContent = fmt(v.currentTime) + " / " + fmt(v.duration);
         });
         const seekTo = (e) => {
@@ -777,10 +719,8 @@
         seek.addEventListener("pointermove", (e) => dragging && seekTo(e));
         seek.addEventListener("pointerup", () => (dragging = false));
         seek.addEventListener("keydown", (e) => {
-          if (e.key === "ArrowRight")
-            v.currentTime = Math.min(v.duration || 0, v.currentTime + 5);
-          if (e.key === "ArrowLeft")
-            v.currentTime = Math.max(0, v.currentTime - 5);
+          if (e.key === "ArrowRight") v.currentTime = Math.min(v.duration || 0, v.currentTime + 5);
+          if (e.key === "ArrowLeft") v.currentTime = Math.max(0, v.currentTime - 5);
         });
         mute.addEventListener("click", () => {
           v.muted = !v.muted;
@@ -860,18 +800,8 @@
         });
     </script>
 
-    <!-- Cloudflare Web Analytics -->
-    <script
-      type="module"
-      src="https://static.cloudflareinsights.com/beacon.min.js"
-      data-cf-beacon='{"token": "03cde9157bdf4c348ac15d4c18317802"}'
-    ></script>
-    <!-- End Cloudflare Web Analytics -->
+    <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "03cde9157bdf4c348ac15d4c18317802"}'></script><!-- End Cloudflare Web Analytics -->
     <!-- GoatCounter (page views + which pieces get opened) -->
-    <script
-      data-goatcounter="https://grandmamapatrick.goatcounter.com/count"
-      async
-      src="https://gc.zgo.at/count.js"
-    ></script>
+    <script data-goatcounter="https://grandmamapatrick.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
   </body>
 </html>
