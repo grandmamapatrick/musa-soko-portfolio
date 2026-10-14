@@ -12,13 +12,15 @@
     { "title": "voice 02", "year": "2025", "kind": "video", "src": "https://pub-87473b845b5a4c40aa79448de8215fdc.r2.dev/Voice_02.mp4", "w": 1920, "h": 1080 },
     { "title": "main", "year": "2025", "kind": "video", "src": "https://pub-87473b845b5a4c40aa79448de8215fdc.r2.dev/Main.mp4", "w": 1080, "h": 1920 },
     { "title": "girlfriend", "year": "2025", "kind": "video", "src": "https://pub-87473b845b5a4c40aa79448de8215fdc.r2.dev/Girlfriend.mp4", "w": 1080, "h": 1920 },
-    { "title": "vamos", "year": "2025", "kind": "video", "src": "https://pub-87473b845b5a4c40aa79448de8215fdc.r2.dev/Vamos.mp4", "w": 1024, "h": 1024 },
+    { "title": "vamos", "year": "2025", "kind": "video", "src": "https://pub-87473b845b5a4c40aa79448de8215fdc.r2.dev/Vamos.mp4", "w": 1024, "h": 770 },
     { "title": "thundercat", "year": "2025", "kind": "video", "src": "https://pub-87473b845b5a4c40aa79448de8215fdc.r2.dev/Thundercat.mp4", "w": 720, "h": 1280 },
     { "title": "amarillo", "year": "2025", "kind": "video", "src": "https://pub-87473b845b5a4c40aa79448de8215fdc.r2.dev/Amarillo.mp4", "w": 720, "h": 1280 },
     { "title": "motion", "year": "2025", "kind": "video", "src": "https://pub-87473b845b5a4c40aa79448de8215fdc.r2.dev/Motion.mp4", "w": 720, "h": 1280 },
+    { "title": "BOX", "year": "2026", "kind": "video", "src": "https://pub-87473b845b5a4c40aa79448de8215fdc.r2.dev/Box.mp4", "w": 1920, "h": 1440 },
     { "title": "pink black", "year": "2025", "kind": "img", "src": "images/sketchbook/Pink%20Black.png", "w": 1024, "h": 1024 },
     { "title": "inspired by girlfriend", "year": "2025", "kind": "img", "src": "images/sketchbook/Inspired%20by%20Girlfriend.webp", "w": 1080, "h": 1080 },
-    { "title": "flower boy challengers", "year": "2025", "kind": "img", "src": "images/sketchbook/Flower%20Boy%20Challengers.webp", "w": 1066, "h": 1066 },
-    { "title": "fing ting", "year": "2025", "kind": "img", "src": "images/sketchbook/Fing%20Ting.png", "w": 1024, "h": 1024 }
-  ]
+    { "title": "flower boy challengers", "year": "2023", "kind": "img", "src": "images/sketchbook/Flower%20Boy%20Challengers.webp", "w": 1066, "h": 1066 },
+    { "title": "fing ting", "year": "2022", "kind": "img", "src": "images/sketchbook/Fing%20Ting.png", "w": 1024, "h": 1024 }
+
+  ] 
 }
